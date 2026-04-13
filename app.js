@@ -258,31 +258,18 @@ function renderDesignCards({ selectedId, onSelect }) {
   const sampleData = buildSampleData();
 
   for (const t of TEMPLATES) {
-    const card = document.createElement("div");
-    card.className = "design-card";
-    card.setAttribute("role", "listitem");
-    card.dataset.templateId = t.id;
-    card.dataset.selected = String(t.id === selectedId);
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "design-card";
+    btn.setAttribute("role", "listitem");
+    btn.dataset.templateId = t.id;
+    btn.dataset.selected = String(t.id === selectedId);
+    btn.setAttribute("aria-pressed", String(t.id === selectedId));
+    btn.title = "Klick: Design wählen · Doppelklick: Vorschau öffnen";
+    btn.innerHTML = `<div class="design-name">${t.name}</div><p class="design-desc">${t.description}</p>`;
 
-    const mainBtn = document.createElement("button");
-    mainBtn.type = "button";
-    mainBtn.className = "design-card-main";
-    mainBtn.setAttribute("aria-pressed", String(t.id === selectedId));
-    mainBtn.innerHTML = `
-      <div class="design-name">${t.name}</div>
-      <p class="design-desc">${t.description}</p>
-    `.trim();
-
-    const actions = document.createElement("div");
-    actions.className = "design-card-actions";
-
-    const previewBtn = document.createElement("button");
-    previewBtn.type = "button";
-    previewBtn.className = "pill";
-    previewBtn.textContent = "Vorschau";
-    previewBtn.title = "Zeigt eine kompakte Vorschau dieses Designs (ohne Auswahl zu ändern).";
-    previewBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
+    btn.addEventListener("click", () => onSelect(t.id));
+    btn.addEventListener("dblclick", () => {
       document.dispatchEvent(
         new CustomEvent("open-design-preview", {
           detail: { templateId: t.id, name: t.name, description: t.description, sampleData },
@@ -290,18 +277,19 @@ function renderDesignCards({ selectedId, onSelect }) {
       );
     });
 
-    actions.appendChild(previewBtn);
+    btn.addEventListener("keydown", (e) => {
+      // Accessibility: "p" opens preview when focused.
+      if (e.key?.toLowerCase?.() === "p") {
+        e.preventDefault();
+        document.dispatchEvent(
+          new CustomEvent("open-design-preview", {
+            detail: { templateId: t.id, name: t.name, description: t.description, sampleData },
+          })
+        );
+      }
+    });
 
-    const top = document.createElement("div");
-    top.className = "design-card-top";
-    top.appendChild(mainBtn);
-    top.appendChild(actions);
-
-    mainBtn.addEventListener("click", () => onSelect(t.id));
-    card.addEventListener("dblclick", () => onSelect(t.id));
-
-    card.appendChild(top);
-    grid.appendChild(card);
+    grid.appendChild(btn);
   }
 }
 

@@ -215,46 +215,22 @@ input[type="file"]{padding: 8px 10px; cursor:pointer;}
   border: 1px solid var(--border);
   background: color-mix(in oklab, var(--card2) 82%, transparent);
   border-radius: 14px;
-  padding: 14px;
+  padding: 12px;
   text-align: left;
   display:flex;
   flex-direction:column;
   gap: 8px;
-  min-height: 104px;
+  min-height: 86px;
+  cursor: pointer;
 }
 .design-card:hover{border-color: color-mix(in oklab, var(--accent) 45%, var(--border));}
 .design-card[data-selected="true"]{
   border-color: color-mix(in oklab, var(--accent) 70%, var(--border));
   background: linear-gradient(180deg, color-mix(in oklab, var(--accent) 18%, var(--card2)), color-mix(in oklab, var(--accent) 6%, var(--card2)));
 }
-.design-card-top{display:flex; align-items:flex-start; justify-content:space-between; gap:10px;}
-.design-card-main{
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
-  display:block;
-  width: 100%;
-}
-.design-card-main:focus{outline:none; box-shadow: var(--focus); border-radius: 12px;}
-.design-card-actions{display:flex; gap:8px; align-items:center; flex-shrink:0;}
-.pill{
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--muted);
-  font-weight: 800;
-  font-size: 12px;
-  padding: 8px 10px;
-  border-radius: 999px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.pill:hover{color: var(--text); border-color: color-mix(in oklab, var(--accent) 45%, var(--border));}
-.pill:focus{outline:none; box-shadow: var(--focus);}
 .design-name{font-weight: 850; font-size: 13.5px; letter-spacing: 0.01em;}
 .design-desc{margin:4px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.35;}
+.design-card:focus{outline:none; box-shadow: var(--focus);}
 
 .preview-head{display:flex; align-items:center; justify-content:space-between; gap: 10px; flex-wrap:wrap;}
 .preview-head h2{flex: 1 1 140px;}
