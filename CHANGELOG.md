@@ -9,6 +9,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.4] - 2026-04-13
+### Changed
+- Social‑Icons: „Icons (Logos)“ rendert jetzt echte Icon‑Buttons (ohne Initialen‑Text), damit sofort erkennbar ist, dass SVG‑Icons aktiv sind.
+
 ## [1.1.3] - 2026-04-13
 ### Changed
 - UI: Light‑Mode als Standard (keine Theme‑Umschaltung mehr).

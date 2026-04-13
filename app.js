@@ -445,7 +445,7 @@ function buildCompatibilityNotice(state) {
 
   if (compat !== "outlook" && social === "icons") {
     parts.push(
-      "<strong>Icons:</strong> Viele Mail‑Clients entfernen inline‑SVG. In diesem Fall bleiben die Initialen im Button übrig – für maximale Kompatibilität sind Textlinks am sichersten."
+      "<strong>Icons:</strong> Viele Mail‑Clients entfernen inline‑SVG. Icons können dann fehlen – für maximale Kompatibilität sind Textlinks am sichersten."
     );
   }
 
