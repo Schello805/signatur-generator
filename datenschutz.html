@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <meta name="app-version" content="1.1.8" />
+    <meta name="app-version" content="1.1.9" />
     <meta name="theme-color" content="#f6f7fb" />
     <title>Datenschutz – Signaturgenerator</title>
     <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
@@ -55,6 +55,9 @@
           <p class="panel-hint">Was passiert mit deinen Eingaben?</p>
         </div>
         <div class="form" style="line-height:1.6;">
+          <p style="margin-top:0; color: var(--muted);">
+            <strong>Stand:</strong> 13. April 2026
+          </p>
           <ul style="margin-top:0; color: var(--muted);">
             <li>
               Die Webapp läuft vollständig im Browser. Die von dir eingegebenen Daten werden <strong>nicht</strong> an einen Server übertragen.
@@ -83,19 +86,23 @@
         <div class="form" style="line-height:1.6;">
           <ul style="margin-top:0; color: var(--muted);">
             <li>
-              Diese Website kann Matomo (self‑hosted) einsetzen, um Besucherstatistiken zu erfassen (z. B. Seitenaufrufe, Referrer, Geräte‑/Browser‑Infos).
+              Diese Website setzt Matomo (self‑hosted) ein, um Besucherstatistiken zu erfassen und die Website zu verbessern (z. B. Seitenaufrufe,
+              Einstiegs-/Ausstiegsseiten, Referrer, ungefähre Geräte-/Browser-Infos).
             </li>
             <li>
-              Das Tracking wird nur ausgeführt, wenn in der Datei <code>matomo.js</code> ein Matomo‑Tracking‑Code hinterlegt ist.
+              Matomo wird über das Skript <code>matomo.js</code> eingebunden (Tracking-Pixel/Requests an <code>analytics.schellenberger.biz</code>).
             </li>
             <li>
               Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Reichweitenmessung und Verbesserung der Website).
             </li>
             <li>
-              Je nach Matomo‑Konfiguration können Cookies/LocalStorage verwendet werden. Details und Speicherfristen ergeben sich aus der Matomo‑Konfiguration.
+              Je nach Matomo‑Konfiguration können Cookies oder ähnliche Speichertechniken eingesetzt werden. In diesem Fall kann nach deutschem/europäischem
+              Recht zusätzlich eine Einwilligung erforderlich sein (z. B. § 25 TTDSG / ePrivacy). Für einen rein cookielosen Betrieb muss Matomo entsprechend
+              konfiguriert werden.
             </li>
             <li>
-              Du kannst Tracking durch Browser‑Einstellungen (z. B. Cookie‑Blocker) einschränken.
+              Du kannst Tracking durch Browser‑Einstellungen (z. B. Cookie‑Blocker) einschränken. Außerdem kannst du in vielen Browsern „Do Not Track“
+              aktivieren; ob und wie dies berücksichtigt wird, hängt von der Matomo‑Konfiguration ab.
             </li>
           </ul>
         </div>
@@ -103,14 +110,38 @@
 
       <section class="panel" style="margin-top:16px;">
         <div class="panel-head">
-          <h2>Hosting‑Hinweis</h2>
-          <p class="panel-hint">Nur relevant, wenn die Seite online betrieben wird</p>
+          <h2>Server‑Logs & Hosting</h2>
+          <p class="panel-hint">Technisch notwendige Zugriffsdaten</p>
         </div>
         <div class="form" style="line-height:1.6;">
           <p style="margin-top:0; color: var(--muted);">
-            Wenn diese Seite online gehostet wird (z. B. GitHub Pages oder ein Webhoster), verarbeitet der Hosting‑Anbieter typischerweise
-            technische Zugriffsdaten (z. B. IP‑Adresse, Zeitstempel, angeforderte Ressourcen) in Server‑Logs. In diesem Fall ergänze diese
-            Erklärung entsprechend um Angaben zum Hoster und zur Rechtsgrundlage.
+            Beim Aufruf der Website werden technisch notwendige Zugriffsdaten verarbeitet (z. B. IP‑Adresse, Datum/Uhrzeit, angeforderte Ressourcen,
+            User‑Agent). Diese Daten fallen typischerweise in Server‑Logs beim Betrieb (z. B. Reverse‑Proxy/Webserver) an und dienen der
+            Bereitstellung der Website, der Fehleranalyse und der Abwehr von Angriffen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO.
+          </p>
+          <p style="margin-bottom:0; color: var(--muted);">
+            Speicherdauer: Server‑Logs werden nur so lange aufbewahrt, wie es zur Sicherheit und zum Betrieb erforderlich ist.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel" style="margin-top:16px;">
+        <div class="panel-head">
+          <h2>Deine Rechte</h2>
+          <p class="panel-hint">Betroffenenrechte nach DSGVO</p>
+        </div>
+        <div class="form" style="line-height:1.6;">
+          <ul style="margin-top:0; color: var(--muted);">
+            <li>Auskunft (Art. 15 DSGVO)</li>
+            <li>Berichtigung (Art. 16 DSGVO)</li>
+            <li>Löschung (Art. 17 DSGVO)</li>
+            <li>Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+            <li>Datenübertragbarkeit (Art. 20 DSGVO)</li>
+            <li>Widerspruch gegen Verarbeitung auf Basis berechtigter Interessen (Art. 21 DSGVO)</li>
+            <li>Beschwerde bei einer Aufsichtsbehörde (Art. 77 DSGVO)</li>
+          </ul>
+          <p style="margin-bottom:0; color: var(--muted);">
+            Für Anfragen genügt eine E‑Mail an <a href="mailto:info@schellenberger.biz">info@schellenberger.biz</a>.
           </p>
         </div>
       </section>

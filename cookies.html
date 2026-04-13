@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <meta name="app-version" content="1.1.8" />
+    <meta name="app-version" content="1.1.9" />
     <meta name="theme-color" content="#f6f7fb" />
     <title>Cookie‑Hinweise – Signaturgenerator</title>
     <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
@@ -43,7 +43,8 @@
         </div>
         <div class="form" style="line-height:1.6;">
           <p style="margin-top:0; color: var(--muted);">
-            <strong>Nein.</strong> Die Webapp setzt keine Cookies zu Tracking‑ oder Marketingzwecken.
+            <strong>Kommt darauf an.</strong> Die Webapp selbst setzt keine Tracking‑ oder Marketing‑Cookies. Wenn jedoch Matomo (self‑hosted)
+            aktiv ist, können – je nach Konfiguration – Analyse‑Cookies gesetzt werden.
           </p>
           <p style="color: var(--muted);">
             Optional kann die Webapp lokale Browser‑Speicherung (<strong>LocalStorage</strong>) verwenden, wenn „Im Browser speichern“
@@ -51,9 +52,23 @@
             gelöscht werden.
           </p>
           <p style="color: var(--muted); margin-bottom:0;">
-            Wenn Matomo (self‑hosted) genutzt wird, können – je nach Konfiguration – Cookies oder ähnliche Speichertechniken verwendet
-            werden. Details findest du in der Datenschutzerklärung.
+            <strong>Matomo:</strong> Matomo kann Besucher wiedererkennen und dazu Cookies oder ähnliche Speichertechniken verwenden. Du kannst das in
+            den Browser‑Einstellungen (Cookies blockieren/löschen) einschränken. Details findest du in der Datenschutzerklärung.
           </p>
+        </div>
+      </section>
+
+      <section class="panel" style="margin-top:16px;">
+        <div class="panel-head">
+          <h2>Wie kann ich Cookies löschen oder blockieren?</h2>
+          <p class="panel-hint">Kurz-Anleitung</p>
+        </div>
+        <div class="form" style="line-height:1.6;">
+          <ul style="margin-top:0; color: var(--muted);">
+            <li>In deinem Browser kannst du Cookies/Website‑Daten löschen oder blockieren (Einstellungen → Datenschutz/Sicherheit).</li>
+            <li>Wenn du Cookies blockierst, kann Matomo je nach Setup weniger oder gar nicht messen.</li>
+            <li>LocalStorage‑Einträge der Webapp kannst du ebenfalls in den Browser‑Website‑Daten löschen.</li>
+          </ul>
         </div>
       </section>
     </main>
