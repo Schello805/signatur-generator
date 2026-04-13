@@ -9,6 +9,12 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.11] - 2026-04-13
+### Fixed
+- Gradient Badge: „Akzent: …“ Info aus dem Template entfernt.
+- Bild-Vorschau: Uploads per `data:image/...` werden jetzt auch im Signature-Preview gerendert (mit Größenlimit).
+- Bild-URL: Pastes von `data:` werden im URL-Feld abgefangen (Bitte Upload nutzen) + Schutz vor extrem großen Data-URLs.
+
 ## [1.1.10] - 2026-04-13
 ### Fixed
 - Bild‑URL: Eingabe auf 300 Zeichen begrenzt, um Abstürze durch extrem lange Pastes zu verhindern.

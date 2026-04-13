@@ -27,6 +27,20 @@ function cleanUrl(url) {
   }
 }
 
+function cleanImageSrc(value) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return "";
+
+  // Allow https/http image URLs.
+  const asUrl = cleanUrl(raw);
+  if (asUrl) return asUrl;
+
+  // Allow uploaded inline images for preview/export (may be blocked by some mail clients).
+  // Keep a hard size limit to prevent accidental huge strings from freezing the UI.
+  if (raw.startsWith("data:image/") && raw.length <= 250_000) return raw;
+  return "";
+}
+
 function normalizeHost(host) {
   return String(host || "").trim().toLowerCase().replace(/\.$/, "");
 }
@@ -339,7 +353,7 @@ function templateCard(data, options) {
   const accent = options.accentColor;
   const density = options.density;
   const compact = density === "compact";
-  const imgUrl = cleanUrl(data.imageUrl);
+  const imgUrl = cleanImageSrc(data.imageUrl);
   const outlookSafe = options.compatMode === "outlook";
   const radius = outlookSafe ? 0 : 14;
 
@@ -426,7 +440,7 @@ function templateSplitPhoto(data, options) {
   const accent = options.accentColor;
   const density = options.density;
   const compact = density === "compact";
-  const imgUrl = cleanUrl(data.imageUrl);
+  const imgUrl = cleanImageSrc(data.imageUrl);
   const outlookSafe = options.compatMode === "outlook";
 
   const nameSize = compact ? 14 : 16;
@@ -560,11 +574,6 @@ function templateGradientBadge(data, options) {
                   </table>`
                 : ""
             }
-            <div style="margin-top:${gap + 6}px;font-size:${small}px;line-height:1.25;color:rgba(0,0,0,0.55);">
-              <span style="display:inline-block;padding:4px 8px;border-radius:999px;background:rgba(0,0,0,0.06);">
-                Akzent: <span style="font-weight:700;color:${esc(accent)};">${esc(accent)}</span>
-              </span>
-            </div>
             ${social}
           </td>
         </tr>

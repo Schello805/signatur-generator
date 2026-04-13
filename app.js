@@ -175,6 +175,10 @@ function writeForm(form, state) {
       if (key === "imageUrl") {
         const raw = String(value ?? "");
         // Prevent accidental huge pastes from making the UI sluggish/crash.
+        if (raw.startsWith("data:") && raw.length > 250_000) {
+          input.value = "";
+          continue;
+        }
         if (!raw.startsWith("data:") && raw.length > 300) {
           input.value = raw.slice(0, 300);
           continue;
@@ -228,6 +232,10 @@ function loadState() {
     data: { ...base.data, ...(parsed.data ?? {}) },
     options,
   };
+  // Safety: if an extremely large data URL was pasted previously, drop it.
+  if (String(next.data.imageUrl || "").startsWith("data:") && String(next.data.imageUrl || "").length > 250_000) {
+    next.data.imageUrl = "";
+  }
   // Persist v2 format best-effort.
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
@@ -602,7 +610,11 @@ function main() {
     if (target && target.name === "imageUpload") return;
     if (target && target.name === "imageUrl") {
       const v = String(target.value || "");
-      if (!v.startsWith("data:") && v.length > 300) {
+      if (v.startsWith("data:")) {
+        // Avoid pasting huge base64 strings into the URL field (can freeze/crash the UI).
+        target.value = "";
+        toast("Data‑URL bitte über „Bild hochladen“ einfügen (Feld ist für HTTPS‑Bildlinks).", { kind: "info" });
+      } else if (v.length > 300) {
         target.value = v.slice(0, 300);
         toast("Bild‑URL wurde auf 300 Zeichen gekürzt.", { kind: "info" });
       }
