@@ -53,6 +53,7 @@ function readForm(form) {
     fontFamily: fd.get("fontFamily") ?? "system",
     density: fd.get("density") ?? "normal",
     socialStyle: fd.get("socialStyle") ?? "badges",
+    compatMode: fd.get("compatMode") ?? "standard",
   };
 
   const persist = fd.get("persist") === "on";
@@ -298,6 +299,34 @@ function plainFromState(state) {
   return parts.join("\n");
 }
 
+function buildCompatibilityNotice(state) {
+  const parts = [];
+  const compat = state.options.compatMode;
+  const social = state.options.socialStyle;
+  const img = String(state.data.imageUrl ?? "").trim();
+
+  if (compat === "outlook") {
+    parts.push(
+      "<strong>Outlook‑sicher aktiv:</strong> Effekte werden vereinfacht, damit die Signatur in Outlook (Windows‑Desktop) zuverlässiger aussieht."
+    );
+    if (social === "badges") {
+      parts.push("Hinweis: Badges werden in Outlook‑sicher automatisch als Textlinks dargestellt.");
+    }
+  } else {
+    parts.push(
+      "<strong>Standard:</strong> Moderne Optik – einzelne Elemente (Rundungen/Verläufe) können in Outlook (Windows‑Desktop) anders aussehen."
+    );
+  }
+
+  if (img.startsWith("data:")) {
+    parts.push(
+      "<strong>Bild als Data‑URL:</strong> Manche Mail‑Clients blockieren/entfernen das. Für maximale Zuverlässigkeit nutze eine öffentliche HTTPS‑Bild‑URL."
+    );
+  }
+
+  return parts.join(" ");
+}
+
 function buildFullHtmlDocument(fragment) {
   return `<!doctype html>
 <html lang="de">
@@ -325,6 +354,7 @@ function main() {
   const form = $("signatureForm");
   const preview = $("preview");
   const output = $("outputHtml");
+  const notice = $("compatNotice");
 
   const initial = loadState();
   writeForm(form, initial);
@@ -344,6 +374,7 @@ function main() {
     const html = buildSignatureHtml(state.templateId, state.data, state.options);
     preview.innerHTML = html;
     output.value = html;
+    notice.innerHTML = buildCompatibilityNotice(state);
     saveState(state);
   }
 

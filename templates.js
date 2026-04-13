@@ -103,8 +103,9 @@ function renderSocialRow(data, options) {
 
   const accent = options.accentColor;
   const textColor = options.textColor;
+  const outlookSafe = options.compatMode === "outlook";
 
-  if (style === "text") {
+  if (style === "text" || (outlookSafe && style === "badges")) {
     const html = links
       .map((l) => `<a href="${esc(l.href)}" style="color:${esc(textColor)};text-decoration:none;">${esc(l.label)}</a>`)
       .join(`<span style="color:rgba(0,0,0,0.35);"> · </span>`);
@@ -288,6 +289,8 @@ function templateCard(data, options) {
   const density = options.density;
   const compact = density === "compact";
   const imgUrl = cleanUrl(data.imageUrl);
+  const outlookSafe = options.compatMode === "outlook";
+  const radius = outlookSafe ? 0 : 14;
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -318,7 +321,7 @@ function templateCard(data, options) {
   )};">
   <tr>
     <td style="padding:0;">
-      <table cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(0,0,0,0.12);border-radius:14px;overflow:hidden;">
+      <table cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(0,0,0,0.12);border-radius:${radius}px;overflow:hidden;">
         <tr>
           <td style="padding:${pad}px;background:${esc(accent)};color:#ffffff;">
             <div style="font-size:${nameSize}px;font-weight:800;line-height:1.2;margin:0;">${base.nameLine}</div>
@@ -373,6 +376,7 @@ function templateSplitPhoto(data, options) {
   const density = options.density;
   const compact = density === "compact";
   const imgUrl = cleanUrl(data.imageUrl);
+  const outlookSafe = options.compatMode === "outlook";
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -391,10 +395,10 @@ function templateSplitPhoto(data, options) {
 
   const imgHtml = imgUrl
     ? `<img src="${esc(imgUrl)}" alt="Foto/Logo" width="${imageSize}" height="${imageSize}" style="display:block;border-radius:${
-        imageSize / 2
+        outlookSafe ? 0 : imageSize / 2
       }px;object-fit:cover;border:2px solid ${esc(accent)};" />`
     : `<div style="width:${imageSize}px;height:${imageSize}px;border-radius:${
-        imageSize / 2
+        outlookSafe ? 0 : imageSize / 2
       }px;background:${esc(accent)};opacity:0.18;border:2px solid ${esc(accent)};"></div>`;
 
   return `
@@ -446,6 +450,7 @@ function templateGradientBadge(data, options) {
   const accent = options.accentColor;
   const density = options.density;
   const compact = density === "compact";
+  const outlookSafe = options.compatMode === "outlook";
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -453,6 +458,8 @@ function templateGradientBadge(data, options) {
 
   const topRight = options.accentColor;
   const bottomLeft = "#10b981";
+  const headerBg = outlookSafe ? esc(accent) : `linear-gradient(135deg, ${esc(bottomLeft)} 0%, ${esc(topRight)} 100%)`;
+  const radius = outlookSafe ? 0 : 16;
 
   const contactItems = lines
     .map((l) => {
@@ -474,11 +481,9 @@ function templateGradientBadge(data, options) {
   )};">
   <tr>
     <td style="padding:0;">
-      <table cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(0,0,0,0.12);border-radius:16px;overflow:hidden;">
+      <table cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(0,0,0,0.12);border-radius:${radius}px;overflow:hidden;">
         <tr>
-          <td style="padding:${compact ? 10 : 12}px;background: linear-gradient(135deg, ${esc(
-    bottomLeft
-  )} 0%, ${esc(topRight)} 100%); color:#ffffff;">
+          <td style="padding:${compact ? 10 : 12}px;background: ${headerBg}; color:#ffffff;">
             <div style="font-size:${small}px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.95;">Signature</div>
             <div style="margin-top:6px;font-size:${nameSize}px;font-weight:850;line-height:1.2;">${base.nameLine}</div>
             ${
@@ -585,6 +590,7 @@ export function defaultState() {
       fontFamily: "system",
       density: "normal",
       socialStyle: "badges",
+      compatMode: "standard",
     },
   };
 }

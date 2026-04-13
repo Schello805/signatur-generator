@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
     <title>Signaturgenerator</title>
+    <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -12,9 +13,20 @@
 
     <header class="app-header">
       <div class="wrap header-inner">
-        <div>
-          <h1 class="title">Signaturgenerator</h1>
-          <p class="subtitle">E-Mail‑Signaturen erstellen, Design wählen, kopieren oder herunterladen.</p>
+        <div class="brand">
+          <img
+            class="brand-logo"
+            src="Logo-Signatur-Generator.png"
+            alt="Signaturgenerator Logo"
+            width="56"
+            height="56"
+            loading="eager"
+            decoding="async"
+          />
+          <div>
+            <h1 class="title">Signaturgenerator</h1>
+            <p class="subtitle">E-Mail‑Signaturen erstellen, Design wählen, kopieren oder herunterladen.</p>
+          </div>
         </div>
         <div class="header-actions">
           <button type="button" class="btn btn-ghost" id="btnReset" title="Alle Felder zurücksetzen">Zurücksetzen</button>
@@ -144,11 +156,39 @@
             </label>
 
             <label class="field">
-              <span class="label">Social‑Icons</span>
+              <span class="label"
+                >Social‑Links
+                <span
+                  class="hint"
+                  tabindex="0"
+                  role="img"
+                  aria-label="Hilfe zu Social-Links"
+                  data-tip="Badges sind optisch stark, aber Outlook kann Rundungen/Layouts manchmal anders darstellen. Für maximale Kompatibilität wähle Textlinks oder Outlook‑sicher."
+                  >?</span
+                ></span
+              >
               <select name="socialStyle">
                 <option value="badges">Badges (empfohlen)</option>
                 <option value="text">Textlinks</option>
                 <option value="none">Aus</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="label"
+                >Kompatibilität
+                <span
+                  class="hint"
+                  tabindex="0"
+                  role="img"
+                  aria-label="Hilfe zu Kompatibilität"
+                  data-tip="Outlook (Windows‑Desktop) rendert HTML teils anders. Outlook‑sicher vereinfacht Effekte (z. B. Verläufe/Badges), damit die Signatur zuverlässiger aussieht."
+                  >?</span
+                ></span
+              >
+              <select name="compatMode">
+                <option value="standard">Standard</option>
+                <option value="outlook">Outlook‑sicher</option>
               </select>
             </label>
 
@@ -168,7 +208,17 @@
               <span class="label">Einstellungen</span>
               <div class="checkrow">
                 <input name="persist" type="checkbox" checked />
-                <span class="checktext">Im Browser speichern (LocalStorage)</span>
+                <span class="checktext"
+                  >Im Browser speichern (LocalStorage)
+                  <span
+                    class="hint"
+                    tabindex="0"
+                    role="img"
+                    aria-label="Hilfe zu Speicherung"
+                    data-tip="Speichert deine Eingaben nur lokal im Browser (praktisch für Wiederverwendung). Wenn aus, werden keine Daten gespeichert."
+                    >?</span
+                  ></span
+                >
               </div>
             </label>
           </div>
@@ -193,6 +243,8 @@
           </div>
         </div>
 
+        <div id="compatNotice" class="notice" role="note" aria-live="polite"></div>
+
         <div class="preview-shell" aria-label="Signatur Vorschau">
           <div id="preview" class="preview"></div>
         </div>
@@ -210,7 +262,14 @@
         <div class="output">
           <div class="output-head">
             <h3>HTML (zum Nachschlagen)</h3>
-            <button type="button" class="btn btn-ghost" id="btnCopyPlain">Nur Text kopieren</button>
+            <button
+              type="button"
+              class="btn btn-ghost"
+              id="btnCopyPlain"
+              title="Plain‑Text Fallback: nützlich, wenn ein System kein HTML annimmt oder wenn du schnell Text brauchst."
+            >
+              Text‑Fallback kopieren
+            </button>
           </div>
           <textarea id="outputHtml" class="output-area" spellcheck="false" aria-label="HTML Ausgabe" readonly></textarea>
         </div>
