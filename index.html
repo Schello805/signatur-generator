@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Signaturgenerator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+    <header class="app-header">
+      <div class="wrap header-inner">
+        <div>
+          <h1 class="title">Signaturgenerator</h1>
+          <p class="subtitle">E-Mail‑Signaturen erstellen, Design wählen, kopieren oder herunterladen.</p>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn btn-ghost" id="btnReset" title="Alle Felder zurücksetzen">Zurücksetzen</button>
+          <button type="button" class="btn btn-ghost" id="btnTheme" title="Hell/Dunkel umschalten">Theme</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="wrap layout">
+      <section class="panel" aria-labelledby="formTitle">
+        <div class="panel-head">
+          <h2 id="formTitle">Daten</h2>
+          <p class="panel-hint">Felder sind optional – je mehr du ausfüllst, desto vollständiger wird die Signatur.</p>
+        </div>
+
+        <form id="signatureForm" class="form" autocomplete="on">
+          <div class="grid">
+            <label class="field">
+              <span class="label">Vorname Nachname</span>
+              <input name="fullName" type="text" inputmode="text" placeholder="Max Mustermann" />
+            </label>
+
+            <label class="field">
+              <span class="label">Position / Rolle</span>
+              <input name="jobTitle" type="text" inputmode="text" placeholder="Senior Consultant" />
+            </label>
+
+            <label class="field">
+              <span class="label">Firma</span>
+              <input name="company" type="text" inputmode="text" placeholder="Muster GmbH" />
+            </label>
+
+            <label class="field">
+              <span class="label">Abteilung (optional)</span>
+              <input name="department" type="text" inputmode="text" placeholder="Sales" />
+            </label>
+
+            <label class="field">
+              <span class="label">Telefon</span>
+              <input name="phone" type="tel" inputmode="tel" placeholder="+49 30 1234567" />
+            </label>
+
+            <label class="field">
+              <span class="label">Mobil</span>
+              <input name="mobile" type="tel" inputmode="tel" placeholder="+49 170 1234567" />
+            </label>
+
+            <label class="field">
+              <span class="label">E‑Mail</span>
+              <input name="email" type="email" inputmode="email" placeholder="max@muster.de" />
+            </label>
+
+            <label class="field">
+              <span class="label">Website</span>
+              <input name="website" type="url" inputmode="url" placeholder="https://muster.de" />
+            </label>
+
+            <label class="field span-2">
+              <span class="label">Adresse (eine Zeile)</span>
+              <input name="address" type="text" inputmode="text" placeholder="Musterstraße 1, 10115 Berlin" />
+            </label>
+
+            <label class="field">
+              <span class="label">LinkedIn‑URL</span>
+              <input name="linkedin" type="url" inputmode="url" placeholder="https://www.linkedin.com/in/..." />
+            </label>
+
+            <label class="field">
+              <span class="label">Termin‑Link (optional)</span>
+              <input name="calendarLink" type="url" inputmode="url" placeholder="https://cal.com/..." />
+            </label>
+
+            <label class="field span-2">
+              <span class="label">Claim / Zusatztext (optional)</span>
+              <input name="tagline" type="text" inputmode="text" placeholder="Kurzer Zusatz, z. B. „Wir machen X einfach.“" />
+            </label>
+          </div>
+
+          <div class="divider" role="separator" aria-hidden="true"></div>
+
+          <div class="grid">
+            <label class="field">
+              <span class="label">Akzentfarbe</span>
+              <input name="accentColor" type="color" value="#2563eb" />
+            </label>
+
+            <label class="field">
+              <span class="label">Textfarbe</span>
+              <input name="textColor" type="color" value="#0f172a" />
+            </label>
+
+            <label class="field">
+              <span class="label">Schrift</span>
+              <select name="fontFamily">
+                <option value="system">System Sans</option>
+                <option value="serif">Serif</option>
+                <option value="mono">Monospace</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="label">Layout‑Dichte</span>
+              <select name="density">
+                <option value="normal">Normal</option>
+                <option value="compact">Kompakt</option>
+              </select>
+            </label>
+
+            <label class="field span-2">
+              <span class="label">Logo/Foto‑URL (empfohlen: https‑Bildlink)</span>
+              <input name="imageUrl" type="url" inputmode="url" placeholder="https://…/logo.png" />
+              <span class="help">Tipp: Für Mail‑Clients sind normale Bild‑URLs oft zuverlässiger als Base64.</span>
+            </label>
+
+            <label class="field span-2">
+              <span class="label">Oder Bild hochladen (für Vorschau/Base64)</span>
+              <input name="imageUpload" type="file" accept="image/*" />
+              <span class="help">Das Bild wird als Data‑URL eingefügt. Manche E‑Mail‑Programme blockieren das.</span>
+            </label>
+
+            <label class="field span-2">
+              <span class="label">Einstellungen</span>
+              <div class="checkrow">
+                <input name="persist" type="checkbox" checked />
+                <span class="checktext">Im Browser speichern (LocalStorage)</span>
+              </div>
+            </label>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel" aria-labelledby="designTitle">
+        <div class="panel-head">
+          <h2 id="designTitle">Design auswählen</h2>
+          <p class="panel-hint">Mindestens 5 Designs – klicke auf eine Karte.</p>
+        </div>
+
+        <div id="designGrid" class="design-grid" role="list"></div>
+
+        <div class="panel-head preview-head">
+          <h2>Vorschau</h2>
+          <div class="preview-actions">
+            <button type="button" class="btn" id="btnCopyRich">Als Rich‑Text kopieren</button>
+            <button type="button" class="btn btn-secondary" id="btnCopyHtml">HTML kopieren</button>
+            <button type="button" class="btn btn-ghost" id="btnDownload">Download .html</button>
+          </div>
+        </div>
+
+        <div class="preview-shell" aria-label="Signatur Vorschau">
+          <div id="preview" class="preview"></div>
+        </div>
+
+        <details class="tips">
+          <summary>Anwendungshinweise (Gmail/Outlook)</summary>
+          <ul>
+            <li><strong>Gmail:</strong> Einstellungen → „Alle Einstellungen aufrufen“ → „Allgemein“ → „Signatur“ → im Editor einfügen (Rich‑Text).</li>
+            <li><strong>Outlook (Desktop):</strong> Datei → Optionen → E‑Mail → Signaturen → neue Signatur → einfügen (Rich‑Text).</li>
+            <li>Wenn Bilder nicht angezeigt werden: nutze eine öffentliche HTTPS‑Bild‑URL statt Upload/Base64.</li>
+            <li>Wenn „Kopieren“ nicht funktioniert: öffne die App über <em>localhost</em> (z. B. `python3 -m http.server`) statt direkt per Datei‑Doppelklick.</li>
+          </ul>
+        </details>
+
+        <div class="output">
+          <div class="output-head">
+            <h3>HTML (zum Nachschlagen)</h3>
+            <button type="button" class="btn btn-ghost" id="btnCopyPlain">Nur Text kopieren</button>
+          </div>
+          <textarea id="outputHtml" class="output-area" spellcheck="false" aria-label="HTML Ausgabe" readonly></textarea>
+        </div>
+      </section>
+    </main>
+
+    <footer class="wrap footer">
+      <p>
+        Läuft komplett lokal im Browser. Keine Daten werden hochgeladen. Einstellungen werden optional im Browser gespeichert.
+      </p>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
