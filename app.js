@@ -123,11 +123,8 @@ function applyTheme(theme) {
   window.localStorage.setItem(THEME_KEY, theme);
 }
 
-function renderDesignCards({ selectedId, onSelect }) {
-  const grid = $("designGrid");
-  grid.innerHTML = "";
-
-  const sampleData = {
+function buildSampleData() {
+  return {
     fullName: "Max Mustermann",
     jobTitle: "Senior Consultant",
     company: "Muster GmbH",
@@ -146,28 +143,59 @@ function renderDesignCards({ selectedId, onSelect }) {
     tagline: "Kurz. Klar. Kompetent.",
     imageUrl: "",
   };
+}
+
+function renderDesignCards({ selectedId, onSelect }) {
+  const grid = $("designGrid");
+  grid.innerHTML = "";
+
+  const sampleData = buildSampleData();
 
   for (const t of TEMPLATES) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "design-card";
-    btn.setAttribute("role", "listitem");
-    btn.setAttribute("aria-selected", String(t.id === selectedId));
-    btn.dataset.templateId = t.id;
-    const mini = buildSignatureHtml(t.id, sampleData, {
-      accentColor: "#2563eb",
-      textColor: "#0f172a",
-      fontFamily: "system",
-      density: "compact",
-      socialStyle: "badges",
-    });
-    btn.innerHTML = `
+    const card = document.createElement("div");
+    card.className = "design-card";
+    card.setAttribute("role", "listitem");
+    card.dataset.templateId = t.id;
+    card.dataset.selected = String(t.id === selectedId);
+
+    const mainBtn = document.createElement("button");
+    mainBtn.type = "button";
+    mainBtn.className = "design-card-main";
+    mainBtn.setAttribute("aria-pressed", String(t.id === selectedId));
+    mainBtn.innerHTML = `
       <div class="design-name">${t.name}</div>
       <p class="design-desc">${t.description}</p>
-      <div class="design-mini" aria-hidden="true">${mini}</div>
     `.trim();
-    btn.addEventListener("click", () => onSelect(t.id));
-    grid.appendChild(btn);
+
+    const actions = document.createElement("div");
+    actions.className = "design-card-actions";
+
+    const previewBtn = document.createElement("button");
+    previewBtn.type = "button";
+    previewBtn.className = "pill";
+    previewBtn.textContent = "Vorschau";
+    previewBtn.title = "Zeigt eine kompakte Vorschau dieses Designs (ohne Auswahl zu ändern).";
+    previewBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      document.dispatchEvent(
+        new CustomEvent("open-design-preview", {
+          detail: { templateId: t.id, name: t.name, description: t.description, sampleData },
+        })
+      );
+    });
+
+    actions.appendChild(previewBtn);
+
+    const top = document.createElement("div");
+    top.className = "design-card-top";
+    top.appendChild(mainBtn);
+    top.appendChild(actions);
+
+    mainBtn.addEventListener("click", () => onSelect(t.id));
+    card.addEventListener("dblclick", () => onSelect(t.id));
+
+    card.appendChild(top);
+    grid.appendChild(card);
   }
 }
 
@@ -355,6 +383,13 @@ function main() {
   const preview = $("preview");
   const output = $("outputHtml");
   const notice = $("compatNotice");
+  const modal = $("designPreviewModal");
+  const modalClose = $("modalClose");
+  const modalPreview = $("modalPreview");
+  const modalSubtitle = $("modalSubtitle");
+  const modalSelect = $("modalSelect");
+  let modalTemplateId = null;
+  let lastFocus = null;
 
   const initial = loadState();
   writeForm(form, initial);
@@ -365,6 +400,29 @@ function main() {
     state = { ...state, templateId: id };
     renderDesignCards({ selectedId: state.templateId, onSelect: setTemplateId });
     update();
+  }
+
+  function openModal({ templateId, name, description, sampleData }) {
+    lastFocus = document.activeElement;
+    modalTemplateId = templateId;
+
+    const mini = buildSignatureHtml(templateId, sampleData, {
+      ...state.options,
+      density: "compact",
+    });
+    modalPreview.innerHTML = mini;
+    modalSubtitle.textContent = `${name} — ${description}`;
+
+    modal.hidden = false;
+    modal.setAttribute("aria-hidden", "false");
+    modalClose.focus();
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    modal.setAttribute("aria-hidden", "true");
+    modalTemplateId = null;
+    if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
   }
 
   function update() {
@@ -380,6 +438,26 @@ function main() {
 
   renderDesignCards({ selectedId: state.templateId, onSelect: setTemplateId });
   update();
+
+  document.addEventListener("open-design-preview", (e) => {
+    const detail = e.detail;
+    if (!detail) return;
+    openModal(detail);
+  });
+
+  modal.addEventListener("click", (e) => {
+    const target = e.target;
+    if (target && target.dataset && target.dataset.modalClose === "true") closeModal();
+  });
+  modalClose.addEventListener("click", closeModal);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !modal.hidden) closeModal();
+  });
+  modalSelect.addEventListener("click", () => {
+    if (!modalTemplateId) return;
+    setTemplateId(modalTemplateId);
+    closeModal();
+  });
 
   form.addEventListener("input", (e) => {
     const target = e.target;
