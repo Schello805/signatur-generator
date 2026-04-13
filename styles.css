@@ -161,6 +161,16 @@ input[type="file"]{padding: 8px 10px; cursor:pointer;}
 }
 .design-name{font-weight: 750; font-size: 13px;}
 .design-desc{margin:0; color: var(--muted); font-size: 12px; line-height: 1.25;}
+.design-mini{
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 8px;
+  overflow: hidden;
+  transform: translateZ(0);
+  pointer-events: none;
+}
+.design-mini table{max-width: 100%;}
 
 .preview-head{display:flex; align-items:center; justify-content:space-between; gap: 10px;}
 .preview-actions{display:flex; flex-wrap:wrap; gap: 8px; justify-content:flex-end;}

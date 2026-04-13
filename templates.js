@@ -74,6 +74,64 @@ function buildLines(data) {
   return lines;
 }
 
+function buildSocialLinks(data) {
+  const items = [];
+  const linkedin = cleanUrl(data.linkedin);
+  const github = cleanUrl(data.github);
+  const instagram = cleanUrl(data.instagram);
+  const x = cleanUrl(data.x);
+  const facebook = cleanUrl(data.facebook);
+  const website = cleanUrl(data.website);
+  const calendar = cleanUrl(data.calendarLink);
+
+  if (linkedin) items.push({ key: "in", label: "LinkedIn", href: linkedin });
+  if (github) items.push({ key: "gh", label: "GitHub", href: github });
+  if (instagram) items.push({ key: "ig", label: "Instagram", href: instagram });
+  if (x) items.push({ key: "x", label: "X", href: x });
+  if (facebook) items.push({ key: "fb", label: "Facebook", href: facebook });
+  if (website) items.push({ key: "web", label: "Web", href: website });
+  if (calendar) items.push({ key: "cal", label: "Termin", href: calendar });
+  return items;
+}
+
+function renderSocialRow(data, options) {
+  const style = options.socialStyle ?? "badges";
+  if (style === "none") return "";
+
+  const links = buildSocialLinks(data);
+  if (!links.length) return "";
+
+  const accent = options.accentColor;
+  const textColor = options.textColor;
+
+  if (style === "text") {
+    const html = links
+      .map((l) => `<a href="${esc(l.href)}" style="color:${esc(textColor)};text-decoration:none;">${esc(l.label)}</a>`)
+      .join(`<span style="color:rgba(0,0,0,0.35);"> · </span>`);
+    return `<div style="margin-top:8px;font-size:12.5px;line-height:1.25;">${html}</div>`;
+  }
+
+  // Badges (mail-client friendly): small linked cells with short label.
+  const cells = links
+    .map((l) => {
+      const short = l.key.toUpperCase();
+      return `
+        <td style="padding:0 6px 0 0;vertical-align:middle;">
+          <a href="${esc(l.href)}" style="display:inline-block;background:${esc(
+        accent
+      )};color:#ffffff;text-decoration:none;font-weight:800;font-size:11px;line-height:1;padding:6px 8px;border-radius:999px;">
+            ${esc(short)}
+          </a>
+        </td>`;
+    })
+    .join("");
+
+  return `
+    <table cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;">
+      <tr>${cells}</tr>
+    </table>`;
+}
+
 function richNameBlock(data, options) {
   const name = String(data.fullName ?? "").trim();
   const job = String(data.jobTitle ?? "").trim();
@@ -103,6 +161,7 @@ function richNameBlock(data, options) {
 function templateMinimal(data, options) {
   const base = richNameBlock(data, options);
   const lines = buildLines(data);
+  const social = renderSocialRow(data, options);
   const accent = options.accentColor;
   const density = options.density;
   const compact = density === "compact";
@@ -151,6 +210,7 @@ function templateMinimal(data, options) {
             </table>`
           : ""
       }
+      ${social}
     </td>
   </tr>
 </table>`.trim();
@@ -159,6 +219,7 @@ function templateMinimal(data, options) {
 function templateLeftBar(data, options) {
   const base = richNameBlock(data, options);
   const lines = buildLines(data);
+  const social = renderSocialRow(data, options);
   const accent = options.accentColor;
   const density = options.density;
   const compact = density === "compact";
@@ -210,6 +271,7 @@ function templateLeftBar(data, options) {
                   </div>`
                 : ""
             }
+            ${social}
           </td>
         </tr>
       </table>
@@ -221,6 +283,7 @@ function templateLeftBar(data, options) {
 function templateCard(data, options) {
   const base = richNameBlock(data, options);
   const lines = buildLines(data);
+  const social = renderSocialRow(data, options);
   const accent = options.accentColor;
   const density = options.density;
   const compact = density === "compact";
@@ -290,6 +353,7 @@ function templateCard(data, options) {
                         </table>`
                       : ""
                   }
+                  ${social}
                 </td>
               </tr>
             </table>
@@ -304,6 +368,7 @@ function templateCard(data, options) {
 function templateSplitPhoto(data, options) {
   const base = richNameBlock(data, options);
   const lines = buildLines(data);
+  const social = renderSocialRow(data, options);
   const accent = options.accentColor;
   const density = options.density;
   const compact = density === "compact";
@@ -365,6 +430,7 @@ function templateSplitPhoto(data, options) {
                   </div>`
                 : ""
             }
+            ${social}
           </td>
         </tr>
       </table>
@@ -376,6 +442,7 @@ function templateSplitPhoto(data, options) {
 function templateGradientBadge(data, options) {
   const base = richNameBlock(data, options);
   const lines = buildLines(data);
+  const social = renderSocialRow(data, options);
   const accent = options.accentColor;
   const density = options.density;
   const compact = density === "compact";
@@ -442,6 +509,7 @@ function templateGradientBadge(data, options) {
                 Akzent: <span style="font-weight:700;color:${esc(accent)};">${esc(accent)}</span>
               </span>
             </div>
+            ${social}
           </td>
         </tr>
       </table>
@@ -503,8 +571,12 @@ export function defaultState() {
       website: "",
       address: "",
       linkedin: "",
+      github: "",
       calendarLink: "",
+      instagram: "",
       tagline: "",
+      x: "",
+      facebook: "",
       imageUrl: "",
     },
     options: {
@@ -512,6 +584,7 @@ export function defaultState() {
       textColor: "#0f172a",
       fontFamily: "system",
       density: "normal",
+      socialStyle: "badges",
     },
   };
 }

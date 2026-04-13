@@ -38,8 +38,12 @@ function readForm(form) {
     website: fd.get("website") ?? "",
     address: fd.get("address") ?? "",
     linkedin: fd.get("linkedin") ?? "",
+    github: fd.get("github") ?? "",
     calendarLink: fd.get("calendarLink") ?? "",
+    instagram: fd.get("instagram") ?? "",
     tagline: fd.get("tagline") ?? "",
+    x: fd.get("x") ?? "",
+    facebook: fd.get("facebook") ?? "",
     imageUrl: fd.get("imageUrl") ?? "",
   };
 
@@ -48,6 +52,7 @@ function readForm(form) {
     textColor: clampHexColor(fd.get("textColor"), "#0f172a"),
     fontFamily: fd.get("fontFamily") ?? "system",
     density: fd.get("density") ?? "normal",
+    socialStyle: fd.get("socialStyle") ?? "badges",
   };
 
   const persist = fd.get("persist") === "on";
@@ -121,6 +126,26 @@ function renderDesignCards({ selectedId, onSelect }) {
   const grid = $("designGrid");
   grid.innerHTML = "";
 
+  const sampleData = {
+    fullName: "Max Mustermann",
+    jobTitle: "Senior Consultant",
+    company: "Muster GmbH",
+    department: "Sales",
+    phone: "+49 30 1234567",
+    mobile: "+49 170 1234567",
+    email: "max@muster.de",
+    website: "https://muster.de",
+    address: "Musterstraße 1, 10115 Berlin",
+    linkedin: "https://www.linkedin.com/in/max-mustermann",
+    github: "https://github.com/example",
+    instagram: "",
+    x: "",
+    facebook: "",
+    calendarLink: "https://cal.com/example",
+    tagline: "Kurz. Klar. Kompetent.",
+    imageUrl: "",
+  };
+
   for (const t of TEMPLATES) {
     const btn = document.createElement("button");
     btn.type = "button";
@@ -128,7 +153,18 @@ function renderDesignCards({ selectedId, onSelect }) {
     btn.setAttribute("role", "listitem");
     btn.setAttribute("aria-selected", String(t.id === selectedId));
     btn.dataset.templateId = t.id;
-    btn.innerHTML = `<div class="design-name">${t.name}</div><p class="design-desc">${t.description}</p>`;
+    const mini = buildSignatureHtml(t.id, sampleData, {
+      accentColor: "#2563eb",
+      textColor: "#0f172a",
+      fontFamily: "system",
+      density: "compact",
+      socialStyle: "badges",
+    });
+    btn.innerHTML = `
+      <div class="design-name">${t.name}</div>
+      <p class="design-desc">${t.description}</p>
+      <div class="design-mini" aria-hidden="true">${mini}</div>
+    `.trim();
     btn.addEventListener("click", () => onSelect(t.id));
     grid.appendChild(btn);
   }
@@ -166,6 +202,18 @@ function downloadHtml({ filename, html }) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
 
+function downloadVcard({ filename, vcard }) {
+  const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+
 function fallbackCopyText(text) {
   const ta = document.createElement("textarea");
   ta.value = text;
@@ -179,6 +227,61 @@ function fallbackCopyText(text) {
   const ok = document.execCommand?.("copy");
   ta.remove();
   if (!ok) throw new Error("copy-failed");
+}
+
+function escVcardText(value) {
+  // vCard 3.0 escaping: backslash, semicolon, comma, newline
+  return String(value ?? "")
+    .replaceAll("\\", "\\\\")
+    .replaceAll(";", "\\;")
+    .replaceAll(",", "\\,")
+    .replaceAll("\r\n", "\\n")
+    .replaceAll("\n", "\\n")
+    .replaceAll("\r", "\\n")
+    .trim();
+}
+
+function splitName(fullName) {
+  const raw = String(fullName ?? "").trim().replace(/\s+/g, " ");
+  if (!raw) return { first: "", last: "" };
+  const parts = raw.split(" ");
+  if (parts.length === 1) return { first: raw, last: "" };
+  return { first: parts.slice(0, -1).join(" "), last: parts.at(-1) ?? "" };
+}
+
+function buildVcard(data) {
+  const { first, last } = splitName(data.fullName);
+  const lines = [];
+  lines.push("BEGIN:VCARD");
+  lines.push("VERSION:3.0");
+  if (first || last) lines.push(`N:${escVcardText(last)};${escVcardText(first)};;;`);
+  if (data.fullName) lines.push(`FN:${escVcardText(data.fullName)}`);
+  if (data.company) lines.push(`ORG:${escVcardText(data.company)}`);
+  if (data.jobTitle) lines.push(`TITLE:${escVcardText(data.jobTitle)}`);
+  if (data.phone) lines.push(`TEL;TYPE=WORK,VOICE:${escVcardText(data.phone)}`);
+  if (data.mobile) lines.push(`TEL;TYPE=CELL:${escVcardText(data.mobile)}`);
+  if (data.email) lines.push(`EMAIL;TYPE=INTERNET:${escVcardText(data.email)}`);
+  if (data.website) lines.push(`URL:${escVcardText(data.website)}`);
+  if (data.address) lines.push(`ADR;TYPE=WORK:;;${escVcardText(data.address)};;;;`);
+
+  const urls = [
+    ["LinkedIn", data.linkedin],
+    ["GitHub", data.github],
+    ["Instagram", data.instagram],
+    ["X", data.x],
+    ["Facebook", data.facebook],
+    ["Termin", data.calendarLink],
+  ]
+    .map(([label, url]) => [label, String(url ?? "").trim()])
+    .filter(([, url]) => Boolean(url));
+
+  if (urls.length) {
+    const note = urls.map(([label, url]) => `${label}: ${url}`).join(" | ");
+    lines.push(`NOTE:${escVcardText(note)}`);
+  }
+
+  lines.push("END:VCARD");
+  return lines.join("\r\n") + "\r\n";
 }
 
 function plainFromState(state) {
@@ -304,6 +407,13 @@ function main() {
     const filename = `${name || "signatur"}.html`;
     downloadHtml({ filename, html: buildFullHtmlDocument(output.value) });
     toast("Download gestartet.");
+  });
+
+  $("btnVcard").addEventListener("click", () => {
+    const name = (state.data.fullName || "kontakt").trim().replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-_äöüÄÖÜß]/g, "");
+    const filename = `${name || "kontakt"}.vcf`;
+    downloadVcard({ filename, vcard: buildVcard(state.data) });
+    toast("vCard Download gestartet.");
   });
 
   $("btnReset").addEventListener("click", () => {
