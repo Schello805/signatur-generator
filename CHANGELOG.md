@@ -9,6 +9,12 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.5] - 2026-04-13
+### Added
+- vCard-Link: Optionales Feld „vCard‑Download‑URL“ (wird als Link in der Signatur ausgegeben, wenn HTTPS-URL gesetzt ist).
+### Changed
+- Matomo: Tracking-Code in `matomo.js` eingebunden.
+
 ## [1.1.4] - 2026-04-13
 ### Changed
 - Social‑Icons: „Icons (Logos)“ rendert jetzt echte Icon‑Buttons (ohne Initialen‑Text), damit sofort erkennbar ist, dass SVG‑Icons aktiv sind.

@@ -63,6 +63,7 @@ function buildLines(data) {
   const address = String(data.address ?? "").trim();
   const linkedin = cleanUrl(data.linkedin);
   const calendarLink = cleanUrl(data.calendarLink);
+  const vcardUrl = cleanUrl(data.vcardUrl);
 
   if (phone) lines.push({ key: "phone", label: "Tel:", text: phone, href: normalizePhoneHref(phone) });
   if (mobile) lines.push({ key: "mobile", label: "Mobil:", text: mobile, href: normalizePhoneHref(mobile) });
@@ -71,6 +72,7 @@ function buildLines(data) {
   if (address) lines.push({ key: "address", label: "Adresse:", text: address, href: "" });
   if (linkedin) lines.push({ key: "linkedin", label: "LinkedIn:", text: "Profil", href: linkedin });
   if (calendarLink) lines.push({ key: "calendar", label: "Termin:", text: "Buchen", href: calendarLink });
+  if (vcardUrl) lines.push({ key: "vcard", label: "vCard:", text: "Download", href: vcardUrl });
   return lines;
 }
 
@@ -609,6 +611,7 @@ export function defaultState() {
       linkedin: "",
       github: "",
       calendarLink: "",
+      vcardUrl: "",
       instagram: "",
       tagline: "",
       x: "",

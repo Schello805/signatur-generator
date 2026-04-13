@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <meta name="app-version" content="1.1.4" />
+    <meta name="app-version" content="1.1.5" />
     <meta name="theme-color" content="#f6f7fb" />
     <title>Signaturgenerator</title>
     <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
@@ -104,6 +104,21 @@
             <label class="field">
               <span class="label">Termin‑Link (optional)</span>
               <input name="calendarLink" type="url" inputmode="url" placeholder="https://cal.com/..." />
+            </label>
+
+            <label class="field">
+              <span class="label"
+                >vCard‑Download‑URL (optional)
+                <span
+                  class="hint"
+                  tabindex="0"
+                  role="img"
+                  aria-label="Hilfe zu vCard-Link"
+                  data-tip="Wenn du die vCard (Datei .vcf) online unter HTTPS bereitstellst, kann die Signatur einen Download-Link enthalten. Hinweis: Einige Mail-Clients oder Security-Gateways blockieren Downloads aus E-Mails."
+                  >?</span
+                ></span
+              >
+              <input name="vcardUrl" type="url" inputmode="url" placeholder="https://…/kontakt.vcf" />
             </label>
 
             <label class="field">

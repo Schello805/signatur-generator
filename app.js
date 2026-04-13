@@ -145,6 +145,7 @@ function readForm(form) {
     linkedin: fd.get("linkedin") ?? "",
     github: fd.get("github") ?? "",
     calendarLink: fd.get("calendarLink") ?? "",
+    vcardUrl: fd.get("vcardUrl") ?? "",
     instagram: fd.get("instagram") ?? "",
     tagline: fd.get("tagline") ?? "",
     x: fd.get("x") ?? "",
@@ -234,6 +235,7 @@ function buildSampleData() {
     x: "",
     facebook: "",
     calendarLink: "https://cal.com/example",
+    vcardUrl: "https://example.com/kontakt.vcf",
     tagline: "Kurz. Klar. Kompetent.",
     imageUrl: "",
   };
