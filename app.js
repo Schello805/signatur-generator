@@ -24,6 +24,112 @@ function toast(message, { kind = "info", timeoutMs = 2200 } = {}) {
   toast._timer = window.setTimeout(() => t.classList.remove("show"), timeoutMs);
 }
 
+function setupTooltips() {
+  const tooltip = $("tooltip");
+  const tooltipContent = $("tooltipContent");
+  const arrow = tooltip.querySelector(".tooltip-arrow");
+
+  let activeHint = null;
+  let hideTimer = null;
+
+  function hide() {
+    window.clearTimeout(hideTimer);
+    activeHint = null;
+    tooltip.classList.remove("show");
+    tooltip.hidden = true;
+  }
+
+  function scheduleHide() {
+    window.clearTimeout(hideTimer);
+    hideTimer = window.setTimeout(hide, 160);
+  }
+
+  function position({ hintRect, placement }) {
+    const margin = 10;
+    const vpW = window.innerWidth;
+    const vpH = window.innerHeight;
+
+    tooltip.dataset.placement = placement;
+
+    // Ensure tooltip is measurable.
+    tooltip.style.left = "0px";
+    tooltip.style.top = "0px";
+    const tipRect = tooltip.getBoundingClientRect();
+
+    let left = hintRect.left + hintRect.width / 2 - tipRect.width / 2;
+    left = Math.max(margin, Math.min(vpW - tipRect.width - margin, left));
+
+    let top;
+    if (placement === "top") {
+      top = hintRect.top - tipRect.height - 12;
+      top = Math.max(margin, top);
+      arrow.style.left = `${Math.max(14, Math.min(tipRect.width - 14, hintRect.left + hintRect.width / 2 - left))}px`;
+      arrow.style.top = "auto";
+      arrow.style.bottom = "-6px";
+    } else {
+      top = hintRect.bottom + 12;
+      top = Math.min(vpH - tipRect.height - margin, top);
+      arrow.style.left = `${Math.max(14, Math.min(tipRect.width - 14, hintRect.left + hintRect.width / 2 - left))}px`;
+      arrow.style.top = "-6px";
+      arrow.style.bottom = "auto";
+    }
+
+    tooltip.style.left = `${Math.round(left)}px`;
+    tooltip.style.top = `${Math.round(top)}px`;
+  }
+
+  function showFor(hintEl) {
+    const tip = hintEl?.dataset?.tip;
+    if (!tip) return;
+
+    window.clearTimeout(hideTimer);
+    activeHint = hintEl;
+    tooltipContent.textContent = tip;
+
+    tooltip.hidden = false;
+    // Decide placement based on available space.
+    const rect = hintEl.getBoundingClientRect();
+    tooltip.classList.add("show");
+
+    // Initial placement guess.
+    const preferBottom = rect.bottom + 180 < window.innerHeight;
+    const placement = preferBottom ? "bottom" : "top";
+    position({ hintRect: rect, placement });
+  }
+
+  document.addEventListener("mouseover", (e) => {
+    const hint = e.target?.closest?.(".hint[data-tip]");
+    if (!hint) return;
+    showFor(hint);
+  });
+  document.addEventListener("focusin", (e) => {
+    const hint = e.target?.closest?.(".hint[data-tip]");
+    if (!hint) return;
+    showFor(hint);
+  });
+  document.addEventListener("mouseout", (e) => {
+    if (!activeHint) return;
+    const to = e.relatedTarget;
+    if (to && (to.closest?.("#tooltip") || to.closest?.(".hint[data-tip]"))) return;
+    scheduleHide();
+  });
+  document.addEventListener("focusout", (e) => {
+    if (!activeHint) return;
+    const to = e.relatedTarget;
+    if (to && (to.closest?.("#tooltip") || to.closest?.(".hint[data-tip]"))) return;
+    scheduleHide();
+  });
+
+  tooltip.addEventListener("mouseenter", () => window.clearTimeout(hideTimer));
+  tooltip.addEventListener("mouseleave", scheduleHide);
+
+  document.addEventListener("scroll", hide, true);
+  window.addEventListener("resize", hide);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !tooltip.hidden) hide();
+  });
+}
+
 function readForm(form) {
   const fd = new FormData(form);
 
@@ -438,6 +544,7 @@ function main() {
 
   renderDesignCards({ selectedId: state.templateId, onSelect: setTemplateId });
   update();
+  setupTooltips();
 
   document.addEventListener("open-design-preview", (e) => {
     const detail = e.detail;

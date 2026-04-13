@@ -277,12 +277,26 @@
     </main>
 
     <footer class="wrap footer">
+      <p class="footer-links">
+        <a href="impressum.html">Impressum</a>
+        <span aria-hidden="true">·</span>
+        <a href="datenschutz.html">Datenschutz</a>
+        <span aria-hidden="true">·</span>
+        <a href="cookies.html">Cookie‑Hinweise</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/Schello805/signatur-generator" target="_blank" rel="noreferrer">GitHub</a>
+      </p>
       <p>
-        Läuft komplett lokal im Browser. Keine Daten werden hochgeladen. Einstellungen werden optional im Browser gespeichert.
+        Datenschutz: Läuft komplett lokal im Browser. Keine Daten werden an einen Server übertragen. Optional werden Eingaben lokal im
+        Browser gespeichert (LocalStorage).
       </p>
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+    <div id="tooltip" class="tooltip" role="tooltip" hidden>
+      <div class="tooltip-arrow" aria-hidden="true"></div>
+      <div class="tooltip-content" id="tooltipContent"></div>
+    </div>
 
     <div id="designPreviewModal" class="modal" hidden aria-hidden="true">
       <div class="modal-backdrop" data-modal-close="true"></div>
