@@ -9,6 +9,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.7] - 2026-04-13
+### Fixed
+- Social‑Icons Vorschau: LocalStorage-Migration (`v1` → `v2`), damit „Icons (Logos)“ nicht von alten gespeicherten Einstellungen überschrieben wird.
+
 ## [1.1.6] - 2026-04-13
 ### Fixed
 - Matomo: Queue-Reihenfolge angepasst (Tracker-Setup vor `trackPageView`), um 400er Requests zu vermeiden.

@@ -1,6 +1,7 @@
 import { TEMPLATES, buildSignatureHtml, defaultState } from "./templates.js";
 
-const STORAGE_KEY = "signaturgenerator:v1";
+const STORAGE_KEY = "signaturgenerator:v2";
+const STORAGE_KEY_LEGACY = "signaturgenerator:v1";
 
 function $(id) {
   const el = document.getElementById(id);
@@ -158,7 +159,7 @@ function readForm(form) {
     textColor: clampHexColor(fd.get("textColor"), "#0f172a"),
     fontFamily: fd.get("fontFamily") ?? "system",
     density: fd.get("density") ?? "normal",
-    socialStyle: fd.get("socialStyle") ?? "badges",
+    socialStyle: fd.get("socialStyle") ?? "icons",
     compatMode: fd.get("compatMode") ?? "standard",
   };
 
@@ -192,17 +193,38 @@ function safeParse(json) {
 
 function loadState() {
   const raw = window.localStorage.getItem(STORAGE_KEY);
-  const parsed = raw ? safeParse(raw) : null;
+  let parsed = raw ? safeParse(raw) : null;
+
+  // One-time migration from v1 -> v2 (keeps user data, but defaults Social logos to icons).
+  if (!parsed) {
+    const legacyRaw = window.localStorage.getItem(STORAGE_KEY_LEGACY);
+    const legacyParsed = legacyRaw ? safeParse(legacyRaw) : null;
+    if (legacyParsed && typeof legacyParsed === "object") {
+      parsed = legacyParsed;
+    }
+  }
+
   const base = defaultState();
   if (!parsed || typeof parsed !== "object") return base;
 
   const templateId = TEMPLATES.some((t) => t.id === parsed.templateId) ? parsed.templateId : base.templateId;
-  return {
+  const options = { ...base.options, ...(parsed.options ?? {}) };
+  // Migration behavior: previously saved "badges" are upgraded to icon logos by default.
+  if (options.socialStyle === "badges") options.socialStyle = "icons";
+
+  const next = {
     templateId,
     persist: typeof parsed.persist === "boolean" ? parsed.persist : base.persist,
     data: { ...base.data, ...(parsed.data ?? {}) },
-    options: { ...base.options, ...(parsed.options ?? {}) },
+    options,
   };
+  // Persist v2 format best-effort.
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  } catch {
+    // ignore
+  }
+  return next;
 }
 
 function saveState(state) {
