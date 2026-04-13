@@ -6,11 +6,6 @@ const VERSION_META = document.querySelector('meta[name="app-version"]');
 const LOCAL_VERSION = (VERSION_META?.getAttribute("content") || "").trim() || "dev";
 const VERSION_EL = document.getElementById("versionInfo");
 
-function setVersionText(text) {
-  if (!VERSION_EL) return;
-  VERSION_EL.textContent = text;
-}
-
 function setVersionHtml(html) {
   if (!VERSION_EL) return;
   VERSION_EL.innerHTML = html;
@@ -45,15 +40,8 @@ async function fetchLatestCommitSha() {
   return String(data?.sha || "");
 }
 
-function shouldCheckUpdates() {
-  // Only check if we have a version to compare and we're likely online.
-  if (!LOCAL_VERSION || LOCAL_VERSION === "dev") return false;
-  if (navigator.onLine === false) return false;
-  return true;
-}
-
 function getCachedCheck() {
-  const raw = window.localStorage.getItem("signaturgenerator:updatecheck:v1");
+  const raw = window.localStorage.getItem("signaturgenerator:updatecheck:v2");
   const parsed = raw ? safeParse(raw) : null;
   if (!parsed || typeof parsed !== "object") return null;
   if (!parsed.checkedAt || !parsed.latestSha) return null;
@@ -62,63 +50,87 @@ function getCachedCheck() {
 
 function setCachedCheck({ latestSha }) {
   window.localStorage.setItem(
-    "signaturgenerator:updatecheck:v1",
+    "signaturgenerator:updatecheck:v2",
     JSON.stringify({ latestSha, checkedAt: Date.now() })
   );
 }
 
-async function checkForUpdates() {
-  if (!shouldCheckUpdates()) {
+function getInstalledInfo() {
+  const raw = window.localStorage.getItem("signaturgenerator:installed:v1");
+  const parsed = raw ? safeParse(raw) : null;
+  if (!parsed || typeof parsed !== "object") return { version: "", sha: "" };
+  return { version: String(parsed.version || ""), sha: String(parsed.sha || "") };
+}
+
+function setInstalledInfo({ version, sha }) {
+  window.localStorage.setItem("signaturgenerator:installed:v1", JSON.stringify({ version, sha }));
+}
+
+function shouldCheckUpdates() {
+  if (!LOCAL_VERSION) return false;
+  if (navigator.onLine === false) return false;
+  return true;
+}
+
+function renderLocalOnly() {
+  setVersionHtml(`v${LOCAL_VERSION} · <a href="${repoUrl()}" target="_blank" rel="noreferrer">GitHub</a>`);
+}
+
+function renderWithLatest(latestSha) {
+  const latestShort = shortSha(latestSha);
+  const installed = getInstalledInfo();
+
+  // If the user updated the app files (version changed), re-baseline.
+  if (installed.version !== LOCAL_VERSION && latestSha) setInstalledInfo({ version: LOCAL_VERSION, sha: latestSha });
+  // First run: remember current latest sha as installed baseline.
+  if (!installed.sha && latestSha) setInstalledInfo({ version: LOCAL_VERSION, sha: latestSha });
+
+  const baseline = getInstalledInfo();
+  const baselineShort = shortSha(baseline.sha);
+  const same = Boolean(latestShort && baselineShort && latestShort === baselineShort);
+
+  if (!latestShort) return renderLocalOnly();
+
+  if (same) {
     setVersionHtml(
-      `v${LOCAL_VERSION} · <a href="${repoUrl()}" target="_blank" rel="noreferrer">GitHub</a>`
+      `v${LOCAL_VERSION} · up to date · GitHub ${latestShort} · <a href="${repoUrl(
+        "commits/" + BRANCH
+      )}" target="_blank" rel="noreferrer">Commits</a>`
     );
     return;
   }
 
+  setVersionHtml(
+    `v${LOCAL_VERSION} · <strong>Update verfügbar</strong> (GitHub ${latestShort}) · <a href="${repoUrl(
+      "archive/refs/heads/" + BRANCH + ".zip"
+    )}" target="_blank" rel="noreferrer">Download</a> · <a href="${repoUrl(
+      "compare/" + (baselineShort || "main") + "..." + latestShort
+    )}" target="_blank" rel="noreferrer">Diff</a> · <a href="#" data-action="reload">Neu laden</a>`
+  );
+}
+
+async function checkForUpdates() {
+  if (!shouldCheckUpdates()) return renderLocalOnly();
+
   const cached = getCachedCheck();
   const cacheMaxAgeMs = 6 * 60 * 60 * 1000; // 6h
-  if (cached && Date.now() - cached.checkedAt < cacheMaxAgeMs) {
-    return renderWithLatest(cached.latestSha);
-  }
+  if (cached && Date.now() - cached.checkedAt < cacheMaxAgeMs) return renderWithLatest(cached.latestSha);
 
   try {
     const latestSha = await fetchLatestCommitSha();
     if (latestSha) setCachedCheck({ latestSha });
     renderWithLatest(latestSha);
   } catch {
-    // No network / rate limited / blocked — show local only.
-    setVersionHtml(
-      `v${LOCAL_VERSION} · <a href="${repoUrl()}" target="_blank" rel="noreferrer">GitHub</a>`
-    );
+    renderLocalOnly();
   }
 }
 
-function renderWithLatest(latestSha) {
-  const localShort = LOCAL_VERSION;
-  const latestShort = shortSha(latestSha);
-  const same = latestShort && localShort && latestShort === localShort;
-
-  if (!latestShort) {
-    setVersionHtml(`v${localShort} · <a href="${repoUrl()}" target="_blank" rel="noreferrer">GitHub</a>`);
-    return;
-  }
-
-  if (same) {
-    setVersionHtml(
-      `v${localShort} · up to date · <a href="${repoUrl("commits/" + BRANCH)}" target="_blank" rel="noreferrer">Commits</a>`
-    );
-    return;
-  }
-
-  setVersionHtml(
-    `v${localShort} · <strong>Update verfügbar</strong> (latest ${latestShort}) · <a href="${repoUrl(
-      "archive/refs/heads/" + BRANCH + ".zip"
-    )}" target="_blank" rel="noreferrer">Download</a> · <a href="${repoUrl(
-      "compare/" + localShort + "..." + latestShort
-    )}" target="_blank" rel="noreferrer">Diff</a>`
-  );
-}
-
-setVersionText(`v${LOCAL_VERSION}`);
+renderLocalOnly();
 checkForUpdates();
 
+document.addEventListener("click", (e) => {
+  const a = e.target?.closest?.("a[data-action='reload']");
+  if (!a) return;
+  e.preventDefault();
+  window.location.reload();
+});
