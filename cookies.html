@@ -4,9 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="app-version" content="1.0.2" />
+    <meta name="app-version" content="1.1.0" />
+    <meta name="theme-color" content="#0b1220" />
     <title>Cookie‑Hinweise – Signaturgenerator</title>
     <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -62,8 +64,13 @@
         <span aria-hidden="true">·</span>
         <a href="https://github.com/Schello805/signatur-generator" target="_blank" rel="noreferrer">GitHub</a>
       </p>
-      <p class="footer-version">Version: <span id="versionInfo">v…</span></p>
+      <p class="footer-version">
+        Version: <span id="versionInfo">v…</span>
+        <span class="footer-sep" aria-hidden="true">·</span>
+        <span id="pwaInfo"></span>
+      </p>
     </footer>
+    <script type="module" src="pwa.js"></script>
     <script type="module" src="version.js"></script>
   </body>
 </html>

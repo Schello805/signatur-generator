@@ -6,6 +6,7 @@ Eine kleine, lokale Webapp zum Erstellen von E‑Mail‑Signaturen (HTML) mit me
 
 - Öffne `index.html` direkt im Browser (funktioniert offline).
 - Für Copy‑Funktionen (Clipboard) ist ein lokaler Server oft zuverlässiger: `python3 -m http.server` und dann die angezeigte URL öffnen.
+- Für PWA/Offline-Cache (Service Worker) ist `https://` oder `http://localhost` erforderlich.
 
 ## Features
 
@@ -13,6 +14,7 @@ Eine kleine, lokale Webapp zum Erstellen von E‑Mail‑Signaturen (HTML) mit me
 - Live‑Vorschau
 - Social‑Links als „Badges“ oder Textlinks
 - Kompatibilitätsschalter: „Standard“ / „Outlook‑sicher“
+- PWA/Offline: Update‑Hinweis + „Update installieren“ (nur über HTTPS/localhost)
 - Export:
   - „Als Rich‑Text kopieren“ (ideal für Mail‑Signatur‑Editoren)
   - „HTML kopieren“
