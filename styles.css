@@ -181,6 +181,20 @@ input[type="checkbox"]{
   background: color-mix(in oklab, var(--card2) 92%, transparent);
 }
 .checktext{font-size: 13px; color: var(--text);}
+
+.exportrow{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 10px;
+  align-items:center;
+}
+.exportrow .btn{
+  flex: 1 1 240px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 6px;
+}
 input:focus, select:focus, textarea:focus{box-shadow: var(--focus); border-color: color-mix(in oklab, var(--accent) 65%, var(--border));}
 input[type="color"]{padding:0; height: 42px; cursor:pointer;}
 input[type="file"]{padding: 8px 10px; cursor:pointer;}

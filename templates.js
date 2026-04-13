@@ -105,23 +105,55 @@ function renderSocialRow(data, options) {
   const textColor = options.textColor;
   const outlookSafe = options.compatMode === "outlook";
 
-  if (style === "text" || (outlookSafe && style === "badges")) {
+  if (style === "text" || (outlookSafe && (style === "badges" || style === "icons"))) {
     const html = links
       .map((l) => `<a href="${esc(l.href)}" style="color:${esc(textColor)};text-decoration:none;">${esc(l.label)}</a>`)
       .join(`<span style="color:rgba(0,0,0,0.35);"> · </span>`);
     return `<div style="margin-top:8px;font-size:12.5px;line-height:1.25;">${html}</div>`;
   }
 
+  const ICON_SVG = {
+    in: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M6 9h3v10H6V9Z" fill="currentColor"/><path d="M7.5 5.5a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Z" fill="currentColor"/>
+      <path d="M11 9h2.9v1.4h.04c.4-.76 1.39-1.56 2.86-1.56 3.06 0 3.62 2.01 3.62 4.63V19h-3v-4.88c0-1.16-.02-2.65-1.62-2.65-1.62 0-1.87 1.26-1.87 2.57V19h-2.93V9Z" fill="currentColor"/>
+    </svg>`,
+    gh: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path fill="currentColor" d="M12 2.2A10 10 0 0 0 8.84 21.3c.5.1.68-.22.68-.48v-1.68c-2.77.6-3.36-1.19-3.36-1.19-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.93.83.09-.65.35-1.09.63-1.34-2.21-.25-4.53-1.1-4.53-4.9 0-1.08.39-1.96 1.03-2.65-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.69 1.03 1.57 1.03 2.65 0 3.81-2.33 4.64-4.55 4.89.36.31.68.92.68 1.86v2.76c0 .27.18.59.69.48A10 10 0 0 0 12 2.2Z"/>
+    </svg>`,
+    ig: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Z"/>
+      <path fill="currentColor" d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/>
+      <path fill="currentColor" d="M18 6.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
+    </svg>`,
+    x: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path fill="currentColor" d="M18.2 2H21l-6.1 7 7.2 13H16.2l-4.6-8.2L4.9 22H2l6.6-7.6L1.7 2H7.7l4.2 7.5L18.2 2Zm-1 18h1.5L6.9 3.9H5.3L17.2 20Z"/>
+    </svg>`,
+    fb: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path fill="currentColor" d="M14 22v-8h3l.5-4H14V7.7c0-1.1.3-1.7 1.8-1.7H18V2.2C17.2 2.1 15.8 2 14.1 2 10.6 2 8.3 4.1 8.3 7.9V10H5v4h3.3v8H14Z"/>
+    </svg>`,
+    web: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm7.9 9h-3.1a15.7 15.7 0 0 0-1.2-5 8.1 8.1 0 0 1 4.3 5ZM12 4c.9 1.2 1.6 3.1 2 7h-4c.4-3.9 1.1-5.8 2-7Zm-6.8 7H2.1a8.1 8.1 0 0 1 4.3-5 15.7 15.7 0 0 0-1.2 5ZM2.1 13h3.1c.2 1.8.7 3.5 1.2 5a8.1 8.1 0 0 1-4.3-5Zm3.1-2h3.6c0 1.7.2 3.5.6 5H6.4c-.6-1.5-1-3.2-1.2-5Zm3.6-2H5.2c.2-1.8.7-3.5 1.2-5h3c-.4 1.5-.6 3.3-.6 5Zm2 2h4c0 1.7-.2 3.5-.6 5h-2.8c-.4-1.5-.6-3.3-.6-5Zm0-2c0-1.7.2-3.5.6-5h2.8c.4 1.5.6 3.3.6 5h-4Zm7.8 2h3.1a8.1 8.1 0 0 1-4.3 5c.5-1.5 1-3.2 1.2-5Zm0-2c-.2-1.8-.7-3.5-1.2-5a8.1 8.1 0 0 1 4.3 5h-3.1Z"/>
+    </svg>`,
+    cal: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path fill="currentColor" d="M7 2h2v2h6V2h2v2h3v18H4V4h3V2Zm13 8H4v10h16V10Zm-2-4H6v2h12V6Z"/>
+    </svg>`,
+  };
+
   // Badges (mail-client friendly): small linked cells with short label.
   const cells = links
     .map((l) => {
       const short = l.key.toUpperCase();
+      const icon = ICON_SVG[l.key] || "";
+      const inner =
+        style === "icons"
+          ? `<span style="display:inline-flex;align-items:center;justify-content:center;color:#ffffff;">${icon}</span>`
+          : esc(short);
       return `
         <td style="padding:0 6px 0 0;vertical-align:middle;">
           <a href="${esc(l.href)}" style="display:inline-block;background:${esc(
         accent
       )};color:#ffffff;text-decoration:none;font-weight:800;font-size:11px;line-height:1;padding:6px 8px;border-radius:999px;">
-            ${esc(short)}
+            ${inner}
           </a>
         </td>`;
     })

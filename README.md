@@ -13,6 +13,7 @@ Eine kleine, lokale Webapp zum Erstellen von E‑Mail‑Signaturen (HTML) mit me
 - 5 Designs (auswählbar)
 - Live‑Vorschau
 - Social‑Links als „Badges“ oder Textlinks
+- Profil Export/Import als JSON (für spätere Bearbeitung)
 - Kompatibilitätsschalter: „Standard“ / „Outlook‑sicher“
 - PWA/Offline: Update‑Hinweis + „Update installieren“ (nur über HTTPS/localhost)
 - Export:

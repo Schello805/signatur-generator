@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="app-version" content="1.1.0" />
+    <meta name="app-version" content="1.1.1" />
     <meta name="theme-color" content="#0b1220" />
     <title>Signaturgenerator</title>
     <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
@@ -166,12 +166,13 @@
                   tabindex="0"
                   role="img"
                   aria-label="Hilfe zu Social-Links"
-                  data-tip="Badges sind optisch stark, aber Outlook kann Rundungen/Layouts manchmal anders darstellen. Für maximale Kompatibilität wähle Textlinks oder Outlook‑sicher."
+                  data-tip="Icons sehen am besten aus, aber nicht jeder Mail‑Client unterstützt SVG. Für maximale Kompatibilität wähle Textlinks oder Outlook‑sicher."
                   >?</span
                 ></span
               >
               <select name="socialStyle">
-                <option value="badges">Badges (empfohlen)</option>
+                <option value="badges">Badges (Initialen)</option>
+                <option value="icons">Badges (Icons)</option>
                 <option value="text">Textlinks</option>
                 <option value="none">Aus</option>
               </select>
@@ -224,6 +225,32 @@
                 >
               </div>
             </label>
+
+            <div class="span-2 exportrow" aria-label="Profil importieren oder exportieren">
+              <button type="button" class="btn btn-secondary" id="btnExportJson">
+                Profil exportieren (.json)
+                <span
+                  class="hint"
+                  tabindex="0"
+                  role="img"
+                  aria-label="Hilfe zu Export"
+                  data-tip="Exportiert deine Eingaben als JSON-Datei. Damit kannst du dein Profil später wieder importieren und weiterbearbeiten."
+                  >?</span
+                >
+              </button>
+              <button type="button" class="btn btn-secondary" id="btnImportJson">
+                Profil importieren (.json)
+                <span
+                  class="hint"
+                  tabindex="0"
+                  role="img"
+                  aria-label="Hilfe zu Import"
+                  data-tip="Importiert ein zuvor exportiertes JSON-Profil und füllt alle Felder automatisch aus."
+                  >?</span
+                >
+              </button>
+              <input id="fileImportJson" type="file" accept="application/json,.json" hidden />
+            </div>
           </div>
         </form>
       </section>

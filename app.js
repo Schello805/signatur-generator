@@ -337,6 +337,18 @@ function downloadVcard({ filename, vcard }) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
 
+function downloadJson({ filename, jsonText }) {
+  const blob = new Blob([jsonText], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+
 function fallbackCopyText(text) {
   const ta = document.createElement("textarea");
   ta.value = text;
@@ -618,6 +630,60 @@ function main() {
     const filename = `${name || "kontakt"}.vcf`;
     downloadVcard({ filename, vcard: buildVcard(state.data) });
     toast("vCard Download gestartet.");
+  });
+
+  const fileImport = document.getElementById("fileImportJson");
+  const btnExport = document.getElementById("btnExportJson");
+  const btnImport = document.getElementById("btnImportJson");
+
+  btnExport?.addEventListener("click", () => {
+    const name = (state.data.fullName || "profil")
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-zA-Z0-9-_äöüÄÖÜß]/g, "");
+    const filename = `${name || "profil"}.json`;
+    const jsonText = JSON.stringify(
+      {
+        templateId: state.templateId,
+        data: state.data,
+        options: state.options,
+      },
+      null,
+      2
+    );
+    downloadJson({ filename, jsonText });
+    toast("JSON exportiert.");
+  });
+
+  btnImport?.addEventListener("click", () => fileImport?.click());
+  fileImport?.addEventListener("change", () => {
+    const file = fileImport.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onerror = () => toast("Import fehlgeschlagen.", { kind: "error" });
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(String(reader.result || "{}"));
+        const fresh = defaultState();
+        const templateId = TEMPLATES.some((t) => t.id === parsed.templateId) ? parsed.templateId : fresh.templateId;
+        const next = {
+          ...fresh,
+          templateId,
+          data: { ...fresh.data, ...(parsed.data || {}) },
+          options: { ...fresh.options, ...(parsed.options || {}) },
+        };
+        state = next;
+        writeForm(form, next);
+        renderDesignCards({ selectedId: state.templateId, onSelect: setTemplateId });
+        update();
+        toast("JSON importiert.");
+      } catch {
+        toast("Ungültige JSON-Datei.", { kind: "error" });
+      } finally {
+        fileImport.value = "";
+      }
+    };
+    reader.readAsText(file, "utf-8");
   });
 
   $("btnReset").addEventListener("click", () => {
