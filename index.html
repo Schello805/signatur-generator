@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
+    <meta name="app-version" content="4154635" />
     <title>Signaturgenerator</title>
     <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
     <link rel="stylesheet" href="styles.css" />
@@ -290,6 +291,7 @@
         Datenschutz: Läuft komplett lokal im Browser. Keine Daten werden an einen Server übertragen. Optional werden Eingaben lokal im
         Browser gespeichert (LocalStorage).
       </p>
+      <p class="footer-version">Version: <span id="versionInfo">v…</span></p>
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
@@ -317,6 +319,7 @@
       </div>
     </div>
 
+    <script type="module" src="version.js"></script>
     <script type="module" src="app.js"></script>
   </body>
 </html>

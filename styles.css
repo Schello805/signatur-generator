@@ -301,6 +301,8 @@ input[type="file"]{padding: 8px 10px; cursor:pointer;}
 
 .footer{padding-top: 8px;}
 .footer p{margin:0; color: var(--muted); font-size: 12.5px;}
+.footer-version{margin-top: 6px;}
+.footer-version a{color: var(--text);}
 .footer-links{
   display:flex;
   flex-wrap:wrap;
