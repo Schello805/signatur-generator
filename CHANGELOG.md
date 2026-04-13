@@ -9,6 +9,13 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.2] - 2026-04-13
+### Changed
+- Social‑Icon‑Buttons: SVGs auf Bootstrap Icons (MIT) umgestellt, mit robustem Fallback (Initialen bleiben sichtbar, falls SVG entfernt wird).
+- Kompatibilitäts‑Hinweis: Zusätzlicher Hinweis, dass viele Mail‑Clients inline‑SVG entfernen.
+### Added
+- `THIRD_PARTY_NOTICES.md` (Bootstrap Icons Lizenz/Notice).
+
 ## [1.1.1] - 2026-04-13
 ### Added
 - Profil Export/Import als JSON (für spätere Bearbeitung).

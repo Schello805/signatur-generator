@@ -446,9 +446,18 @@ function buildCompatibilityNotice(state) {
     if (social === "badges") {
       parts.push("Hinweis: Badges werden in Outlook‑sicher automatisch als Textlinks dargestellt.");
     }
+    if (social === "icons") {
+      parts.push("Hinweis: Icons/Badges werden in Outlook‑sicher automatisch als Textlinks dargestellt.");
+    }
   } else {
     parts.push(
       "<strong>Standard:</strong> Moderne Optik – einzelne Elemente (Rundungen/Verläufe) können in Outlook (Windows‑Desktop) anders aussehen."
+    );
+  }
+
+  if (compat !== "outlook" && social === "icons") {
+    parts.push(
+      "<strong>Icons:</strong> Viele Mail‑Clients entfernen inline‑SVG. In diesem Fall bleiben die Initialen im Button übrig – für maximale Kompatibilität sind Textlinks am sichersten."
     );
   }
 
