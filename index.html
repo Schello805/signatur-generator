@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <meta name="app-version" content="1.1.11" />
+    <meta name="app-version" content="1.1.12" />
     <meta name="theme-color" content="#f6f7fb" />
     <title>Signaturgenerator</title>
     <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
@@ -37,14 +37,15 @@
       </div>
     </header>
 
-    <main id="main" class="wrap layout">
-      <section class="panel" aria-labelledby="formTitle">
+    <main id="main" class="wrap">
+      <form id="signatureForm" class="layout" autocomplete="on">
+        <section class="panel" aria-labelledby="formTitle">
         <div class="panel-head">
           <h2 id="formTitle">Daten</h2>
           <p class="panel-hint">Felder sind optional – je mehr du ausfüllst, desto vollständiger wird die Signatur.</p>
         </div>
 
-        <form id="signatureForm" class="form" autocomplete="on">
+        <div class="form">
           <div class="grid">
             <label class="field">
               <span class="label">Vorname Nachname</span>
@@ -141,135 +142,143 @@
               <input name="facebook" type="url" inputmode="url" placeholder="https://facebook.com/..." />
             </label>
           </div>
+        </div>
+        </section>
 
-          <div class="divider" role="separator" aria-hidden="true"></div>
-
-          <div class="grid">
-            <label class="field">
-              <span class="label">Akzentfarbe</span>
-              <input name="accentColor" type="color" value="#2563eb" />
-            </label>
-
-            <label class="field">
-              <span class="label">Textfarbe</span>
-              <input name="textColor" type="color" value="#0f172a" />
-            </label>
-
-            <label class="field">
-              <span class="label">Schrift</span>
-              <select name="fontFamily">
-                <option value="system">System Sans</option>
-                <option value="serif">Serif</option>
-                <option value="mono">Monospace</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span class="label">Layout‑Dichte</span>
-              <select name="density">
-                <option value="normal">Normal</option>
-                <option value="compact">Kompakt</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span class="label"
-                >Social‑Links
-                <span
-                  class="hint"
-                  tabindex="0"
-                  role="img"
-                  aria-label="Hilfe zu Social-Links"
-                  data-tip="Icons sehen am besten aus, aber nicht jeder Mail‑Client unterstützt SVG. Für maximale Kompatibilität wähle Textlinks oder Outlook‑sicher."
-                  >?</span
-                ></span
-              >
-              <select name="socialStyle">
-                <option value="icons">Icons (Logos)</option>
-                <option value="badges">Initialen‑Badges</option>
-                <option value="text">Textlinks (max. kompatibel)</option>
-                <option value="none">Aus</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span class="label"
-                >Kompatibilität
-                <span
-                  class="hint"
-                  tabindex="0"
-                  role="img"
-                  aria-label="Hilfe zu Kompatibilität"
-                  data-tip="Outlook (Windows‑Desktop) rendert HTML teils anders. Outlook‑sicher vereinfacht Effekte (z. B. Verläufe/Badges), damit die Signatur zuverlässiger aussieht."
-                  >?</span
-                ></span
-              >
-              <select name="compatMode">
-                <option value="standard">Standard</option>
-                <option value="outlook">Outlook‑sicher</option>
-              </select>
-            </label>
-
-            <label class="field span-2">
-              <span class="label">Logo/Foto‑URL (empfohlen: https‑Bildlink)</span>
-              <input name="imageUrl" type="url" inputmode="url" placeholder="https://…/logo.png" maxlength="300" />
-              <span class="help">Tipp: Für Mail‑Clients sind normale Bild‑URLs oft zuverlässiger als Base64.</span>
-            </label>
-
-            <label class="field span-2">
-              <span class="label">Oder Bild hochladen (für Vorschau/Base64)</span>
-              <input name="imageUpload" type="file" accept="image/*" />
-              <span class="help">Das Bild wird als Data‑URL eingefügt. Manche E‑Mail‑Programme blockieren das.</span>
-            </label>
-
-            <label class="field span-2">
-              <span class="label">Einstellungen</span>
-              <div class="checkrow">
-                <input name="persist" type="checkbox" checked />
-                <span class="checktext"
-                  >Im Browser speichern (LocalStorage)
-                  <span
-                    class="hint"
-                    tabindex="0"
-                    role="img"
-                    aria-label="Hilfe zu Speicherung"
-                    data-tip="Speichert deine Eingaben nur lokal im Browser (praktisch für Wiederverwendung). Wenn aus, werden keine Daten gespeichert."
-                    >?</span
-                  ></span
-                >
-              </div>
-            </label>
-
-            <div class="span-2 exportrow" aria-label="Profil importieren oder exportieren">
-              <button type="button" class="btn btn-secondary" id="btnExportJson">
-                Profil exportieren (.json)
-                <span
-                  class="hint"
-                  tabindex="0"
-                  role="img"
-                  aria-label="Hilfe zu Export"
-                  data-tip="Exportiert deine Eingaben als JSON-Datei. Damit kannst du dein Profil später wieder importieren und weiterbearbeiten."
-                  >?</span
-                >
-              </button>
-              <button type="button" class="btn btn-secondary" id="btnImportJson">
-                Profil importieren (.json)
-                <span
-                  class="hint"
-                  tabindex="0"
-                  role="img"
-                  aria-label="Hilfe zu Import"
-                  data-tip="Importiert ein zuvor exportiertes JSON-Profil und füllt alle Felder automatisch aus."
-                  >?</span
-                >
-              </button>
-              <input id="fileImportJson" type="file" accept="application/json,.json" hidden />
+        <div class="right-col">
+          <section class="panel" aria-labelledby="settingsTitle">
+            <div class="panel-head">
+              <h2 id="settingsTitle">Einstellungen</h2>
+              <p class="panel-hint">Optik, Social‑Darstellung, Kompatibilität, Bild und Speicherung.</p>
             </div>
-          </div>
-        </form>
-      </section>
 
-      <section class="panel" aria-labelledby="designTitle">
+            <div class="form">
+              <div class="grid">
+                <label class="field">
+                  <span class="label">Akzentfarbe</span>
+                  <input name="accentColor" type="color" value="#2563eb" />
+                </label>
+
+                <label class="field">
+                  <span class="label">Textfarbe</span>
+                  <input name="textColor" type="color" value="#0f172a" />
+                </label>
+
+                <label class="field">
+                  <span class="label">Schrift</span>
+                  <select name="fontFamily">
+                    <option value="system">System Sans</option>
+                    <option value="serif">Serif</option>
+                    <option value="mono">Monospace</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span class="label">Layout‑Dichte</span>
+                  <select name="density">
+                    <option value="normal">Normal</option>
+                    <option value="compact">Kompakt</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span class="label"
+                    >Social‑Links
+                    <span
+                      class="hint"
+                      tabindex="0"
+                      role="img"
+                      aria-label="Hilfe zu Social-Links"
+                      data-tip="Icons sehen am besten aus, aber nicht jeder Mail‑Client unterstützt SVG. Für maximale Kompatibilität wähle Textlinks oder Outlook‑sicher."
+                      >?</span
+                    ></span
+                  >
+                  <select name="socialStyle">
+                    <option value="icons">Icons (Logos)</option>
+                    <option value="badges">Initialen‑Badges</option>
+                    <option value="text">Textlinks (max. kompatibel)</option>
+                    <option value="none">Aus</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span class="label"
+                    >Kompatibilität
+                    <span
+                      class="hint"
+                      tabindex="0"
+                      role="img"
+                      aria-label="Hilfe zu Kompatibilität"
+                      data-tip="Outlook (Windows‑Desktop) rendert HTML teils anders. Outlook‑sicher vereinfacht Effekte (z. B. Verläufe/Badges), damit die Signatur zuverlässiger aussieht."
+                      >?</span
+                    ></span
+                  >
+                  <select name="compatMode">
+                    <option value="standard">Standard</option>
+                    <option value="outlook">Outlook‑sicher</option>
+                  </select>
+                </label>
+
+                <label class="field span-2">
+                  <span class="label">Logo/Foto‑URL (empfohlen: https‑Bildlink)</span>
+                  <input name="imageUrl" type="url" inputmode="url" placeholder="https://…/logo.png" maxlength="300" />
+                  <span class="help">Tipp: Für Mail‑Clients sind normale Bild‑URLs oft zuverlässiger als Base64.</span>
+                </label>
+
+                <label class="field span-2">
+                  <span class="label">Oder Bild hochladen (für Vorschau/Base64)</span>
+                  <input name="imageUpload" type="file" accept="image/*" />
+                  <span class="help">Das Bild wird als Data‑URL eingefügt. Manche E‑Mail‑Programme blockieren das.</span>
+                </label>
+
+                <label class="field span-2">
+                  <span class="label">Speicherung</span>
+                  <div class="checkrow">
+                    <input name="persist" type="checkbox" checked />
+                    <span class="checktext"
+                      >Im Browser speichern (LocalStorage)
+                      <span
+                        class="hint"
+                        tabindex="0"
+                        role="img"
+                        aria-label="Hilfe zu Speicherung"
+                        data-tip="Speichert deine Eingaben nur lokal im Browser (praktisch für Wiederverwendung). Wenn aus, werden keine Daten gespeichert."
+                        >?</span
+                      ></span
+                    >
+                  </div>
+                </label>
+
+                <div class="span-2 exportrow" aria-label="Profil importieren oder exportieren">
+                  <button type="button" class="btn btn-secondary" id="btnExportJson">
+                    Profil exportieren (.json)
+                    <span
+                      class="hint"
+                      tabindex="0"
+                      role="img"
+                      aria-label="Hilfe zu Export"
+                      data-tip="Exportiert deine Eingaben als JSON-Datei. Damit kannst du dein Profil später wieder importieren und weiterbearbeiten."
+                      >?</span
+                    >
+                  </button>
+                  <button type="button" class="btn btn-secondary" id="btnImportJson">
+                    Profil importieren (.json)
+                    <span
+                      class="hint"
+                      tabindex="0"
+                      role="img"
+                      aria-label="Hilfe zu Import"
+                      data-tip="Importiert ein zuvor exportiertes JSON-Profil und füllt alle Felder automatisch aus."
+                      >?</span
+                    >
+                  </button>
+                  <input id="fileImportJson" type="file" accept="application/json,.json" hidden />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="designTitle">
         <div class="panel-head">
           <h2 id="designTitle">Design auswählen</h2>
           <p class="panel-hint">Mindestens 5 Designs – Klick wählt, Doppelklick öffnet Vorschau.</p>
@@ -317,7 +326,9 @@
           </div>
           <textarea id="outputHtml" class="output-area" spellcheck="false" aria-label="HTML Ausgabe" readonly></textarea>
         </div>
-      </section>
+          </section>
+        </div>
+      </form>
     </main>
 
     <footer class="footer">

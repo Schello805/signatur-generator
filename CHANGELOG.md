@@ -9,6 +9,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.12] - 2026-04-13
+### Changed
+- Layout: Einstellungen in die rechte Spalte verschoben (eigene „Einstellungen“-Box), links bleiben nur Daten/Content-Felder.
+
 ## [1.1.11] - 2026-04-13
 ### Fixed
 - Gradient Badge: „Akzent: …“ Info aus dem Template entfernt.
