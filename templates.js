@@ -27,6 +27,24 @@ function cleanUrl(url) {
   }
 }
 
+function normalizeHost(host) {
+  return String(host || "").trim().toLowerCase().replace(/\.$/, "");
+}
+
+function cleanUrlForHosts(url, allowedHosts) {
+  const cleaned = cleanUrl(url);
+  if (!cleaned) return "";
+  try {
+    const parsed = new URL(cleaned);
+    const host = normalizeHost(parsed.host);
+    const allowed = (allowedHosts || []).map((h) => normalizeHost(h));
+    const ok = allowed.some((h) => host === h || host.endsWith(`.${h}`));
+    return ok ? cleaned : "";
+  } catch {
+    return "";
+  }
+}
+
 function formatWebsiteLabel(url) {
   try {
     const parsed = new URL(url);
@@ -61,7 +79,7 @@ function buildLines(data) {
   const email = String(data.email ?? "").trim();
   const website = cleanUrl(data.website);
   const address = String(data.address ?? "").trim();
-  const linkedin = cleanUrl(data.linkedin);
+  const linkedin = cleanUrlForHosts(data.linkedin, ["linkedin.com"]);
   const calendarLink = cleanUrl(data.calendarLink);
   const vcardUrl = cleanUrl(data.vcardUrl);
 
@@ -78,11 +96,11 @@ function buildLines(data) {
 
 function buildSocialLinks(data) {
   const items = [];
-  const linkedin = cleanUrl(data.linkedin);
-  const github = cleanUrl(data.github);
-  const instagram = cleanUrl(data.instagram);
-  const x = cleanUrl(data.x);
-  const facebook = cleanUrl(data.facebook);
+  const linkedin = cleanUrlForHosts(data.linkedin, ["linkedin.com"]);
+  const github = cleanUrlForHosts(data.github, ["github.com"]);
+  const instagram = cleanUrlForHosts(data.instagram, ["instagram.com"]);
+  const x = cleanUrlForHosts(data.x, ["x.com", "twitter.com"]);
+  const facebook = cleanUrlForHosts(data.facebook, ["facebook.com"]);
   const website = cleanUrl(data.website);
   const calendar = cleanUrl(data.calendarLink);
 

@@ -171,7 +171,17 @@ function readForm(form) {
 function writeForm(form, state) {
   for (const [key, value] of Object.entries(state.data)) {
     const input = form.elements.namedItem(key);
-    if (input && "value" in input) input.value = String(value ?? "");
+    if (input && "value" in input) {
+      if (key === "imageUrl") {
+        const raw = String(value ?? "");
+        // Prevent accidental huge pastes from making the UI sluggish/crash.
+        if (!raw.startsWith("data:") && raw.length > 300) {
+          input.value = raw.slice(0, 300);
+          continue;
+        }
+      }
+      input.value = String(value ?? "");
+    }
   }
   for (const [key, value] of Object.entries(state.options)) {
     const input = form.elements.namedItem(key);
@@ -590,6 +600,13 @@ function main() {
   form.addEventListener("input", (e) => {
     const target = e.target;
     if (target && target.name === "imageUpload") return;
+    if (target && target.name === "imageUrl") {
+      const v = String(target.value || "");
+      if (!v.startsWith("data:") && v.length > 300) {
+        target.value = v.slice(0, 300);
+        toast("Bild‑URL wurde auf 300 Zeichen gekürzt.", { kind: "info" });
+      }
+    }
     update();
   });
 
