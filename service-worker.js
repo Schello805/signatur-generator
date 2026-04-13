@@ -1,6 +1,6 @@
 // Signaturgenerator Service Worker
 // Version must be bumped on releases to ensure updates propagate.
-const APP_VERSION = "1.1.2";
+const APP_VERSION = "1.1.3";
 const CACHE_PREFIX = "sg-cache-";
 const CACHE_NAME = `${CACHE_PREFIX}${APP_VERSION}`;
 
@@ -12,6 +12,7 @@ const PRECACHE_URLS = [
   "./templates.js",
   "./version.js",
   "./pwa.js",
+  "./matomo.js",
   "./manifest.webmanifest",
   "./Logo-Signatur-Generator.png",
   "./icon-192.png",
@@ -67,9 +68,13 @@ self.addEventListener("fetch", (event) => {
   if (!isSameOrigin(req.url)) return;
 
   const isNavigation = req.mode === "navigate" || (req.headers.get("accept") || "").includes("text/html");
+  const url = new URL(req.url);
+  const pathname = url.pathname || "";
+  const isCodeAsset =
+    pathname.endsWith(".js") || pathname.endsWith(".css") || pathname.endsWith(".webmanifest");
 
-  if (isNavigation) {
-    // Network-first for HTML so users get updates when online; fallback to cache for offline.
+  if (isNavigation || isCodeAsset) {
+    // Network-first for HTML and code assets so updates propagate even if an older SW is still controlling.
     event.respondWith(
       fetch(req)
         .then((res) => {

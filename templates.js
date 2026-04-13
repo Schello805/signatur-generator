@@ -623,7 +623,7 @@ export function defaultState() {
       textColor: "#0f172a",
       fontFamily: "system",
       density: "normal",
-      socialStyle: "badges",
+      socialStyle: "icons",
       compatMode: "standard",
     },
   };

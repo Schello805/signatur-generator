@@ -1,7 +1,6 @@
 import { TEMPLATES, buildSignatureHtml, defaultState } from "./templates.js";
 
 const STORAGE_KEY = "signaturgenerator:v1";
-const THEME_KEY = "signaturgenerator:theme";
 
 function $(id) {
   const el = document.getElementById(id);
@@ -213,20 +212,9 @@ function saveState(state) {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
-function normalizeTheme(value) {
-  return value === "light" ? "light" : "dark";
-}
-
-function loadTheme() {
-  const stored = window.localStorage.getItem(THEME_KEY);
-  if (stored) return normalizeTheme(stored);
-  const prefersLight = window.matchMedia?.("(prefers-color-scheme: light)")?.matches;
-  return prefersLight ? "light" : "dark";
-}
-
-function applyTheme(theme) {
-  document.documentElement.dataset.theme = theme;
-  window.localStorage.setItem(THEME_KEY, theme);
+function applyTheme() {
+  // App runs in light mode only (simpler and consistent across devices/clients).
+  document.documentElement.dataset.theme = "light";
 }
 
 function buildSampleData() {
@@ -704,13 +692,7 @@ function main() {
     toast("Zurückgesetzt.");
   });
 
-  $("btnTheme").addEventListener("click", () => {
-    const current = document.documentElement.dataset.theme || "dark";
-    const next = current === "dark" ? "light" : "dark";
-    applyTheme(next);
-  });
-
-  applyTheme(loadTheme());
+  applyTheme();
 }
 
 main();

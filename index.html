@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="app-version" content="1.1.2" />
-    <meta name="theme-color" content="#0b1220" />
+    <meta name="color-scheme" content="light" />
+    <meta name="app-version" content="1.1.3" />
+    <meta name="theme-color" content="#f6f7fb" />
     <title>Signaturgenerator</title>
     <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
     <link rel="manifest" href="manifest.webmanifest" />
@@ -33,7 +33,6 @@
         </div>
         <div class="header-actions">
           <button type="button" class="btn btn-ghost" id="btnReset" title="Alle Felder zurücksetzen">Zurücksetzen</button>
-          <button type="button" class="btn btn-ghost" id="btnTheme" title="Hell/Dunkel umschalten">Theme</button>
         </div>
       </div>
     </header>
@@ -171,9 +170,9 @@
                 ></span
               >
               <select name="socialStyle">
-                <option value="badges">Badges (Initialen)</option>
-                <option value="icons">Badges (Icons)</option>
-                <option value="text">Textlinks</option>
+                <option value="icons">Icons (Logos)</option>
+                <option value="badges">Initialen‑Badges</option>
+                <option value="text">Textlinks (max. kompatibel)</option>
                 <option value="none">Aus</option>
               </select>
             </label>
@@ -306,25 +305,32 @@
       </section>
     </main>
 
-    <footer class="wrap footer">
-      <p class="footer-links">
-        <a href="impressum.html">Impressum</a>
-        <span aria-hidden="true">·</span>
-        <a href="datenschutz.html">Datenschutz</a>
-        <span aria-hidden="true">·</span>
-        <a href="cookies.html">Cookie‑Hinweise</a>
-        <span aria-hidden="true">·</span>
-        <a href="https://github.com/Schello805/signatur-generator" target="_blank" rel="noreferrer">GitHub</a>
-      </p>
-      <p>
-        Datenschutz: Läuft komplett lokal im Browser. Keine Daten werden an einen Server übertragen. Optional werden Eingaben lokal im
-        Browser gespeichert (LocalStorage).
-      </p>
-      <p class="footer-version">
-        Version: <span id="versionInfo">v…</span>
-        <span class="footer-sep" aria-hidden="true">·</span>
-        <span id="pwaInfo"></span>
-      </p>
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <div class="footer-col">
+          <div class="footer-title">Links</div>
+          <nav class="footer-nav" aria-label="Footer Navigation">
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+            <a href="cookies.html">Cookie‑Hinweise</a>
+            <a href="https://github.com/Schello805/signatur-generator" target="_blank" rel="noreferrer">GitHub</a>
+          </nav>
+        </div>
+        <div class="footer-col">
+          <div class="footer-title">Datenschutz‑Hinweis</div>
+          <p>
+            Die Signatur wird im Browser generiert. Optional werden Eingaben lokal gespeichert (LocalStorage). Wenn diese Seite online
+            betrieben wird, kann zusätzlich Matomo (self‑hosted) aktiv sein – Details siehe Datenschutz.
+          </p>
+        </div>
+        <div class="footer-col">
+          <div class="footer-title">Version</div>
+          <div class="footer-meta-row">
+            <span class="footer-chip">App: <span id="versionInfo">v…</span></span>
+            <span id="pwaInfo"></span>
+          </div>
+        </div>
+      </div>
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
@@ -352,6 +358,7 @@
       </div>
     </div>
 
+    <script src="matomo.js" defer></script>
     <script type="module" src="pwa.js"></script>
     <script type="module" src="version.js"></script>
     <script type="module" src="app.js"></script>
