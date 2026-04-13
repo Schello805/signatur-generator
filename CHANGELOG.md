@@ -9,6 +9,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.6] - 2026-04-13
+### Fixed
+- Matomo: Queue-Reihenfolge angepasst (Tracker-Setup vor `trackPageView`), um 400er Requests zu vermeiden.
+
 ## [1.1.5] - 2026-04-13
 ### Added
 - vCard-Link: Optionales Feld „vCard‑Download‑URL“ (wird als Link in der Signatur ausgegeben, wenn HTTPS-URL gesetzt ist).
