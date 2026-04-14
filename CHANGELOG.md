@@ -9,6 +9,12 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.26] - 2026-04-14
+### Changed
+- Claim/Zusatztext: Wird in allen Designs am Ende (klein, kursiv) dargestellt.
+- Branding: Standardmäßig aktiv (HTML‑Kommentar).
+- UI: Neuer Hilfe‑Bereich unten rechts; Kompatibilitäts‑Hinweise + Anwendungshinweise dorthin verschoben.
+
 ## [1.1.25] - 2026-04-14
 ### Fixed
 - Branding: Checkbox-Status wird korrekt wiederhergestellt (LocalStorage/Reload), damit das Kommentar-Branding nicht „versehentlich aus“ wirkt.

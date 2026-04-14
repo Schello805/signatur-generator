@@ -234,13 +234,20 @@ function richNameBlock(data, options) {
   };
 }
 
+function renderTaglineFooter(base, options) {
+  if (!base?.taglineLine) return "";
+  const compact = options?.density === "compact";
+  const size = compact ? 11 : 12;
+  return `<div style="margin-top:10px;font-size:${size}px;line-height:1.35;color:rgba(0,0,0,0.65);font-style:italic;">${base.taglineLine}</div>`;
+}
+
 function templateMinimal(data, options) {
   const base = richNameBlock(data, options);
   const lines = buildLines(data);
   const social = renderSocialRow(data, options);
-  const accent = options.accentColor;
   const density = options.density;
   const compact = density === "compact";
+  const taglineFooter = renderTaglineFooter(base, options);
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -273,13 +280,6 @@ function templateMinimal(data, options) {
           : ""
       }
       ${
-        base.taglineLine
-          ? `<div style="margin-top:${gap}px;font-size:${small}px;line-height:1.35;color:${esc(
-              accent
-            )};font-weight:600;">${base.taglineLine}</div>`
-          : ""
-      }
-      ${
         contactHtml
           ? `<table cellpadding="0" cellspacing="0" border="0" style="margin-top:${gap + 6}px;font-size:${small}px;line-height:1.25;">
               ${contactHtml}
@@ -287,6 +287,7 @@ function templateMinimal(data, options) {
           : ""
       }
       ${social}
+      ${taglineFooter}
     </td>
   </tr>
 </table>`.trim();
@@ -299,6 +300,7 @@ function templateLeftBar(data, options) {
   const accent = options.accentColor;
   const density = options.density;
   const compact = density === "compact";
+  const taglineFooter = renderTaglineFooter(base, options);
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -334,13 +336,6 @@ function templateLeftBar(data, options) {
                 : ""
             }
             ${
-              base.taglineLine
-                ? `<div style="margin-top:${gap}px;font-size:${small}px;line-height:1.35;color:rgba(0,0,0,0.78);">
-                    ${base.taglineLine}
-                  </div>`
-                : ""
-            }
-            ${
               contactHtml
                 ? `<div style="margin-top:${gap + 6}px;font-size:${small}px;line-height:1.25;">
                     ${contactHtml}
@@ -348,6 +343,7 @@ function templateLeftBar(data, options) {
                 : ""
             }
             ${social}
+            ${taglineFooter}
           </td>
         </tr>
       </table>
@@ -366,6 +362,7 @@ function templateCard(data, options) {
   const imgUrl = cleanImageSrc(data.imageUrl);
   const outlookSafe = options.compatMode === "outlook";
   const radius = outlookSafe ? 0 : 14;
+  const taglineFooter = renderTaglineFooter(base, options);
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -415,27 +412,21 @@ function templateCard(data, options) {
                   imgHtml
                     ? `<td style="padding:0 12px 0 0;vertical-align:top;">${imgHtml}</td>`
                     : ""
-                }
-                <td style="padding:0;vertical-align:top;">
-                  ${
-                    base.taglineLine
-                      ? `<div style="font-size:${small}px;line-height:1.35;color:${esc(
-                          base.textColor
-                        )};font-weight:650;margin:0 0 8px 0;">${base.taglineLine}</div>`
-                      : ""
-                  }
-                  ${
-                    contactHtml
-                      ? `<table cellpadding="0" cellspacing="0" border="0" style="font-size:${small}px;line-height:1.25;">
-                          ${contactHtml}
-                        </table>`
-                      : ""
-                  }
-                  ${social}
-                </td>
-              </tr>
-            </table>
-          </td>
+	                }
+	                <td style="padding:0;vertical-align:top;">
+	                  ${
+	                    contactHtml
+	                      ? `<table cellpadding="0" cellspacing="0" border="0" style="font-size:${small}px;line-height:1.25;">
+	                          ${contactHtml}
+	                        </table>`
+	                      : ""
+	                  }
+	                  ${social}
+	                  ${taglineFooter}
+	                </td>
+	              </tr>
+	            </table>
+	          </td>
         </tr>
       </table>
     </td>
@@ -452,6 +443,7 @@ function templateSplitPhoto(data, options) {
   const compact = density === "compact";
   const imgUrl = cleanImageSrc(data.imageUrl);
   const outlookSafe = options.compatMode === "outlook";
+  const taglineFooter = renderTaglineFooter(base, options);
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -496,13 +488,6 @@ function templateSplitPhoto(data, options) {
                 : ""
             }
             ${
-              base.taglineLine
-                ? `<div style="margin-top:${gap}px;font-size:${small}px;line-height:1.35;color:${esc(
-                    accent
-                  )};font-weight:700;">${base.taglineLine}</div>`
-                : ""
-            }
-            ${
               contactHtml
                 ? `<div style="margin-top:${gap + 6}px;font-size:${small}px;line-height:1.25;">
                     ${contactHtml}
@@ -510,6 +495,7 @@ function templateSplitPhoto(data, options) {
                 : ""
             }
             ${social}
+            ${taglineFooter}
           </td>
         </tr>
       </table>
@@ -526,6 +512,7 @@ function templateGradientBadge(data, options) {
   const density = options.density;
   const compact = density === "compact";
   const outlookSafe = options.compatMode === "outlook";
+  const taglineFooter = renderTaglineFooter(base, options);
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -567,27 +554,21 @@ function templateGradientBadge(data, options) {
                   </div>`
                 : ""
             }
-          </td>
-          <td style="padding:${compact ? 10 : 12}px;background:#ffffff;vertical-align:top;">
-            ${
-              base.taglineLine
-                ? `<div style="font-size:${small}px;line-height:1.35;color:rgba(0,0,0,0.80);font-weight:650;margin:0 0 8px 0;">
-                    ${base.taglineLine}
-                  </div>`
-                : ""
-            }
-            ${
-              contactItems
-                ? `<table cellpadding="0" cellspacing="0" border="0" style="font-size:${small}px;line-height:1.25;">
-                    ${contactItems}
-                  </table>`
-                : ""
-            }
-            ${social}
-          </td>
-        </tr>
-      </table>
-    </td>
+	          </td>
+	          <td style="padding:${compact ? 10 : 12}px;background:#ffffff;vertical-align:top;">
+	            ${
+	              contactItems
+	                ? `<table cellpadding="0" cellspacing="0" border="0" style="font-size:${small}px;line-height:1.25;">
+	                    ${contactItems}
+	                  </table>`
+	                : ""
+	            }
+	            ${social}
+	            ${taglineFooter}
+	          </td>
+	        </tr>
+	      </table>
+	    </td>
   </tr>
 </table>`.trim();
 }
@@ -665,7 +646,7 @@ export function defaultState() {
       density: "normal",
       socialStyle: "icons",
       compatMode: "standard",
-      brandingComment: false,
+      brandingComment: true,
     },
   };
 }

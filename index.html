@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <meta name="app-version" content="1.1.25" />
+    <meta name="app-version" content="1.1.26" />
     <meta name="theme-color" content="#f6f7fb" />
     <title>Signaturgenerator</title>
     <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
@@ -197,20 +197,6 @@
           <div id="preview" class="preview"></div>
         </div>
 
-        <div id="compatNotice" class="notice" role="note" aria-live="polite"></div>
-
-        <details class="tips">
-          <summary>Anwendungshinweise (Gmail/Outlook/Apple Mail)</summary>
-          <ul>
-            <li><strong>Gmail:</strong> Einstellungen → „Alle Einstellungen aufrufen“ → „Allgemein“ → „Signatur“ → im Editor einfügen (Rich‑Text).</li>
-            <li><strong>Outlook (Desktop):</strong> Datei → Optionen → E‑Mail → Signaturen → neue Signatur → einfügen (Rich‑Text).</li>
-            <li>
-              <strong>Apple Mail (macOS):</strong> Mail → Einstellungen → Signaturen → Signatur wählen → rechts einfügen (Rich‑Text). Wichtig:
-              „Standardschrift für E‑Mails verwenden“ deaktivieren, sonst überschreibt Mail Formatierungen.
-            </li>
-          </ul>
-        </details>
-
         <div class="output">
           <div class="output-head">
             <h3>HTML (zum Nachschlagen)</h3>
@@ -303,7 +289,7 @@
                 <label class="field span-2">
                   <span class="label">Dezentes Branding</span>
                   <div class="checkrow">
-                    <input name="brandingComment" type="checkbox" />
+                    <input name="brandingComment" type="checkbox" checked />
                     <span class="checktext"
                       >Als HTML‑Kommentar anhängen
                       <span
@@ -363,6 +349,28 @@
                 </div>
               </div>
             </div>
+          </section>
+
+          <section class="panel" aria-labelledby="helpTitle">
+            <div class="panel-head">
+              <h2 id="helpTitle">Hilfe</h2>
+              <p class="panel-hint">Kompatibilität und kurze Einfüge‑Anleitungen.</p>
+            </div>
+
+            <div id="compatNotice" class="notice" role="note" aria-live="polite"></div>
+
+            <details class="tips">
+              <summary>Anwendungshinweise (Gmail/Outlook)</summary>
+              <ul>
+                <li><strong>Gmail:</strong> Einstellungen → „Alle Einstellungen aufrufen“ → „Allgemein“ → „Signatur“ → im Editor einfügen (Rich‑Text).</li>
+                <li><strong>Outlook (Desktop):</strong> Datei → Optionen → E‑Mail → Signaturen → neue Signatur → einfügen (Rich‑Text).</li>
+                <li>Wenn Bilder nicht angezeigt werden: nutze eine öffentliche HTTPS‑Bild‑URL statt Upload/Base64.</li>
+                <li>
+                  Wenn „Kopieren“ nicht funktioniert: öffne die App über <em>localhost</em> (z. B. <code>python3 -m http.server</code>) statt direkt per
+                  Datei‑Doppelklick.
+                </li>
+              </ul>
+            </details>
           </section>
         </div>
       </form>
