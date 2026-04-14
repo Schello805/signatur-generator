@@ -246,7 +246,10 @@ input[type="file"]{padding: 8px 10px; cursor:pointer;}
 
 .preview-head{display:flex; align-items:center; justify-content:space-between; gap: 10px; flex-wrap:wrap;}
 .preview-head h2{flex: 1 1 140px;}
-.preview-actions{display:flex; flex-wrap:wrap; gap: 8px; justify-content:flex-end;}
+.preview-actions{display:flex; flex-wrap:wrap; gap: 10px; justify-content:flex-end; align-items:center;}
+.btn-group{display:flex; flex-wrap:wrap; gap: 8px; align-items:center;}
+.btn-group-downloads{margin-left:auto;}
+.btn{white-space:nowrap;}
 
 .preview-shell{padding: 14px 16px 16px;}
 .notice{
