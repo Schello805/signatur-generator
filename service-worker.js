@@ -1,6 +1,6 @@
 // Signaturgenerator Service Worker
 // Version must be bumped on releases to ensure updates propagate.
-const APP_VERSION = "1.1.12";
+const APP_VERSION = "1.1.13";
 const CACHE_PREFIX = "sg-cache-";
 const CACHE_NAME = `${CACHE_PREFIX}${APP_VERSION}`;
 

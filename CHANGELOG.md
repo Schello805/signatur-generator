@@ -9,6 +9,12 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.13] - 2026-04-14
+### Fixed
+- Update-Check: erkennt neue Versionen jetzt über GitHub `package.json` (statt nur SHA-Baseline), damit „Update verfügbar“ zuverlässiger erscheint.
+### Changed
+- Layout: Bild/Logo wieder links bei den Daten; Settings rechts unter Design/Vorschau.
+
 ## [1.1.12] - 2026-04-13
 ### Changed
 - Layout: Einstellungen in die rechte Spalte verschoben (eigene „Einstellungen“-Box), links bleiben nur Daten/Content-Felder.

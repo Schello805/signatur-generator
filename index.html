@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <meta name="app-version" content="1.1.12" />
+    <meta name="app-version" content="1.1.13" />
     <meta name="theme-color" content="#f6f7fb" />
     <title>Signaturgenerator</title>
     <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
@@ -141,15 +141,77 @@
               <span class="label">Facebook‑URL (optional)</span>
               <input name="facebook" type="url" inputmode="url" placeholder="https://facebook.com/..." />
             </label>
+
+            <label class="field span-2">
+              <span class="label">Logo/Foto‑URL (empfohlen: https‑Bildlink)</span>
+              <input name="imageUrl" type="url" inputmode="url" placeholder="https://…/logo.png" maxlength="300" />
+              <span class="help">Tipp: Für Mail‑Clients sind normale Bild‑URLs oft zuverlässiger als Base64.</span>
+            </label>
+
+            <label class="field span-2">
+              <span class="label">Oder Bild hochladen (für Vorschau/Base64)</span>
+              <input name="imageUpload" type="file" accept="image/*" />
+              <span class="help">Das Bild wird als Data‑URL eingefügt. Manche E‑Mail‑Programme blockieren das.</span>
+            </label>
           </div>
         </div>
         </section>
 
         <div class="right-col">
+          <section class="panel" aria-labelledby="designTitle">
+        <div class="panel-head">
+          <h2 id="designTitle">Design auswählen</h2>
+          <p class="panel-hint">Mindestens 5 Designs – Klick wählt, Doppelklick öffnet Vorschau.</p>
+        </div>
+
+        <div id="designGrid" class="design-grid" role="list"></div>
+
+        <div class="panel-head preview-head">
+          <h2>Vorschau</h2>
+          <div class="preview-actions">
+            <button type="button" class="btn" id="btnCopyRich">Als Rich‑Text kopieren</button>
+            <button type="button" class="btn btn-secondary" id="btnCopyHtml">HTML kopieren</button>
+            <button type="button" class="btn btn-ghost" id="btnDownload">Download .html</button>
+            <button type="button" class="btn btn-ghost" id="btnVcard">Download vCard (.vcf)</button>
+          </div>
+        </div>
+
+        <div class="preview-shell" aria-label="Signatur Vorschau">
+          <div id="preview" class="preview"></div>
+        </div>
+
+        <div id="compatNotice" class="notice" role="note" aria-live="polite"></div>
+
+        <details class="tips">
+          <summary>Anwendungshinweise (Gmail/Outlook)</summary>
+          <ul>
+            <li><strong>Gmail:</strong> Einstellungen → „Alle Einstellungen aufrufen“ → „Allgemein“ → „Signatur“ → im Editor einfügen (Rich‑Text).</li>
+            <li><strong>Outlook (Desktop):</strong> Datei → Optionen → E‑Mail → Signaturen → neue Signatur → einfügen (Rich‑Text).</li>
+            <li>Wenn Bilder nicht angezeigt werden: nutze eine öffentliche HTTPS‑Bild‑URL statt Upload/Base64.</li>
+            <li>Wenn „Kopieren“ nicht funktioniert: öffne die App über <em>localhost</em> (z. B. `python3 -m http.server`) statt direkt per Datei‑Doppelklick.</li>
+          </ul>
+        </details>
+
+        <div class="output">
+          <div class="output-head">
+            <h3>HTML (zum Nachschlagen)</h3>
+            <button
+              type="button"
+              class="btn btn-ghost"
+              id="btnCopyPlain"
+              title="Plain‑Text Fallback: nützlich, wenn ein System kein HTML annimmt oder wenn du schnell Text brauchst."
+            >
+              Text‑Fallback kopieren
+            </button>
+          </div>
+          <textarea id="outputHtml" class="output-area" spellcheck="false" aria-label="HTML Ausgabe" readonly></textarea>
+        </div>
+          </section>
+
           <section class="panel" aria-labelledby="settingsTitle">
             <div class="panel-head">
               <h2 id="settingsTitle">Einstellungen</h2>
-              <p class="panel-hint">Optik, Social‑Darstellung, Kompatibilität, Bild und Speicherung.</p>
+              <p class="panel-hint">Optik, Social‑Darstellung, Kompatibilität und Speicherung.</p>
             </div>
 
             <div class="form">
@@ -220,18 +282,6 @@
                 </label>
 
                 <label class="field span-2">
-                  <span class="label">Logo/Foto‑URL (empfohlen: https‑Bildlink)</span>
-                  <input name="imageUrl" type="url" inputmode="url" placeholder="https://…/logo.png" maxlength="300" />
-                  <span class="help">Tipp: Für Mail‑Clients sind normale Bild‑URLs oft zuverlässiger als Base64.</span>
-                </label>
-
-                <label class="field span-2">
-                  <span class="label">Oder Bild hochladen (für Vorschau/Base64)</span>
-                  <input name="imageUpload" type="file" accept="image/*" />
-                  <span class="help">Das Bild wird als Data‑URL eingefügt. Manche E‑Mail‑Programme blockieren das.</span>
-                </label>
-
-                <label class="field span-2">
                   <span class="label">Speicherung</span>
                   <div class="checkrow">
                     <input name="persist" type="checkbox" checked />
@@ -276,56 +326,6 @@
                 </div>
               </div>
             </div>
-          </section>
-
-          <section class="panel" aria-labelledby="designTitle">
-        <div class="panel-head">
-          <h2 id="designTitle">Design auswählen</h2>
-          <p class="panel-hint">Mindestens 5 Designs – Klick wählt, Doppelklick öffnet Vorschau.</p>
-        </div>
-
-        <div id="designGrid" class="design-grid" role="list"></div>
-
-        <div class="panel-head preview-head">
-          <h2>Vorschau</h2>
-          <div class="preview-actions">
-            <button type="button" class="btn" id="btnCopyRich">Als Rich‑Text kopieren</button>
-            <button type="button" class="btn btn-secondary" id="btnCopyHtml">HTML kopieren</button>
-            <button type="button" class="btn btn-ghost" id="btnDownload">Download .html</button>
-            <button type="button" class="btn btn-ghost" id="btnVcard">Download vCard (.vcf)</button>
-          </div>
-        </div>
-
-        <div class="preview-shell" aria-label="Signatur Vorschau">
-          <div id="preview" class="preview"></div>
-        </div>
-
-        <div id="compatNotice" class="notice" role="note" aria-live="polite"></div>
-
-        <details class="tips">
-          <summary>Anwendungshinweise (Gmail/Outlook)</summary>
-          <ul>
-            <li><strong>Gmail:</strong> Einstellungen → „Alle Einstellungen aufrufen“ → „Allgemein“ → „Signatur“ → im Editor einfügen (Rich‑Text).</li>
-            <li><strong>Outlook (Desktop):</strong> Datei → Optionen → E‑Mail → Signaturen → neue Signatur → einfügen (Rich‑Text).</li>
-            <li>Wenn Bilder nicht angezeigt werden: nutze eine öffentliche HTTPS‑Bild‑URL statt Upload/Base64.</li>
-            <li>Wenn „Kopieren“ nicht funktioniert: öffne die App über <em>localhost</em> (z. B. `python3 -m http.server`) statt direkt per Datei‑Doppelklick.</li>
-          </ul>
-        </details>
-
-        <div class="output">
-          <div class="output-head">
-            <h3>HTML (zum Nachschlagen)</h3>
-            <button
-              type="button"
-              class="btn btn-ghost"
-              id="btnCopyPlain"
-              title="Plain‑Text Fallback: nützlich, wenn ein System kein HTML annimmt oder wenn du schnell Text brauchst."
-            >
-              Text‑Fallback kopieren
-            </button>
-          </div>
-          <textarea id="outputHtml" class="output-area" spellcheck="false" aria-label="HTML Ausgabe" readonly></textarea>
-        </div>
           </section>
         </div>
       </form>
