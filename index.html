@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <meta name="app-version" content="1.1.22" />
+    <meta name="app-version" content="1.1.23" />
     <meta name="theme-color" content="#f6f7fb" />
     <title>Signaturgenerator</title>
     <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
@@ -200,10 +200,19 @@
         <div id="compatNotice" class="notice" role="note" aria-live="polite"></div>
 
         <details class="tips">
-          <summary>Anwendungshinweise (Gmail/Outlook)</summary>
+          <summary>Anwendungshinweise (Gmail/Outlook/Apple Mail)</summary>
           <ul>
             <li><strong>Gmail:</strong> Einstellungen → „Alle Einstellungen aufrufen“ → „Allgemein“ → „Signatur“ → im Editor einfügen (Rich‑Text).</li>
             <li><strong>Outlook (Desktop):</strong> Datei → Optionen → E‑Mail → Signaturen → neue Signatur → einfügen (Rich‑Text).</li>
+            <li>
+              <strong>Apple Mail (macOS):</strong> Mail → Einstellungen → Signaturen → Signatur wählen → rechts einfügen (Rich‑Text). Wichtig:
+              „Standardschrift für E‑Mails verwenden“ deaktivieren, sonst überschreibt Mail Formatierungen.
+            </li>
+            <li>
+              <strong>Apple Mail (Hinweis):</strong> Wenn du eine Signaturdatei (<code>.mailsignature</code>) manuell bearbeitest, setze nur den Inhalt
+              innerhalb von <code>&lt;body&gt;…&lt;/body&gt;</code> ein und sperre die Datei anschließend (Finder → Informationen → „Gesperrt“),
+              damit Apple Mail sie nicht überschreibt.
+            </li>
             <li>Wenn Bilder nicht angezeigt werden: nutze eine öffentliche HTTPS‑Bild‑URL statt Upload/Base64.</li>
             <li>Wenn „Kopieren“ nicht funktioniert: öffne die App über <em>localhost</em> (z. B. `python3 -m http.server`) statt direkt per Datei‑Doppelklick.</li>
           </ul>
