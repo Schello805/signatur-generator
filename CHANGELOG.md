@@ -9,6 +9,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.30] - 2026-04-14
+### Changed
+- UI: Vorschau-Buttons: „Kopieren“ links, weitere Copy-Buttons rechtsbündig.
+
 ## [1.1.29] - 2026-04-14
 ### Changed
 - Branding: Sichtbarer Branding-Text ist kleiner und lautet jetzt „created by …“; HTML-Kommentar angepasst.

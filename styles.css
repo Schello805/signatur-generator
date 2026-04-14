@@ -248,6 +248,9 @@ input[type="file"]{padding: 8px 10px; cursor:pointer;}
 .preview-head h2{flex: 0 0 auto;}
 .preview-actions{display:flex; flex-direction:column; gap: 10px; align-items:flex-start; width: 100%;}
 .preview-actions-row{display:flex; flex-wrap:wrap; gap: 8px; align-items:center;}
+.preview-actions-row-top{width:100%;}
+.preview-actions-left{display:flex; align-items:center; gap:8px;}
+.preview-actions-right{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-left:auto; justify-content:flex-end;}
 .preview-actions-row-secondary{opacity: 0.95;}
 .btn-primary{}
 .btn-small{padding: 8px 10px; border-radius: 11px; font-size: 12.5px;}
