@@ -9,6 +9,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.25] - 2026-04-14
+### Fixed
+- Branding: Checkbox-Status wird korrekt wiederhergestellt (LocalStorage/Reload), damit das Kommentar-Branding nicht „versehentlich aus“ wirkt.
+
 ## [1.1.24] - 2026-04-14
 ### Changed
 - Anwendungshinweise: Apple-Mail Detail-Hinweise (Datei-Pfad/HTTPS/localhost) entfernt, um Verwirrung zu vermeiden.

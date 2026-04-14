@@ -191,7 +191,13 @@ function writeForm(form, state) {
   }
   for (const [key, value] of Object.entries(state.options)) {
     const input = form.elements.namedItem(key);
-    if (input && "value" in input) input.value = String(value ?? "");
+    if (!input) continue;
+    // Support checkboxes inside options (e.g. brandingComment).
+    if ("type" in input && input.type === "checkbox" && "checked" in input) {
+      input.checked = Boolean(value);
+      continue;
+    }
+    if ("value" in input) input.value = String(value ?? "");
   }
   const persist = form.elements.namedItem("persist");
   if (persist && "checked" in persist) persist.checked = Boolean(state.persist);
