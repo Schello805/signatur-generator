@@ -162,6 +162,7 @@ function readForm(form) {
     density: fd.get("density") ?? "normal",
     socialStyle: fd.get("socialStyle") ?? "icons",
     compatMode: fd.get("compatMode") ?? "standard",
+    brandingComment: fd.get("brandingComment") === "on",
   };
 
   const persist = fd.get("persist") === "on";

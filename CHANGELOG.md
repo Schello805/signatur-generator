@@ -9,6 +9,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.22] - 2026-04-14
+### Added
+- Optional: Dezentes Branding als HTML‑Kommentar „Erstellt mit signatur-generator.com“ (nicht sichtbar, kann von Mail‑Clients entfernt werden).
+
 ## [1.1.21] - 2026-04-14
 ### Changed
 - Gradient Badge: „Signature“ Text im Badge entfernt.

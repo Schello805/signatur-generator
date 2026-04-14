@@ -627,7 +627,10 @@ export const TEMPLATES = [
 
 export function buildSignatureHtml(templateId, data, options) {
   const template = TEMPLATES.find((t) => t.id === templateId) ?? TEMPLATES[0];
-  return template.render(data, options);
+  const fragment = template.render(data, options);
+  const branding = Boolean(options?.brandingComment);
+  if (!branding) return fragment;
+  return `${fragment}\n<!-- Erstellt mit signatur-generator.com -->`;
 }
 
 export function defaultState() {
@@ -662,6 +665,7 @@ export function defaultState() {
       density: "normal",
       socialStyle: "icons",
       compatMode: "standard",
+      brandingComment: false,
     },
   };
 }
