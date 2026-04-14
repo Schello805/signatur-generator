@@ -643,6 +643,16 @@ function main() {
     update();
   });
 
+  async function doCopyRich({ label = "Kopiert." } = {}) {
+    try {
+      const fragment = output.value;
+      await copyRichToClipboard({ html: fragment, plain: plainFromState(state) });
+      toast(label);
+    } catch {
+      toast("Kopieren fehlgeschlagen (Browser‑Berechtigung).", { kind: "error" });
+    }
+  }
+
   $("btnCopyHtml").addEventListener("click", async () => {
     try {
       await copyTextToClipboard(output.value);
@@ -652,14 +662,10 @@ function main() {
     }
   });
 
+  $("btnCopy").addEventListener("click", () => doCopyRich({ label: "Kopiert." }));
+
   $("btnCopyRich").addEventListener("click", async () => {
-    try {
-      const fragment = output.value;
-      await copyRichToClipboard({ html: fragment, plain: plainFromState(state) });
-      toast("Rich‑Text kopiert.");
-    } catch {
-      toast("Kopieren fehlgeschlagen (Browser‑Berechtigung).", { kind: "error" });
-    }
+    await doCopyRich({ label: "Rich‑Text kopiert." });
   });
 
   $("btnCopyPlain").addEventListener("click", async () => {

@@ -9,6 +9,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.17] - 2026-04-14
+### Added
+- UI: Einfacher „Kopieren“-Button über der Vorschau (kopiert Rich‑Text).
+
 ## [1.1.16] - 2026-04-14
 ### Changed
 - UI: Claim-Feld nach oben verschoben; Social‑Felder stehen jetzt zusammen.
