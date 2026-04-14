@@ -1,6 +1,6 @@
 // Signaturgenerator Service Worker
 // Version must be bumped on releases to ensure updates propagate.
-const APP_VERSION = "1.1.31";
+const APP_VERSION = "1.1.32";
 const CACHE_PREFIX = "sg-cache-";
 const CACHE_NAME = `${CACHE_PREFIX}${APP_VERSION}`;
 
@@ -17,6 +17,8 @@ const PRECACHE_URLS = [
   "./Logo-Signatur-Generator.png",
   "./icon-192.png",
   "./icon-512.png",
+  "./robots.txt",
+  "./sitemap.xml",
   "./impressum.html",
   "./datenschutz.html",
   "./cookies.html"
