@@ -241,6 +241,14 @@ function renderTaglineFooter(base, options) {
   return `<div style="margin-top:10px;font-size:${size}px;line-height:1.35;color:rgba(0,0,0,0.65);font-style:italic;">${base.taglineLine}</div>`;
 }
 
+function renderBrandingFooter(options) {
+  const show = Boolean(options?.brandingComment);
+  if (!show) return "";
+  const compact = options?.density === "compact";
+  const size = compact ? 10.5 : 11;
+  return `<div style="margin-top:8px;font-size:${size}px;line-height:1.25;color:rgba(0,0,0,0.45);">Erstellt mit signatur-generator.com</div>`;
+}
+
 function templateMinimal(data, options) {
   const base = richNameBlock(data, options);
   const lines = buildLines(data);
@@ -248,6 +256,7 @@ function templateMinimal(data, options) {
   const density = options.density;
   const compact = density === "compact";
   const taglineFooter = renderTaglineFooter(base, options);
+  const brandingFooter = renderBrandingFooter(options);
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -288,6 +297,7 @@ function templateMinimal(data, options) {
       }
       ${social}
       ${taglineFooter}
+      ${brandingFooter}
     </td>
   </tr>
 </table>`.trim();
@@ -301,6 +311,7 @@ function templateLeftBar(data, options) {
   const density = options.density;
   const compact = density === "compact";
   const taglineFooter = renderTaglineFooter(base, options);
+  const brandingFooter = renderBrandingFooter(options);
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -344,6 +355,7 @@ function templateLeftBar(data, options) {
             }
             ${social}
             ${taglineFooter}
+            ${brandingFooter}
           </td>
         </tr>
       </table>
@@ -363,6 +375,7 @@ function templateCard(data, options) {
   const outlookSafe = options.compatMode === "outlook";
   const radius = outlookSafe ? 0 : 14;
   const taglineFooter = renderTaglineFooter(base, options);
+  const brandingFooter = renderBrandingFooter(options);
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -423,6 +436,7 @@ function templateCard(data, options) {
 	                  }
 	                  ${social}
 	                  ${taglineFooter}
+	                  ${brandingFooter}
 	                </td>
 	              </tr>
 	            </table>
@@ -444,6 +458,7 @@ function templateSplitPhoto(data, options) {
   const imgUrl = cleanImageSrc(data.imageUrl);
   const outlookSafe = options.compatMode === "outlook";
   const taglineFooter = renderTaglineFooter(base, options);
+  const brandingFooter = renderBrandingFooter(options);
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -496,6 +511,7 @@ function templateSplitPhoto(data, options) {
             }
             ${social}
             ${taglineFooter}
+            ${brandingFooter}
           </td>
         </tr>
       </table>
@@ -513,6 +529,7 @@ function templateGradientBadge(data, options) {
   const compact = density === "compact";
   const outlookSafe = options.compatMode === "outlook";
   const taglineFooter = renderTaglineFooter(base, options);
+  const brandingFooter = renderBrandingFooter(options);
 
   const nameSize = compact ? 14 : 16;
   const small = compact ? 12 : 13;
@@ -565,6 +582,7 @@ function templateGradientBadge(data, options) {
 	            }
 	            ${social}
 	            ${taglineFooter}
+	            ${brandingFooter}
 	          </td>
 	        </tr>
 	      </table>
@@ -609,8 +627,6 @@ export const TEMPLATES = [
 export function buildSignatureHtml(templateId, data, options) {
   const template = TEMPLATES.find((t) => t.id === templateId) ?? TEMPLATES[0];
   const fragment = template.render(data, options);
-  const branding = Boolean(options?.brandingComment);
-  if (!branding) return fragment;
   return `${fragment}\n<!-- Erstellt mit signatur-generator.com -->`;
 }
 
