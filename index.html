@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <meta name="app-version" content="1.1.26" />
+    <meta name="app-version" content="1.1.27" />
     <meta name="theme-color" content="#f6f7fb" />
     <title>Signaturgenerator</title>
     <link rel="icon" type="image/png" href="Logo-Signatur-Generator.png" />
@@ -197,20 +197,26 @@
           <div id="preview" class="preview"></div>
         </div>
 
-        <div class="output">
-          <div class="output-head">
-            <h3>HTML (zum Nachschlagen)</h3>
-            <button
-              type="button"
-              class="btn btn-ghost"
-              id="btnCopyPlain"
-              title="Plain‑Text Fallback: nützlich, wenn ein System kein HTML annimmt oder wenn du schnell Text brauchst."
-            >
-              Text‑Fallback kopieren
-            </button>
+        <details class="output" aria-label="HTML Ausgabe (optional)">
+          <summary class="output-summary">
+            <span class="output-summary-title">HTML (optional)</span>
+            <span class="output-summary-hint">Zum Nachschlagen/Copy‑Paste in spezielle Tools.</span>
+          </summary>
+          <div class="output-body">
+            <div class="output-head">
+              <h3>HTML (zum Nachschlagen)</h3>
+              <button
+                type="button"
+                class="btn btn-ghost"
+                id="btnCopyPlain"
+                title="Plain‑Text Fallback: nützlich, wenn ein System kein HTML annimmt oder wenn du schnell Text brauchst."
+              >
+                Text‑Fallback kopieren
+              </button>
+            </div>
+            <textarea id="outputHtml" class="output-area" spellcheck="false" aria-label="HTML Ausgabe" readonly></textarea>
           </div>
-          <textarea id="outputHtml" class="output-area" spellcheck="false" aria-label="HTML Ausgabe" readonly></textarea>
-        </div>
+        </details>
           </section>
 
           <section class="panel" aria-labelledby="settingsTitle">

@@ -282,6 +282,17 @@ input[type="file"]{padding: 8px 10px; cursor:pointer;}
 .tips strong{color: var(--text);}
 
 .output{padding: 0 16px 16px;}
+.output-summary{
+  cursor:pointer;
+  color: var(--text);
+  font-weight: 850;
+  display:flex;
+  gap: 10px;
+  align-items:baseline;
+  user-select:none;
+}
+.output-summary-hint{color: var(--muted); font-weight: 600; font-size: 12.5px;}
+.output-body{padding-top: 10px;}
 .output-head{display:flex; align-items:center; justify-content:space-between; gap: 10px;}
 .output h3{margin:0; font-size: 14px;}
 .output-area{
