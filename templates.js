@@ -245,8 +245,8 @@ function renderBrandingFooter(options) {
   const show = Boolean(options?.brandingComment);
   if (!show) return "";
   const compact = options?.density === "compact";
-  const size = compact ? 10.5 : 11;
-  return `<div style="margin-top:8px;font-size:${size}px;line-height:1.25;color:rgba(0,0,0,0.45);">Erstellt mit signatur-generator.com</div>`;
+  const size = compact ? 9.5 : 10;
+  return `<div style="margin-top:8px;font-size:${size}px;line-height:1.25;color:rgba(0,0,0,0.45);">created by signatur-generator.com</div>`;
 }
 
 function templateMinimal(data, options) {
@@ -627,7 +627,7 @@ export const TEMPLATES = [
 export function buildSignatureHtml(templateId, data, options) {
   const template = TEMPLATES.find((t) => t.id === templateId) ?? TEMPLATES[0];
   const fragment = template.render(data, options);
-  return `${fragment}\n<!-- Erstellt mit signatur-generator.com -->`;
+  return `${fragment}\n<!-- created by signatur-generator.com -->`;
 }
 
 export function defaultState() {

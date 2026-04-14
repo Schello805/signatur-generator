@@ -9,6 +9,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.29] - 2026-04-14
+### Changed
+- Branding: Sichtbarer Branding-Text ist kleiner und lautet jetzt „created by …“; HTML-Kommentar angepasst.
+
 ## [1.1.28] - 2026-04-14
 ### Changed
 - Branding: HTML-Kommentar ist immer enthalten; Checkbox steuert nur den sichtbaren Hinweistext in der Signatur (standardmäßig an).
