@@ -334,9 +334,9 @@ input[type="file"]{padding: 8px 10px; cursor:pointer;}
 .footer p{margin:0; color: var(--muted); font-size: 12.5px; line-height: 1.45;}
 .footer-nav{
   display:flex;
-  flex-wrap:wrap;
-  gap: 12px;
-  align-items:center;
+  flex-direction:column;
+  align-items:flex-start;
+  gap: 6px;
 }
 .footer-nav a{
   color: var(--text);
@@ -347,6 +347,7 @@ input[type="file"]{padding: 8px 10px; cursor:pointer;}
   background: transparent;
   padding: 0;
   border-radius: 0;
+  font-size: 12px;
 }
 .footer-nav a:hover{color: var(--accent);}
 .footer-meta-row{

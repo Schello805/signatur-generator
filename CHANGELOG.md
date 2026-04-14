@@ -9,6 +9,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.34] - 2026-04-14
+### Changed
+- Footer: Linkliste ist jetzt kleiner und untereinander.
+
 ## [1.1.33] - 2026-04-14
 ### Changed
 - Footer: Links sind jetzt einfache Textlinks (keine Button-Pills).
