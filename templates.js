@@ -102,7 +102,6 @@ function buildLines(data) {
   if (email) lines.push({ key: "email", label: "E‑Mail:", text: email, href: normalizeEmailHref(email) });
   if (website) lines.push({ key: "website", label: "Web:", text: formatWebsiteLabel(website), href: website });
   if (address) lines.push({ key: "address", label: "Adresse:", text: address, href: "" });
-  if (linkedin) lines.push({ key: "linkedin", label: "LinkedIn:", text: "Profil", href: linkedin });
   if (calendarLink) lines.push({ key: "calendar", label: "Termin:", text: "Buchen", href: calendarLink });
   if (vcardUrl) lines.push({ key: "vcard", label: "vCard:", text: "Download", href: vcardUrl });
   return lines;
