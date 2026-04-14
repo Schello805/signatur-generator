@@ -559,7 +559,6 @@ function templateGradientBadge(data, options) {
       <table cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(0,0,0,0.12);border-radius:${radius}px;overflow:hidden;">
         <tr>
           <td style="padding:${compact ? 10 : 12}px;background: ${headerBg}; color:#ffffff;">
-            <div style="font-size:${small}px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;opacity:0.95;">Signature</div>
             <div style="margin-top:6px;font-size:${nameSize}px;font-weight:850;line-height:1.2;">${base.nameLine}</div>
             ${
               base.jobLine || base.companyLine
