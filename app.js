@@ -150,6 +150,7 @@ function readForm(form) {
     instagram: fd.get("instagram") ?? "",
     tagline: fd.get("tagline") ?? "",
     x: fd.get("x") ?? "",
+    xing: fd.get("xing") ?? "",
     facebook: fd.get("facebook") ?? "",
     imageUrl: fd.get("imageUrl") ?? "",
   };
@@ -273,6 +274,7 @@ function buildSampleData() {
     github: "https://github.com/example",
     instagram: "",
     x: "",
+    xing: "",
     facebook: "",
     calendarLink: "https://cal.com/example",
     vcardUrl: "https://example.com/kontakt.vcf",
@@ -434,6 +436,7 @@ function buildVcard(data) {
     ["GitHub", data.github],
     ["Instagram", data.instagram],
     ["X", data.x],
+    ["XING", data.xing],
     ["Facebook", data.facebook],
     ["Termin", data.calendarLink],
   ]

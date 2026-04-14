@@ -113,6 +113,7 @@ function buildSocialLinks(data) {
   const github = cleanUrlForHosts(data.github, ["github.com"]);
   const instagram = cleanUrlForHosts(data.instagram, ["instagram.com"]);
   const x = cleanUrlForHosts(data.x, ["x.com", "twitter.com"]);
+  const xing = cleanUrlForHosts(data.xing, ["xing.com"]);
   const facebook = cleanUrlForHosts(data.facebook, ["facebook.com"]);
   const website = cleanUrl(data.website);
   const calendar = cleanUrl(data.calendarLink);
@@ -121,6 +122,7 @@ function buildSocialLinks(data) {
   if (github) items.push({ key: "gh", label: "GitHub", href: github });
   if (instagram) items.push({ key: "ig", label: "Instagram", href: instagram });
   if (x) items.push({ key: "x", label: "X", href: x });
+  if (xing) items.push({ key: "xing", label: "XING", href: xing });
   if (facebook) items.push({ key: "fb", label: "Facebook", href: facebook });
   if (website) items.push({ key: "web", label: "Web", href: website });
   if (calendar) items.push({ key: "cal", label: "Termin", href: calendar });
@@ -176,9 +178,12 @@ function renderSocialRow(data, options) {
     .map((l) => {
       const short = l.key.toUpperCase();
       const icon = ICON_SVG[l.key] || "";
+      const iconFallback = esc(short);
       const inner =
         style === "icons"
-          ? `<span style="display:inline-flex;align-items:center;justify-content:center;color:#ffffff;">${icon}</span>`
+          ? icon
+            ? `<span style="display:inline-flex;align-items:center;justify-content:center;color:#ffffff;">${icon}</span>`
+            : iconFallback
           : esc(short);
       return `
         <td style="padding:0 6px 0 0;vertical-align:middle;">
@@ -641,6 +646,7 @@ export function defaultState() {
       instagram: "",
       tagline: "",
       x: "",
+      xing: "",
       facebook: "",
       imageUrl: "",
     },

@@ -9,6 +9,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.15] - 2026-04-14
+### Added
+- Social‑Links: XING‑URL (optional) + Ausgabe als zusätzlicher Social‑Button/Link.
+
 ## [1.1.14] - 2026-04-14
 ### Changed
 - Signatur: „LinkedIn: Profil“ wird nicht mehr als extra Textzeile ausgegeben (LinkedIn bleibt über Social‑Icons/Links verfügbar).
