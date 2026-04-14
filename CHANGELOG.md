@@ -9,6 +9,12 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
+## [1.1.31] - 2026-04-14
+### Added
+- Validierung: Ungültige URLs/Telefonnummern werden direkt am Feld angezeigt (statt still zu ignorieren).
+### Changed
+- Autokorrektur: URLs ohne Protokoll bekommen beim Verlassen des Feldes automatisch `https://` ergänzt.
+
 ## [1.1.30] - 2026-04-14
 ### Changed
 - UI: Vorschau-Buttons: „Kopieren“ links, weitere Copy-Buttons rechtsbündig.

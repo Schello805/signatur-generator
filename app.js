@@ -24,6 +24,96 @@ function toast(message, { kind = "info", timeoutMs = 2200 } = {}) {
   toast._timer = window.setTimeout(() => t.classList.remove("show"), timeoutMs);
 }
 
+function isLikelyDomainish(value) {
+  const v = String(value || "").trim();
+  if (!v) return false;
+  if (v.includes(" ")) return false;
+  // Basic: contains a dot and no scheme.
+  if (/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(v)) return false;
+  return v.includes(".");
+}
+
+function normalizeUrlForInput(raw) {
+  let v = String(raw ?? "").trim();
+  if (!v) return { value: "", changed: false };
+  if (v.startsWith("www.")) {
+    v = `https://${v}`;
+    return { value: v, changed: true };
+  }
+  if (isLikelyDomainish(v) && !/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(v)) {
+    v = `https://${v}`;
+    return { value: v, changed: true };
+  }
+  return { value: v, changed: false };
+}
+
+function parseHttpUrl(value) {
+  const v = String(value ?? "").trim();
+  if (!v) return { url: null, error: "" };
+  try {
+    const u = new URL(v);
+    if (u.protocol !== "http:" && u.protocol !== "https:") return { url: null, error: "Nur http/https URLs sind erlaubt." };
+    return { url: u, error: "" };
+  } catch {
+    return { url: null, error: "Ungültige URL (bitte prüfen)." };
+  }
+}
+
+function hostEndsWith(host, allowed) {
+  const h = String(host || "").toLowerCase().replace(/\.$/, "");
+  const a = String(allowed || "").toLowerCase().replace(/\.$/, "");
+  return h === a || h.endsWith(`.${a}`);
+}
+
+const URL_HOST_RULES = {
+  linkedin: ["linkedin.com"],
+  github: ["github.com"],
+  instagram: ["instagram.com"],
+  x: ["x.com", "twitter.com"],
+  xing: ["xing.com"],
+  facebook: ["facebook.com"],
+};
+
+const URL_FIELDS = [
+  "website",
+  "linkedin",
+  "github",
+  "instagram",
+  "x",
+  "xing",
+  "facebook",
+  "calendarLink",
+  "vcardUrl",
+  "imageUrl",
+];
+
+const PHONE_FIELDS = ["phone", "mobile"];
+
+function validateUrlField(name, value) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return { error: "" };
+  if (name === "imageUrl" && raw.startsWith("data:image/")) return { error: "" };
+
+  const { url, error } = parseHttpUrl(raw);
+  if (error) return { error };
+
+  const allowedHosts = URL_HOST_RULES[name] || [];
+  if (allowedHosts.length) {
+    const ok = allowedHosts.some((h) => hostEndsWith(url.host, h));
+    if (!ok) return { error: `Bitte eine URL von ${allowedHosts.join(" oder ")} eingeben.` };
+  }
+
+  return { error: "" };
+}
+
+function validatePhoneField(value) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return { error: "" };
+  // Allow digits, whitespace, +, (), -, /
+  if (/^[\d\s()+\-\/]+$/.test(raw)) return { error: "" };
+  return { error: "Nur Ziffern, Leerzeichen und + ( ) - / sind erlaubt." };
+}
+
 function setupTooltips() {
   const tooltip = $("tooltip");
   const tooltipContent = $("tooltipContent");
@@ -551,6 +641,42 @@ function main() {
 
   let state = { ...initial };
 
+  function ensureFieldErrors() {
+    for (const name of [...URL_FIELDS, ...PHONE_FIELDS]) {
+      const input = form.elements.namedItem(name);
+      if (!input) continue;
+      const field = input.closest?.(".field");
+      if (!field) continue;
+      if (field.querySelector?.(`[data-error-for="${CSS.escape(name)}"]`)) continue;
+      const span = document.createElement("span");
+      span.className = "field-error";
+      span.dataset.errorFor = name;
+      span.setAttribute("aria-live", "polite");
+      field.appendChild(span);
+    }
+  }
+
+  function setFieldError(name, message) {
+    const el = form.querySelector?.(`[data-error-for="${CSS.escape(name)}"]`);
+    const input = form.elements.namedItem(name);
+    if (el) el.textContent = message || "";
+    if (input && "setAttribute" in input) {
+      if (message) input.setAttribute("aria-invalid", "true");
+      else input.removeAttribute("aria-invalid");
+    }
+  }
+
+  function validateAll(data) {
+    for (const name of URL_FIELDS) {
+      if (!data || typeof data !== "object") continue;
+      setFieldError(name, validateUrlField(name, data[name]).error);
+    }
+    for (const name of PHONE_FIELDS) {
+      if (!data || typeof data !== "object") continue;
+      setFieldError(name, validatePhoneField(data[name]).error);
+    }
+  }
+
   function setTemplateId(id) {
     state = { ...state, templateId: id };
     renderDesignCards({ selectedId: state.templateId, onSelect: setTemplateId });
@@ -588,10 +714,12 @@ function main() {
     preview.innerHTML = html;
     output.value = html;
     notice.innerHTML = buildCompatibilityNotice(state);
+    validateAll(state.data);
     saveState(state);
   }
 
   renderDesignCards({ selectedId: state.templateId, onSelect: setTemplateId });
+  ensureFieldErrors();
   update();
   setupTooltips();
 
@@ -631,6 +759,40 @@ function main() {
     }
     update();
   });
+
+  // On blur: best-effort auto-correct (no spammy toasts during typing).
+  form.addEventListener(
+    "blur",
+    (e) => {
+      const target = e.target;
+      const name = target?.name;
+      if (!name) return;
+
+      if (URL_FIELDS.includes(name) && target && "value" in target) {
+        const before = String(target.value || "");
+        const { value: normalized, changed } = normalizeUrlForInput(before);
+        if (changed) {
+          target.value = normalized;
+          toast("https:// wurde ergänzt.", { kind: "info" });
+        }
+        // Re-validate on blur (shows message if still invalid).
+        update();
+        return;
+      }
+
+      if (PHONE_FIELDS.includes(name) && target && "value" in target) {
+        const before = String(target.value || "");
+        // Remove clearly invalid characters (letters, emojis) but keep common separators.
+        const cleaned = before.replace(/[^\d\s()+\-\/]/g, "");
+        if (cleaned !== before) {
+          target.value = cleaned;
+          toast("Telefonnummer: ungültige Zeichen entfernt.", { kind: "info" });
+        }
+        update();
+      }
+    },
+    true
+  );
 
   form.addEventListener("change", (e) => {
     const target = e.target;
