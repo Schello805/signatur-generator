@@ -29,6 +29,12 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 ### Changed
 - UI: Designkarten zeigen nur noch den Namen (keine Beschreibung).
 
+## [1.1.38] - 2026-04-16
+### Changed
+- Designs: „Bubble“ wurde zu einem deutlich kräftigeren „Ribbon“-Look umgebaut.
+- Designs: „Poster“ wurde zu „Centered“ (zentriert, deutlich anders) umgebaut.
+- Social Icons: Icon-Definitionen zentralisiert; Social-Row kann in bestimmten Designs zentriert gerendert werden.
+
 ## [1.1.33] - 2026-04-14
 ### Changed
 - Footer: Links sind jetzt einfache Textlinks (keine Button-Pills).
