@@ -35,6 +35,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - Designs: „Poster“ wurde zu „Centered“ (zentriert, deutlich anders) umgebaut.
 - Social Icons: Icon-Definitionen zentralisiert; Social-Row kann in bestimmten Designs zentriert gerendert werden.
 
+## [1.1.39] - 2026-04-16
+### Changed
+- Design „Card“: Optik klarer getrennt von „Gradient Badge“ (Accent-Frame + Pill statt Split-Header).
+
 ## [1.1.33] - 2026-04-14
 ### Changed
 - Footer: Links sind jetzt einfache Textlinks (keine Button-Pills).

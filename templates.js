@@ -399,7 +399,9 @@ function templateCard(data, options) {
   const imgHtml = imgUrl
     ? `<img src="${esc(imgUrl)}" alt="Logo" width="${compact ? 44 : 52}" height="${
         compact ? 44 : 52
-      }" style="display:block;border-radius:12px;object-fit:cover;" />`
+      }" style="display:block;border-radius:${outlookSafe ? 0 : 999}px;object-fit:cover;border:2px solid ${esc(
+        accent
+      )};" />`
     : "";
 
   return `
@@ -408,41 +410,43 @@ function templateCard(data, options) {
   )};">
   <tr>
     <td style="padding:0;">
-      <table cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(0,0,0,0.12);border-radius:${radius}px;overflow:hidden;">
+      <table cellpadding="0" cellspacing="0" border="0" style="border:2px solid ${esc(
+        accent
+      )};border-radius:${radius}px;overflow:hidden;background:#ffffff;">
         <tr>
-          <td style="padding:${pad}px;background:${esc(accent)};color:#ffffff;">
-            <div style="font-size:${nameSize}px;font-weight:800;line-height:1.2;margin:0;">${base.nameLine}</div>
-            ${
-              base.jobLine || base.companyLine
-                ? `<div style="margin-top:4px;font-size:${small}px;line-height:1.3;opacity:0.95;">
-                    ${[base.jobLine, base.companyLine].filter(Boolean).join(" · ")}
-                  </div>`
-                : ""
-            }
-          </td>
-          <td style="padding:${pad}px;background:#ffffff;vertical-align:top;">
-            <table cellpadding="0" cellspacing="0" border="0">
+          <td style="padding:${pad}px;vertical-align:top;">
+            <table cellpadding="0" cellspacing="0" border="0" style="width:100%;">
               <tr>
+                <td style="padding:0;vertical-align:top;">
+                  <div style="font-size:${nameSize}px;font-weight:950;line-height:1.15;margin:0;">${base.nameLine}</div>
+                  ${
+                    base.jobLine || base.companyLine
+                      ? `<span style="display:inline-block;margin-top:8px;background:${esc(
+                          accent
+                        )};color:#ffffff;border-radius:999px;padding:4px 9px;font-size:${compact ? 11 : 12}px;line-height:1;font-weight:800;">
+                          ${[base.jobLine, base.companyLine].filter(Boolean).join(" · ")}
+                        </span>`
+                      : ""
+                  }
+                </td>
                 ${
                   imgHtml
-                    ? `<td style="padding:0 12px 0 0;vertical-align:top;">${imgHtml}</td>`
+                    ? `<td style="padding:0 0 0 12px;vertical-align:top;text-align:right;">${imgHtml}</td>`
                     : ""
-	                }
-	                <td style="padding:0;vertical-align:top;">
-	                  ${
-	                    contactHtml
-	                      ? `<table cellpadding="0" cellspacing="0" border="0" style="font-size:${small}px;line-height:1.25;">
-	                          ${contactHtml}
-	                        </table>`
-	                      : ""
-	                  }
-	                  ${social}
-	                  ${taglineFooter}
-	                  ${brandingFooter}
-	                </td>
-	              </tr>
-	            </table>
-	          </td>
+                }
+              </tr>
+            </table>
+            ${
+              contactHtml
+                ? `<table cellpadding="0" cellspacing="0" border="0" style="margin-top:${compact ? 10 : 12}px;font-size:${small}px;line-height:1.25;">
+                    ${contactHtml}
+                  </table>`
+                : ""
+            }
+            ${social}
+            ${taglineFooter}
+            ${brandingFooter}
+          </td>
         </tr>
       </table>
     </td>
