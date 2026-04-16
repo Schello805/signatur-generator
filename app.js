@@ -84,10 +84,12 @@ const URL_FIELDS = [
   "facebook",
   "calendarLink",
   "vcardUrl",
+  "eventLink",
   "imageUrl",
 ];
 
 const PHONE_FIELDS = ["phone", "mobile"];
+const EVENT_FIELDS = ["eventTitle", "eventStart", "eventDuration", "eventReminders"];
 
 function validateUrlField(name, value) {
   const raw = String(value ?? "").trim();
@@ -112,6 +114,56 @@ function validatePhoneField(value) {
   // Allow digits, whitespace, +, (), -, /
   if (/^[\d\s()+\-\/]+$/.test(raw)) return { error: "" };
   return { error: "Nur Ziffern, Leerzeichen und + ( ) - / sind erlaubt." };
+}
+
+function validateEventFields(data) {
+  const title = String(data?.eventTitle ?? "").trim();
+  const start = String(data?.eventStart ?? "").trim();
+  const durationRaw = String(data?.eventDuration ?? "").trim();
+  const remindersRaw = String(data?.eventReminders ?? "").trim();
+  const link = String(data?.eventLink ?? "").trim();
+  const location = String(data?.eventLocation ?? "").trim();
+
+  const any = Boolean(title || start || durationRaw || remindersRaw || link || location);
+  if (!any) {
+    return {
+      eventTitle: "",
+      eventStart: "",
+      eventDuration: "",
+      eventReminders: "",
+    };
+  }
+
+  const out = { eventTitle: "", eventStart: "", eventDuration: "", eventReminders: "" };
+
+  if (!title) out.eventTitle = "Bitte einen Titel angeben.";
+  if (!start) out.eventStart = "Bitte Startdatum/-zeit angeben.";
+  if (start) {
+    const d = new Date(start);
+    if (Number.isNaN(d.getTime())) out.eventStart = "Ungültiges Datum/Zeit.";
+  }
+
+  const duration = durationRaw ? Number(durationRaw) : 30;
+  if (!Number.isFinite(duration) || duration < 5 || duration > 1440) {
+    out.eventDuration = "Dauer muss zwischen 5 und 1440 Minuten liegen.";
+  }
+
+  if (remindersRaw) {
+    const parts = remindersRaw
+      .split(/[,\s]+/g)
+      .map((p) => p.trim())
+      .filter(Boolean);
+    if (!parts.length) {
+      out.eventReminders = "Ungültiges Format (z. B. „15, 60“).";
+    } else {
+      const nums = parts.map((p) => Number(p));
+      const ok = nums.every((n) => Number.isInteger(n) && n >= 0 && n <= 10080);
+      if (!ok) out.eventReminders = "Nur ganze Minuten (0–10080), z. B. „5, 15, 60“.";
+      if (nums.length > 5) out.eventReminders = "Max. 5 Erinnerungen (z. B. „5, 15, 60“).";
+    }
+  }
+
+  return out;
 }
 
 function setupTooltips() {
@@ -237,6 +289,12 @@ function readForm(form) {
     github: fd.get("github") ?? "",
     calendarLink: fd.get("calendarLink") ?? "",
     vcardUrl: fd.get("vcardUrl") ?? "",
+    eventTitle: fd.get("eventTitle") ?? "",
+    eventStart: fd.get("eventStart") ?? "",
+    eventDuration: fd.get("eventDuration") ?? "",
+    eventLink: fd.get("eventLink") ?? "",
+    eventReminders: fd.get("eventReminders") ?? "",
+    eventLocation: fd.get("eventLocation") ?? "",
     instagram: fd.get("instagram") ?? "",
     tagline: fd.get("tagline") ?? "",
     x: fd.get("x") ?? "",
@@ -466,6 +524,18 @@ function downloadVcard({ filename, vcard }) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
 
+function downloadIcs({ filename, ics }) {
+  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+
 function downloadJson({ filename, jsonText }) {
   const blob = new Blob([jsonText], { type: "application/json;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -503,6 +573,94 @@ function escVcardText(value) {
     .replaceAll("\n", "\\n")
     .replaceAll("\r", "\\n")
     .trim();
+}
+
+function escIcsText(value) {
+  return String(value ?? "")
+    .replaceAll("\\", "\\\\")
+    .replaceAll(";", "\\;")
+    .replaceAll(",", "\\,")
+    .replaceAll("\r\n", "\\n")
+    .replaceAll("\n", "\\n")
+    .replaceAll("\r", "\\n")
+    .trim();
+}
+
+function fmtIcsUtc(date) {
+  const pad = (n) => String(n).padStart(2, "0");
+  return (
+    date.getUTCFullYear() +
+    pad(date.getUTCMonth() + 1) +
+    pad(date.getUTCDate()) +
+    "T" +
+    pad(date.getUTCHours()) +
+    pad(date.getUTCMinutes()) +
+    pad(date.getUTCSeconds()) +
+    "Z"
+  );
+}
+
+function buildIcs(data) {
+  const title = String(data?.eventTitle ?? "").trim();
+  const startRaw = String(data?.eventStart ?? "").trim();
+  const durationMin = Number(String(data?.eventDuration ?? "").trim() || "30");
+  const link = String(data?.eventLink ?? "").trim();
+  const location = String(data?.eventLocation ?? "").trim();
+  const remindersRaw = String(data?.eventReminders ?? "").trim();
+
+  if (!title || !startRaw) return "";
+  const start = new Date(startRaw);
+  if (Number.isNaN(start.getTime())) return "";
+
+  const dur = Number.isFinite(durationMin) && durationMin > 0 ? durationMin : 30;
+  const end = new Date(start.getTime() + dur * 60 * 1000);
+
+  let reminders = [15];
+  if (remindersRaw) {
+    const nums = remindersRaw
+      .split(/[,\s]+/g)
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map((p) => Number(p))
+      .filter((n) => Number.isInteger(n) && n >= 0 && n <= 10080);
+    if (nums.length) reminders = nums.slice(0, 5);
+  }
+
+  const uid = (crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`) + "@signatur-generator.com";
+  const dtstamp = fmtIcsUtc(new Date());
+  const dtstart = fmtIcsUtc(start);
+  const dtend = fmtIcsUtc(end);
+
+  const lines = [];
+  lines.push("BEGIN:VCALENDAR");
+  lines.push("VERSION:2.0");
+  lines.push("CALSCALE:GREGORIAN");
+  lines.push("PRODID:-//signatur-generator.com//ICS Generator//DE");
+  lines.push("METHOD:PUBLISH");
+  lines.push("BEGIN:VEVENT");
+  lines.push(`UID:${escIcsText(uid)}`);
+  lines.push(`DTSTAMP:${dtstamp}`);
+  lines.push(`DTSTART:${dtstart}`);
+  lines.push(`DTEND:${dtend}`);
+  lines.push(`SUMMARY:${escIcsText(title)}`);
+  if (location) lines.push(`LOCATION:${escIcsText(location)}`);
+  if (link) {
+    lines.push(`URL:${escIcsText(link)}`);
+    lines.push(`DESCRIPTION:${escIcsText(`Meeting-Link: ${link}`)}`);
+  }
+
+  for (const min of reminders) {
+    lines.push("BEGIN:VALARM");
+    lines.push(`TRIGGER:-PT${min}M`);
+    lines.push("ACTION:DISPLAY");
+    lines.push(`DESCRIPTION:${escIcsText(title)}`);
+    lines.push("END:VALARM");
+  }
+
+  lines.push("END:VEVENT");
+  lines.push("END:VCALENDAR");
+
+  return lines.join("\r\n") + "\r\n";
 }
 
 function splitName(fullName) {
@@ -642,7 +800,7 @@ function main() {
   let state = { ...initial };
 
   function ensureFieldErrors() {
-    for (const name of [...URL_FIELDS, ...PHONE_FIELDS]) {
+    for (const name of [...URL_FIELDS, ...PHONE_FIELDS, ...EVENT_FIELDS]) {
       const input = form.elements.namedItem(name);
       if (!input) continue;
       const field = input.closest?.(".field");
@@ -675,6 +833,8 @@ function main() {
       if (!data || typeof data !== "object") continue;
       setFieldError(name, validatePhoneField(data[name]).error);
     }
+    const events = validateEventFields(data);
+    for (const [k, v] of Object.entries(events)) setFieldError(k, v);
   }
 
   function setTemplateId(id) {
@@ -858,6 +1018,25 @@ function main() {
     const filename = `${name || "kontakt"}.vcf`;
     downloadVcard({ filename, vcard: buildVcard(state.data) });
     toast("vCard Download gestartet.");
+  });
+
+  $("btnIcs").addEventListener("click", () => {
+    const errors = validateEventFields(state.data);
+    const hasErr = Object.values(errors).some(Boolean);
+    if (hasErr) {
+      toast("Bitte Termin‑Felder prüfen (Titel/Start/Dauer/Erinnerung).", { kind: "error" });
+      validateAll(state.data);
+      return;
+    }
+    const ics = buildIcs(state.data);
+    if (!ics) {
+      toast("Bitte Termin‑Titel und Startzeit ausfüllen.", { kind: "error" });
+      return;
+    }
+    const name = (state.data.eventTitle || "termin").trim().replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-_äöüÄÖÜß]/g, "");
+    const filename = `${name || "termin"}.ics`;
+    downloadIcs({ filename, ics });
+    toast("ICS Download gestartet.");
   });
 
   const fileImport = document.getElementById("fileImportJson");

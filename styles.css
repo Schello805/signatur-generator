@@ -87,6 +87,18 @@ body{
 .span-2{grid-column: span 2;}
 @media (max-width: 580px){ .span-2{grid-column: auto;} }
 
+.ics-block{
+  grid-column: span 2;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--card2) 90%, transparent);
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+@media (max-width: 580px){ .ics-block{grid-column: auto;} }
+.ics-block summary{cursor:pointer; color: var(--text); font-weight: 850; user-select:none;}
+.ics-grid{margin-top: 12px; display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px;}
+@media (max-width: 580px){ .ics-grid{grid-template-columns: 1fr;} }
+
 .field{display:flex; flex-direction:column; gap:6px;}
 .label{font-size: 12.5px; color: var(--muted);}
 .help{font-size: 12px; color: var(--muted); line-height: 1.3;}

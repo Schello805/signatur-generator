@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 	    <meta name="color-scheme" content="light" />
-	    <meta name="app-version" content="1.1.34" />
+	    <meta name="app-version" content="1.1.35" />
 	    <meta name="theme-color" content="#f6f7fb" />
 	    <title>Kostenloser E‑Mail‑Signatur Generator – Signaturgenerator</title>
 	    <meta
@@ -172,6 +172,61 @@
               <input name="calendarLink" type="url" inputmode="url" placeholder="https://cal.com/..." />
             </label>
 
+            <details class="ics-block">
+              <summary>
+                Kalendertermin (.ics) erstellen (optional)
+                <span
+                  class="hint"
+                  tabindex="0"
+                  role="img"
+                  aria-label="Hilfe zu ICS"
+                  data-tip="Erstellt eine .ics Datei (Kalendertermin), die du z. B. per Mail verschicken oder im Kalender öffnen kannst. Funktioniert auf Mac/Windows/Smartphone. Einige Browser zeigen die Datei ggf. erst in den Downloads."
+                  >?</span
+                >
+              </summary>
+              <div class="ics-grid">
+                <label class="field">
+                  <span class="label">Titel</span>
+                  <input name="eventTitle" type="text" inputmode="text" placeholder="Meeting / Termin" />
+                </label>
+
+                <label class="field">
+                  <span class="label">Start</span>
+                  <input name="eventStart" type="datetime-local" />
+                </label>
+
+                <label class="field">
+                  <span class="label">Dauer (Min.)</span>
+                  <input name="eventDuration" type="number" inputmode="numeric" min="5" max="1440" step="5" value="30" />
+                </label>
+
+                <label class="field">
+                  <span class="label">Meeting‑Link (optional)</span>
+                  <input name="eventLink" type="url" inputmode="url" placeholder="https://meet.google.com/..." />
+                </label>
+
+                <label class="field span-2">
+                  <span class="label"
+                    >Erinnerungen (Min., optional)
+                    <span
+                      class="hint"
+                      tabindex="0"
+                      role="img"
+                      aria-label="Hilfe zu Erinnerungen"
+                      data-tip="Mehrere Werte möglich, z. B. „5, 15, 60“. Wird als Kalender‑Reminder (VALARM) gespeichert."
+                      >?</span
+                    ></span
+                  >
+                  <input name="eventReminders" type="text" inputmode="text" placeholder="15, 60" />
+                </label>
+
+                <label class="field span-2">
+                  <span class="label">Ort (optional)</span>
+                  <input name="eventLocation" type="text" inputmode="text" placeholder="Online / Büro / Adresse" />
+                </label>
+              </div>
+            </details>
+
             <label class="field">
               <span class="label"
                 >vCard‑Download‑URL (optional)
@@ -230,12 +285,13 @@
                 <button type="button" class="btn btn-secondary" id="btnCopyHtml">HTML kopieren</button>
               </div>
             </div>
-            <div class="preview-actions-row preview-actions-row-secondary" aria-label="Downloads">
-              <button type="button" class="btn btn-small btn-ghost" id="btnDownload">Download .html</button>
-              <button type="button" class="btn btn-small btn-ghost" id="btnVcard">Download vCard (.vcf)</button>
-            </div>
-          </div>
-        </div>
+	            <div class="preview-actions-row preview-actions-row-secondary" aria-label="Downloads">
+	              <button type="button" class="btn btn-small btn-ghost" id="btnDownload">Download .html</button>
+	              <button type="button" class="btn btn-small btn-ghost" id="btnVcard">Download vCard (.vcf)</button>
+	              <button type="button" class="btn btn-small btn-ghost" id="btnIcs">Download Termin (.ics)</button>
+	            </div>
+	          </div>
+	        </div>
 
         <div class="preview-shell" aria-label="Signatur Vorschau">
           <div id="preview" class="preview"></div>
