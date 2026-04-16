@@ -13,6 +13,10 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 ### Changed
 - Footer: Linkliste ist jetzt kleiner und untereinander.
 
+## [1.1.35] - 2026-04-16
+### Changed
+- Header: Logo verlinkt jetzt auf die Startseite (auch auf Impressum/Datenschutz/Cookies).
+
 ## [1.1.33] - 2026-04-14
 ### Changed
 - Footer: Links sind jetzt einfache Textlinks (keine Button-Pills).
