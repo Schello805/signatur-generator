@@ -9,10 +9,6 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).
 - CI (GitHub Actions): Syntaxchecks + Versions-Konsistenzprüfung.
 
-## [1.1.35] - 2026-04-16
-### Added
-- ICS: Kalendertermin (.ics) Generator inkl. Meeting-Link und (mehreren) Erinnerungen + Download-Button.
-
 ## [1.1.34] - 2026-04-14
 ### Changed
 - Footer: Linkliste ist jetzt kleiner und untereinander.
