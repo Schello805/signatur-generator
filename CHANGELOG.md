@@ -17,6 +17,12 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 ### Changed
 - Header: Logo verlinkt jetzt auf die Startseite (auch auf Impressum/Datenschutz/Cookies).
 
+## [1.1.36] - 2026-04-16
+### Added
+- Designs: 3 neue Templates (Underline, Compact Card, Classic).
+### Changed
+- UI: Designkarten kompakter, damit mehr Designs sichtbar sind.
+
 ## [1.1.33] - 2026-04-14
 ### Changed
 - Footer: Links sind jetzt einfache Textlinks (keine Button-Pills).

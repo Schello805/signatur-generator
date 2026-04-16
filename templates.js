@@ -591,12 +591,226 @@ function templateGradientBadge(data, options) {
 </table>`.trim();
 }
 
+function templateUnderline(data, options) {
+  const base = richNameBlock(data, options);
+  const lines = buildLines(data);
+  const social = renderSocialRow(data, options);
+  const accent = options.accentColor;
+  const compact = options.density === "compact";
+  const taglineFooter = renderTaglineFooter(base, options);
+  const brandingFooter = renderBrandingFooter(options);
+
+  const nameSize = compact ? 14 : 16;
+  const small = compact ? 12 : 13;
+  const gap = compact ? 3 : 6;
+  const barH = compact ? 3 : 4;
+
+  const contactHtml = lines
+    .map((l) => {
+      const val = esc(l.text);
+      const content = l.href
+        ? `<a href="${esc(l.href)}" style="color:${esc(base.textColor)};text-decoration:none;">${val}</a>`
+        : val;
+      return `<tr>
+        <td style="padding:0 0 ${gap}px 0;vertical-align:top;"><span style="color:rgba(0,0,0,0.55);">${esc(l.label)}</span> ${content}</td>
+      </tr>`;
+    })
+    .join("");
+
+  return `
+<table cellpadding="0" cellspacing="0" border="0" style="font-family:${esc(base.font)};color:${esc(base.textColor)};">
+  <tr>
+    <td style="padding:0;">
+      <div style="font-size:${nameSize}px;font-weight:850;line-height:1.2;margin:0;">${base.nameLine}</div>
+      <div style="margin-top:${gap}px;height:${barH}px;width:${compact ? 88 : 110}px;background:${esc(accent)};border-radius:${barH}px;"></div>
+      ${
+        base.jobLine || base.companyLine
+          ? `<div style="margin-top:${gap}px;font-size:${small}px;line-height:1.3;color:rgba(0,0,0,0.72);">
+              ${[base.jobLine, base.companyLine].filter(Boolean).join(" · ")}
+            </div>`
+          : ""
+      }
+      ${
+        contactHtml
+          ? `<table cellpadding="0" cellspacing="0" border="0" style="margin-top:${gap + 6}px;font-size:${small}px;line-height:1.25;">
+              ${contactHtml}
+            </table>`
+          : ""
+      }
+      ${social}
+      ${taglineFooter}
+      ${brandingFooter}
+    </td>
+  </tr>
+</table>`.trim();
+}
+
+function templateCompactCard(data, options) {
+  const base = richNameBlock(data, options);
+  const lines = buildLines(data);
+  const social = renderSocialRow(data, options);
+  const accent = options.accentColor;
+  const compact = options.density === "compact";
+  const imgUrl = cleanImageSrc(data.imageUrl);
+  const outlookSafe = options.compatMode === "outlook";
+  const radius = outlookSafe ? 0 : 14;
+  const taglineFooter = renderTaglineFooter(base, options);
+  const brandingFooter = renderBrandingFooter(options);
+
+  const nameSize = compact ? 14 : 16;
+  const small = compact ? 12 : 13;
+  const pad = compact ? 10 : 12;
+
+  const imgHtml = imgUrl
+    ? `<img src="${esc(imgUrl)}" alt="Logo" width="${compact ? 40 : 48}" height="${
+        compact ? 40 : 48
+      }" style="display:block;border-radius:12px;object-fit:cover;border:1px solid rgba(0,0,0,0.12);" />`
+    : "";
+
+  const contactHtml = lines
+    .map((l) => {
+      const val = esc(l.text);
+      const content = l.href
+        ? `<a href="${esc(l.href)}" style="color:${esc(base.textColor)};text-decoration:none;">${val}</a>`
+        : val;
+      return `<tr>
+        <td style="padding:0 0 4px 0;vertical-align:top;color:rgba(0,0,0,0.55);white-space:nowrap;">${esc(l.label)}</td>
+        <td style="padding:0 0 4px 8px;vertical-align:top;">${content}</td>
+      </tr>`;
+    })
+    .join("");
+
+  return `
+<table cellpadding="0" cellspacing="0" border="0" style="font-family:${esc(base.font)};color:${esc(base.textColor)};">
+  <tr>
+    <td style="padding:0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(0,0,0,0.12);border-radius:${radius}px;overflow:hidden;">
+        <tr>
+          <td style="padding:${pad}px;background:#ffffff;">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="padding:0;vertical-align:top;">
+                  <div style="font-size:${nameSize}px;font-weight:850;line-height:1.2;margin:0;">${base.nameLine}</div>
+                  ${
+                    base.jobLine || base.companyLine
+                      ? `<div style="margin-top:6px;font-size:${small}px;line-height:1.3;color:rgba(0,0,0,0.70);">
+                          ${[base.jobLine, base.companyLine].filter(Boolean).join(" · ")}
+                        </div>`
+                      : ""
+                  }
+                </td>
+                <td style="width:12px;"></td>
+                <td style="padding:0;vertical-align:top;">
+                  <div style="width:${compact ? 10 : 12}px;height:${compact ? 10 : 12}px;border-radius:999px;background:${esc(
+        accent
+      )};"></div>
+                </td>
+              </tr>
+            </table>
+
+            <table cellpadding="0" cellspacing="0" border="0" style="margin-top:${compact ? 8 : 10}px;">
+              <tr>
+                ${imgHtml ? `<td style="padding:0 12px 0 0;vertical-align:top;">${imgHtml}</td>` : ""}
+                <td style="padding:0;vertical-align:top;">
+                  ${
+                    contactHtml
+                      ? `<table cellpadding="0" cellspacing="0" border="0" style="font-size:${small}px;line-height:1.25;">
+                          ${contactHtml}
+                        </table>`
+                      : ""
+                  }
+                  ${social}
+                  ${taglineFooter}
+                  ${brandingFooter}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`.trim();
+}
+
+function templateClassic(data, options) {
+  const base = richNameBlock(data, options);
+  const lines = buildLines(data);
+  const social = renderSocialRow(data, options);
+  const accent = options.accentColor;
+  const compact = options.density === "compact";
+  const outlookSafe = options.compatMode === "outlook";
+  const taglineFooter = renderTaglineFooter(base, options);
+  const brandingFooter = renderBrandingFooter(options);
+
+  const nameSize = compact ? 14 : 16;
+  const small = compact ? 12 : 13;
+  const pad = compact ? 10 : 12;
+  const sep = outlookSafe ? `background:${esc(accent)};` : `background:rgba(0,0,0,0.10);`;
+
+  const contactHtml = lines
+    .map((l) => {
+      const val = esc(l.text);
+      const content = l.href
+        ? `<a href="${esc(l.href)}" style="color:${esc(base.textColor)};text-decoration:none;">${val}</a>`
+        : val;
+      return `<tr>
+        <td style="padding:0 0 4px 0;vertical-align:top;color:rgba(0,0,0,0.55);white-space:nowrap;">${esc(l.label)}</td>
+        <td style="padding:0 0 4px 10px;vertical-align:top;">${content}</td>
+      </tr>`;
+    })
+    .join("");
+
+  return `
+<table cellpadding="0" cellspacing="0" border="0" style="font-family:${esc(base.font)};color:${esc(base.textColor)};">
+  <tr>
+    <td style="padding:0;">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="padding:0;vertical-align:top;">
+            <div style="font-size:${nameSize}px;font-weight:850;line-height:1.2;margin:0;">${base.nameLine}</div>
+            ${
+              base.jobLine || base.companyLine
+                ? `<div style="margin-top:6px;font-size:${small}px;line-height:1.3;color:rgba(0,0,0,0.70);">
+                    ${[base.jobLine, base.companyLine].filter(Boolean).join(" · ")}
+                  </div>`
+                : ""
+            }
+          </td>
+          <td style="width:${compact ? 14 : 18}px;"></td>
+          <td style="width:1px;${sep}"></td>
+          <td style="width:${compact ? 14 : 18}px;"></td>
+          <td style="padding:0;vertical-align:top;">
+            ${
+              contactHtml
+                ? `<table cellpadding="0" cellspacing="0" border="0" style="font-size:${small}px;line-height:1.25;">
+                    ${contactHtml}
+                  </table>`
+                : ""
+            }
+            ${social}
+            ${taglineFooter}
+            ${brandingFooter}
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`.trim();
+}
+
 export const TEMPLATES = [
   {
     id: "minimal",
     name: "Minimal",
     description: "Sehr kompatibel, clean und leicht.",
     render: templateMinimal,
+  },
+  {
+    id: "underline",
+    name: "Underline",
+    description: "Klarer Name mit Akzent‑Unterstreichung.",
+    render: templateUnderline,
   },
   {
     id: "leftbar",
@@ -611,10 +825,22 @@ export const TEMPLATES = [
     render: templateCard,
   },
   {
+    id: "compactcard",
+    name: "Compact Card",
+    description: "Ruhige Karte mit Akzentpunkt.",
+    render: templateCompactCard,
+  },
+  {
     id: "splitphoto",
     name: "Split + Foto",
     description: "Rundes Foto/Logo links, modern.",
     render: templateSplitPhoto,
+  },
+  {
+    id: "classic",
+    name: "Classic",
+    description: "Zweispaltig mit feinem Trenner.",
+    render: templateClassic,
   },
   {
     id: "gradient",
