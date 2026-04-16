@@ -395,7 +395,7 @@ function renderDesignCards({ selectedId, onSelect }) {
     btn.dataset.selected = String(t.id === selectedId);
     btn.setAttribute("aria-pressed", String(t.id === selectedId));
     btn.title = "Klick: Design wählen · Doppelklick: Vorschau öffnen";
-    btn.innerHTML = `<div class="design-name">${t.name}</div><p class="design-desc">${t.description}</p>`;
+    btn.innerHTML = `<div class="design-name">${t.name}</div>`;
 
     btn.addEventListener("click", () => onSelect(t.id));
     btn.addEventListener("dblclick", () => {

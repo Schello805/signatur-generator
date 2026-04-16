@@ -23,6 +23,12 @@ Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic V
 ### Changed
 - UI: Designkarten kompakter, damit mehr Designs sichtbar sind.
 
+## [1.1.37] - 2026-04-16
+### Added
+- Designs: 4 weitere Templates (Top Stripe, Mono, Bubble, Poster) – insgesamt jetzt 12.
+### Changed
+- UI: Designkarten zeigen nur noch den Namen (keine Beschreibung).
+
 ## [1.1.33] - 2026-04-14
 ### Changed
 - Footer: Links sind jetzt einfache Textlinks (keine Button-Pills).

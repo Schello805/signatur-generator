@@ -799,6 +799,262 @@ function templateClassic(data, options) {
 </table>`.trim();
 }
 
+function templateTopStripe(data, options) {
+  const base = richNameBlock(data, options);
+  const lines = buildLines(data);
+  const social = renderSocialRow(data, options);
+  const accent = options.accentColor;
+  const compact = options.density === "compact";
+  const outlookSafe = options.compatMode === "outlook";
+  const taglineFooter = renderTaglineFooter(base, options);
+  const brandingFooter = renderBrandingFooter(options);
+
+  const nameSize = compact ? 14 : 16;
+  const small = compact ? 12 : 13;
+  const pad = compact ? 10 : 12;
+  const stripeH = compact ? 6 : 7;
+  const radius = outlookSafe ? 0 : 14;
+
+  const contactHtml = lines
+    .map((l) => {
+      const val = esc(l.text);
+      const content = l.href
+        ? `<a href="${esc(l.href)}" style="color:${esc(base.textColor)};text-decoration:none;">${val}</a>`
+        : val;
+      return `<tr>
+        <td style="padding:0 0 4px 0;vertical-align:top;color:rgba(0,0,0,0.55);white-space:nowrap;">${esc(l.label)}</td>
+        <td style="padding:0 0 4px 10px;vertical-align:top;">${content}</td>
+      </tr>`;
+    })
+    .join("");
+
+  return `
+<table cellpadding="0" cellspacing="0" border="0" style="font-family:${esc(base.font)};color:${esc(base.textColor)};">
+  <tr>
+    <td style="padding:0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(0,0,0,0.12);border-radius:${radius}px;overflow:hidden;">
+        <tr>
+          <td style="padding:0;height:${stripeH}px;background:${esc(accent)};font-size:0;line-height:0;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="padding:${pad}px;background:#ffffff;">
+            <div style="font-size:${nameSize}px;font-weight:850;line-height:1.2;margin:0;">${base.nameLine}</div>
+            ${
+              base.jobLine || base.companyLine
+                ? `<div style="margin-top:6px;font-size:${small}px;line-height:1.3;color:rgba(0,0,0,0.70);">
+                    ${[base.jobLine, base.companyLine].filter(Boolean).join(" · ")}
+                  </div>`
+                : ""
+            }
+            ${
+              contactHtml
+                ? `<table cellpadding="0" cellspacing="0" border="0" style="margin-top:${compact ? 8 : 10}px;font-size:${small}px;line-height:1.25;">
+                    ${contactHtml}
+                  </table>`
+                : ""
+            }
+            ${social}
+            ${taglineFooter}
+            ${brandingFooter}
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`.trim();
+}
+
+function templateMono(data, options) {
+  const base = richNameBlock(data, options);
+  const lines = buildLines(data);
+  const social = renderSocialRow(data, options);
+  const compact = options.density === "compact";
+  const taglineFooter = renderTaglineFooter(base, options);
+  const brandingFooter = renderBrandingFooter(options);
+
+  const nameSize = compact ? 14 : 16;
+  const small = compact ? 12 : 13;
+  const pad = compact ? 8 : 10;
+  const font =
+    'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
+
+  const contactHtml = lines
+    .map((l) => {
+      const val = esc(l.text);
+      const content = l.href
+        ? `<a href="${esc(l.href)}" style="color:${esc(base.textColor)};text-decoration:none;">${val}</a>`
+        : val;
+      return `<tr>
+        <td style="padding:0 0 4px 0;vertical-align:top;color:rgba(0,0,0,0.55);white-space:nowrap;">${esc(l.label)}</td>
+        <td style="padding:0 0 4px 10px;vertical-align:top;">${content}</td>
+      </tr>`;
+    })
+    .join("");
+
+  return `
+<table cellpadding="0" cellspacing="0" border="0" style="font-family:${font};color:${esc(base.textColor)};">
+  <tr>
+    <td style="padding:0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="border:1px dashed rgba(0,0,0,0.25);border-radius:12px;overflow:hidden;">
+        <tr>
+          <td style="padding:${pad}px;background:#ffffff;">
+            <div style="font-size:${nameSize}px;font-weight:850;line-height:1.2;margin:0;">${base.nameLine}</div>
+            ${
+              base.jobLine || base.companyLine
+                ? `<div style="margin-top:6px;font-size:${small}px;line-height:1.3;color:rgba(0,0,0,0.70);">
+                    ${[base.jobLine, base.companyLine].filter(Boolean).join(" · ")}
+                  </div>`
+                : ""
+            }
+            ${
+              contactHtml
+                ? `<table cellpadding="0" cellspacing="0" border="0" style="margin-top:${compact ? 8 : 10}px;font-size:${small}px;line-height:1.25;">
+                    ${contactHtml}
+                  </table>`
+                : ""
+            }
+            ${social}
+            ${taglineFooter}
+            ${brandingFooter}
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`.trim();
+}
+
+function templateBubble(data, options) {
+  const base = richNameBlock(data, options);
+  const lines = buildLines(data);
+  const social = renderSocialRow(data, options);
+  const accent = options.accentColor;
+  const compact = options.density === "compact";
+  const outlookSafe = options.compatMode === "outlook";
+  const taglineFooter = renderTaglineFooter(base, options);
+  const brandingFooter = renderBrandingFooter(options);
+
+  const nameSize = compact ? 14 : 16;
+  const small = compact ? 12 : 13;
+  const pad = compact ? 10 : 12;
+  const radius = outlookSafe ? 0 : 16;
+  const bubbleBg = outlookSafe
+    ? esc(accent)
+    : `linear-gradient(90deg, color-mix(in oklab, ${esc(accent)} 25%, #ffffff), #ffffff)`;
+
+  const contactHtml = lines
+    .map((l) => {
+      const val = esc(l.text);
+      const content = l.href
+        ? `<a href="${esc(l.href)}" style="color:${esc(base.textColor)};text-decoration:none;">${val}</a>`
+        : val;
+      return `<tr>
+        <td style="padding:0 0 4px 0;vertical-align:top;color:rgba(0,0,0,0.55);white-space:nowrap;">${esc(l.label)}</td>
+        <td style="padding:0 0 4px 10px;vertical-align:top;">${content}</td>
+      </tr>`;
+    })
+    .join("");
+
+  return `
+<table cellpadding="0" cellspacing="0" border="0" style="font-family:${esc(base.font)};color:${esc(base.textColor)};">
+  <tr>
+    <td style="padding:0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(0,0,0,0.12);border-radius:${radius}px;overflow:hidden;">
+        <tr>
+          <td style="padding:${pad}px;background:#ffffff;">
+            <span style="display:inline-block;background:${bubbleBg};border:1px solid rgba(0,0,0,0.10);border-radius:999px;padding:6px 10px;">
+              <span style="font-size:${nameSize}px;font-weight:850;line-height:1.2;">${base.nameLine}</span>
+            </span>
+            ${
+              base.jobLine || base.companyLine
+                ? `<div style="margin-top:8px;font-size:${small}px;line-height:1.3;color:rgba(0,0,0,0.70);">
+                    ${[base.jobLine, base.companyLine].filter(Boolean).join(" · ")}
+                  </div>`
+                : ""
+            }
+            ${
+              contactHtml
+                ? `<table cellpadding="0" cellspacing="0" border="0" style="margin-top:${compact ? 8 : 10}px;font-size:${small}px;line-height:1.25;">
+                    ${contactHtml}
+                  </table>`
+                : ""
+            }
+            ${social}
+            ${taglineFooter}
+            ${brandingFooter}
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`.trim();
+}
+
+function templatePoster(data, options) {
+  const base = richNameBlock(data, options);
+  const lines = buildLines(data);
+  const social = renderSocialRow(data, options);
+  const accent = options.accentColor;
+  const compact = options.density === "compact";
+  const outlookSafe = options.compatMode === "outlook";
+  const taglineFooter = renderTaglineFooter(base, options);
+  const brandingFooter = renderBrandingFooter(options);
+
+  const nameSize = compact ? 14 : 16;
+  const small = compact ? 12 : 13;
+  const pad = compact ? 10 : 12;
+  const radius = outlookSafe ? 0 : 16;
+  const headerBg = outlookSafe ? esc(accent) : `linear-gradient(135deg, ${esc(accent)} 0%, #10b981 100%)`;
+
+  const contactItems = lines
+    .map((l) => {
+      const val = esc(l.text);
+      const content = l.href
+        ? `<a href="${esc(l.href)}" style="color:${esc(base.textColor)};text-decoration:none;">${val}</a>`
+        : val;
+      return `<tr>
+        <td style="padding:0 0 4px 0;vertical-align:top;"><span style="color:rgba(0,0,0,0.55);">${esc(l.label)}</span> ${content}</td>
+      </tr>`;
+    })
+    .join("");
+
+  return `
+<table cellpadding="0" cellspacing="0" border="0" style="font-family:${esc(base.font)};color:${esc(base.textColor)};">
+  <tr>
+    <td style="padding:0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(0,0,0,0.12);border-radius:${radius}px;overflow:hidden;">
+        <tr>
+          <td style="padding:${pad}px;background:${headerBg};color:#ffffff;">
+            <div style="font-size:${nameSize}px;font-weight:850;line-height:1.2;margin:0;">${base.nameLine}</div>
+            ${
+              base.jobLine || base.companyLine
+                ? `<div style="margin-top:6px;font-size:${small}px;line-height:1.3;opacity:0.95;">
+                    ${[base.jobLine, base.companyLine].filter(Boolean).join(" · ")}
+                  </div>`
+                : ""
+            }
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:${pad}px;background:#ffffff;vertical-align:top;">
+            ${
+              contactItems
+                ? `<table cellpadding="0" cellspacing="0" border="0" style="font-size:${small}px;line-height:1.25;">
+                    ${contactItems}
+                  </table>`
+                : ""
+            }
+            ${social}
+            ${taglineFooter}
+            ${brandingFooter}
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`.trim();
+}
+
 export const TEMPLATES = [
   {
     id: "minimal",
@@ -811,6 +1067,12 @@ export const TEMPLATES = [
     name: "Underline",
     description: "Klarer Name mit Akzent‑Unterstreichung.",
     render: templateUnderline,
+  },
+  {
+    id: "topstripe",
+    name: "Top Stripe",
+    description: "Karte mit Akzentstreifen oben.",
+    render: templateTopStripe,
   },
   {
     id: "leftbar",
@@ -841,6 +1103,24 @@ export const TEMPLATES = [
     name: "Classic",
     description: "Zweispaltig mit feinem Trenner.",
     render: templateClassic,
+  },
+  {
+    id: "mono",
+    name: "Mono",
+    description: "Technisch, monospace und reduziert.",
+    render: templateMono,
+  },
+  {
+    id: "bubble",
+    name: "Bubble",
+    description: "Verspielt, aber sauber.",
+    render: templateBubble,
+  },
+  {
+    id: "poster",
+    name: "Poster",
+    description: "Kräftiger Header, klarer Inhalt.",
+    render: templatePoster,
   },
   {
     id: "gradient",
