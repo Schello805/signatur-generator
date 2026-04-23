@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 	    <meta name="color-scheme" content="light" />
-	    <meta name="app-version" content="1.1.39" />
+	    <meta name="app-version" content="1.1.40" />
 	    <meta name="theme-color" content="#f6f7fb" />
 	    <title>Impressum – Signaturgenerator</title>
 	    <meta name="description" content="Impressum für signatur-generator.com (Signaturgenerator)." />
@@ -93,7 +93,7 @@
         </div>
         <div class="footer-col">
           <div class="footer-title">Hinweis</div>
-          <p>Matomo wird nur aktiv, wenn <code>matomo.js</code> konfiguriert ist.</p>
+          <p>Matomo wird nur nach Zustimmung aktiviert.</p>
         </div>
         <div class="footer-col">
           <div class="footer-title">Version</div>
@@ -104,8 +104,22 @@
         </div>
       </div>
     </footer>
-    <script src="matomo.js" defer></script>
     <script type="module" src="pwa.js"></script>
     <script type="module" src="version.js"></script>
+    <script type="module" src="analytics-consent.js"></script>
+
+    <div id="analyticsConsent" class="consent-bar" hidden role="dialog" aria-live="polite" aria-label="Cookie-Einstellungen">
+      <div class="consent-inner">
+        <div class="consent-text">
+          Wir würden gern <strong>anonymisierte Statistik</strong> (Matomo) nutzen, um die Seite zu verbessern.
+        </div>
+        <div class="consent-actions">
+          <a class="consent-link" href="datenschutz.html">Datenschutz</a>
+          <a class="consent-link" href="cookies.html">Cookiehinweise</a>
+          <button type="button" class="btn btn-ghost btn-sm" id="consentDecline">Nein</button>
+          <button type="button" class="btn btn-primary btn-sm" id="consentAccept">OK</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

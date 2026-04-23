@@ -1,6 +1,6 @@
 // Signaturgenerator Service Worker
 // Version must be bumped on releases to ensure updates propagate.
-const APP_VERSION = "1.1.39";
+const APP_VERSION = "1.1.40";
 const CACHE_PREFIX = "sg-cache-";
 const CACHE_NAME = `${CACHE_PREFIX}${APP_VERSION}`;
 
@@ -12,7 +12,7 @@ const PRECACHE_URLS = [
   "./templates.js",
   "./version.js",
   "./pwa.js",
-  "./matomo.js",
+  "./analytics-consent.js",
   "./manifest.webmanifest",
   "./Logo-Signatur-Generator.png",
   "./icon-192.png",

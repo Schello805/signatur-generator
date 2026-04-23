@@ -615,6 +615,11 @@ function buildFullHtmlDocument(fragment) {
 }
 
 async function fileToDataUrl(file) {
+  const allowed = new Set(["image/png", "image/jpeg", "image/webp", "image/gif"]);
+  const type = String(file?.type || "");
+  if (!allowed.has(type)) {
+    throw new Error("Bitte nur PNG/JPEG/WebP/GIF hochladen.");
+  }
   return new Promise((resolve, reject) => {
     const r = new FileReader();
     r.onerror = () => reject(new Error("Datei konnte nicht gelesen werden."));
@@ -806,7 +811,7 @@ function main() {
           toast("Bild eingefügt (Data‑URL).", { kind: "info" });
           update();
         })
-        .catch(() => toast("Bild konnte nicht geladen werden.", { kind: "error" }));
+        .catch((err) => toast(err?.message || "Bild konnte nicht geladen werden.", { kind: "error" }));
       return;
     }
     update();

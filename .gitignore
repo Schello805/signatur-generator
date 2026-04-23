@@ -3,3 +3,8 @@ Thumbs.db
 .idea/
 .vscode/
 *.log
+node_modules/
+server/
+pelletpreise/
+pelletspreise/
+pelletspreise-repo/

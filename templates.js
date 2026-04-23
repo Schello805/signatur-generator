@@ -37,7 +37,8 @@ function cleanImageSrc(value) {
 
   // Allow uploaded inline images for preview/export (may be blocked by some mail clients).
   // Keep a hard size limit to prevent accidental huge strings from freezing the UI.
-  if (raw.startsWith("data:image/") && raw.length <= 250_000) return raw;
+  // Security: only allow raster formats (avoid SVG-in-data-URL edge cases).
+  if (/^data:image\/(png|jpeg|jpg|webp|gif);/i.test(raw) && raw.length <= 250_000) return raw;
   return "";
 }
 

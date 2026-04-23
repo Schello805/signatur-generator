@@ -4,6 +4,11 @@ Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokument
 
 Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic Versioning*.
 
+## [1.1.40] - 2026-04-23
+### Changed
+- Analytics: Matomo wird erst nach Zustimmung geladen (dezente Consent-Leiste).
+- Bild-Upload: Dateiformate auf PNG/JPEG/WebP/GIF eingeschränkt (kein SVG).
+
 ## [1.1.0] - 2026-04-13
 ### Added
 - PWA/Service‑Worker: Offline‑Support und „Update installieren“ direkt aus dem Footer (HTTPS/localhost).

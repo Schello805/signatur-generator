@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 	    <meta name="color-scheme" content="light" />
-	    <meta name="app-version" content="1.1.39" />
+	    <meta name="app-version" content="1.1.40" />
 	    <meta name="theme-color" content="#f6f7fb" />
 	    <title>Kostenloser E‑Mail‑Signatur Generator – Signaturgenerator</title>
 	    <meta
@@ -195,7 +195,7 @@
 
             <label class="field span-2">
               <span class="label">Oder Bild hochladen (für Vorschau/Base64)</span>
-              <input name="imageUpload" type="file" accept="image/*" />
+              <input name="imageUpload" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
               <span class="help">Das Bild wird als Data‑URL eingefügt. Manche E‑Mail‑Programme blockieren das.</span>
             </label>
           </div>
@@ -479,9 +479,23 @@
       </div>
     </div>
 
-    <script src="matomo.js" defer></script>
     <script type="module" src="pwa.js"></script>
     <script type="module" src="version.js"></script>
+    <script type="module" src="analytics-consent.js"></script>
     <script type="module" src="app.js"></script>
+
+    <div id="analyticsConsent" class="consent-bar" hidden role="dialog" aria-live="polite" aria-label="Cookie-Einstellungen">
+      <div class="consent-inner">
+        <div class="consent-text">
+          Wir würden gern <strong>anonymisierte Statistik</strong> (Matomo) nutzen, um die Seite zu verbessern.
+        </div>
+        <div class="consent-actions">
+          <a class="consent-link" href="datenschutz.html">Datenschutz</a>
+          <a class="consent-link" href="cookies.html">Cookiehinweise</a>
+          <button type="button" class="btn btn-ghost btn-sm" id="consentDecline">Nein</button>
+          <button type="button" class="btn btn-primary btn-sm" id="consentAccept">OK</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
