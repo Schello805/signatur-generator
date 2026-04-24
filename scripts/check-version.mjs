@@ -50,12 +50,11 @@ async function main() {
     throw new Error(`service-worker APP_VERSION (${swVersion}) != app-version (${appVersion})`);
   }
 
-  // Basic changelog check (must mention the version header).
+  // Basic changelog check (Unreleased section required; release headers optional).
   const changelog = await fs.readFile(path.join(ROOT, "CHANGELOG.md"), "utf8");
-  if (!changelog.includes(`## [${appVersion}]`)) {
-    throw new Error(`CHANGELOG.md missing header for version ${appVersion}`);
+  if (!changelog.includes("## [Unreleased]")) {
+    throw new Error("CHANGELOG.md missing required '## [Unreleased]' section");
   }
 }
 
 await main();
-

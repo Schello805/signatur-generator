@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+set -eu
+
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT_DIR"
+
+# Allow bypass for emergency cases.
+if [ "${SKIP_VERSION_BUMP:-}" = "1" ]; then
+  exit 0
+fi
+
+# If this commit is introducing/updating the hook scripts themselves, don't
+# auto-bump to avoid a "double bump" in the same change-set.
+if git diff --cached --name-only | grep -qE '^(\\.githooks/pre-commit|scripts/bump-version\\.mjs|scripts/setup-githooks\\.mjs)$'; then
+  exit 0
+fi
+
+node scripts/bump-version.mjs
+git add package.json package-lock.json service-worker.js index.html impressum.html datenschutz.html cookies.html >/dev/null 2>&1 || true

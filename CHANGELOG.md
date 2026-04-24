@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokument
 
 Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic Versioning*.
 
+## [Unreleased]
+
+## [1.1.43] - 2026-04-24
+### Changed
+- Versionierung: Patch-Version wird bei jedem Commit automatisch erhöht (Git-Hook via `npm install`).
+
 ## [1.1.40] - 2026-04-23
 ### Changed
 - Analytics: Matomo wird erst nach Zustimmung geladen (dezente Consent-Leiste).
