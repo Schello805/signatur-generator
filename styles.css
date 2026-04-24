@@ -521,3 +521,50 @@ body.consent-visible {
   .consent-inner{ flex-direction: column; align-items: stretch; }
   .consent-actions{ justify-content:flex-start; }
 }
+
+/* Modern file input button */
+input[type="file"]{
+  width: 100%;
+  font: inherit;
+  color: var(--text);
+  background: color-mix(in oklab, var(--panel) 92%, white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 8px 10px;
+}
+
+input[type="file"]::file-selector-button{
+  border: 1px solid color-mix(in oklab, var(--border) 86%, black);
+  background: color-mix(in oklab, var(--panel) 86%, white);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-weight: 750;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+input[type="file"]::-webkit-file-upload-button{
+  border: 1px solid color-mix(in oklab, var(--border) 86%, black);
+  background: color-mix(in oklab, var(--panel) 86%, white);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-weight: 750;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+input[type="file"]::file-selector-button:hover,
+input[type="file"]::-webkit-file-upload-button:hover{
+  background: color-mix(in oklab, var(--panel) 78%, white);
+  border-color: color-mix(in oklab, var(--border) 70%, black);
+}
+
+input[type="file"]:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 26%, transparent);
+  border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+}
