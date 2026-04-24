@@ -476,6 +476,10 @@ body.consent-visible {
   justify-content: center;
 }
 
+.consent-bar[hidden]{
+  display: none !important;
+}
+
 .consent-inner{
   width: min(980px, 100%);
   background: color-mix(in oklab, var(--bg) 86%, white);
