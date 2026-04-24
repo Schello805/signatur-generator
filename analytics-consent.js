@@ -1,4 +1,5 @@
 const CONSENT_KEY = "signaturgenerator:analytics-consent:v1";
+let wired = false;
 
 function $(id) {
   return document.getElementById(id);
@@ -49,8 +50,10 @@ function loadMatomo() {
 }
 
 function wireUi() {
+  if (wired) return true;
   const accept = $("consentAccept");
   const decline = $("consentDecline");
+  if (!accept || !decline) return false;
   if (accept) {
     accept.addEventListener("click", () => {
       setConsent("yes");
@@ -64,9 +67,13 @@ function wireUi() {
       hideBar();
     });
   }
+  wired = true;
+  return true;
 }
 
 function main() {
+  // The consent markup is placed at the end of <body> on some pages.
+  // Ensure handlers are wired only after the DOM is fully parsed.
   wireUi();
   const consent = getConsent();
   if (consent === "yes") {
@@ -79,8 +86,14 @@ function main() {
     return;
   }
   // Dezent: erst nach kurzem Delay einblenden.
-  window.setTimeout(showBar, 900);
+  window.setTimeout(() => {
+    wireUi();
+    showBar();
+  }, 900);
 }
 
-main();
-
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", main, { once: true });
+} else {
+  main();
+}
