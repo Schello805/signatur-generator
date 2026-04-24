@@ -1,18 +1,29 @@
 const CONSENT_KEY = "signaturgenerator:analytics-consent:v1";
 let wired = false;
+let memoryConsent = null;
 
 function $(id) {
   return document.getElementById(id);
 }
 
 function getConsent() {
-  const v = window.localStorage.getItem(CONSENT_KEY);
-  if (v === "yes" || v === "no") return v;
+  try {
+    const v = window.localStorage.getItem(CONSENT_KEY);
+    if (v === "yes" || v === "no") return v;
+  } catch {
+    // Some privacy modes can block localStorage; fall back to in-memory consent for this session.
+  }
+  if (memoryConsent === "yes" || memoryConsent === "no") return memoryConsent;
   return null;
 }
 
 function setConsent(value) {
-  window.localStorage.setItem(CONSENT_KEY, value);
+  memoryConsent = value;
+  try {
+    window.localStorage.setItem(CONSENT_KEY, value);
+  } catch {
+    // ignore
+  }
 }
 
 function showBar() {
@@ -54,19 +65,46 @@ function wireUi() {
   const accept = $("consentAccept");
   const decline = $("consentDecline");
   if (!accept || !decline) return false;
-  if (accept) {
-    accept.addEventListener("click", () => {
+  accept.addEventListener("click", (e) => {
+    e.preventDefault();
+    try {
       setConsent("yes");
+    } finally {
       hideBar();
       loadMatomo();
-    });
-  }
-  if (decline) {
-    decline.addEventListener("click", () => {
+    }
+  });
+  decline.addEventListener("click", (e) => {
+    e.preventDefault();
+    try {
       setConsent("no");
+    } finally {
       hideBar();
-    });
-  }
+    }
+  });
+
+  // Fallback: event delegation (in case markup is re-rendered in the future).
+  document.addEventListener("click", (e) => {
+    const t = e.target;
+    if (!(t instanceof HTMLElement)) return;
+    if (t.id === "consentAccept") {
+      e.preventDefault();
+      try {
+        setConsent("yes");
+      } finally {
+        hideBar();
+        loadMatomo();
+      }
+    }
+    if (t.id === "consentDecline") {
+      e.preventDefault();
+      try {
+        setConsent("no");
+      } finally {
+        hideBar();
+      }
+    }
+  });
   wired = true;
   return true;
 }
