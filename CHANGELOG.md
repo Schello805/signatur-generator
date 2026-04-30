@@ -5,6 +5,8 @@ Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokument
 Das Format basiert auf *Keep a Changelog* und Versionsnummern folgen *Semantic Versioning*.
 
 ## [Unreleased]
+### Changed
+- Footer: Versionsanzeige markiert „Update verfügbar“ direkt an der Revision + Hover-Hinweis zur Update-Nutzung.
 
 ## [1.1.43] - 2026-04-24
 ### Changed

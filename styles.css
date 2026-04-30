@@ -373,6 +373,36 @@ input[type="file"]{padding: 8px 10px; cursor:pointer;}
 .footer-meta-row a:hover{
   border-bottom-color: color-mix(in oklab, var(--accent) 55%, var(--border));
 }
+.version-inline{
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+.version-pill{
+  font-weight: 850;
+  color: color-mix(in oklab, var(--text) 86%, var(--muted));
+}
+.version-latest{color: var(--muted);}
+.version-badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.01em;
+  cursor: help;
+  user-select: none;
+}
+.version-badge--update{
+  background: color-mix(in oklab, var(--accent) 14%, var(--card2));
+  border-color: color-mix(in oklab, var(--accent) 45%, var(--border));
+  color: color-mix(in oklab, var(--text) 90%, var(--accent));
+}
 .footer-chip{
   display:inline-flex;
   align-items:center;

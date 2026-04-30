@@ -6,6 +6,20 @@ const VERSION_META = document.querySelector('meta[name="app-version"]');
 const LOCAL_VERSION = (VERSION_META?.getAttribute("content") || "").trim() || "dev";
 const VERSION_EL = document.getElementById("versionInfo");
 
+function escapeAttr(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function updateHelpText({ latestVersion }) {
+  const v = latestVersion ? ` (v${latestVersion})` : "";
+  return `Neue Version${v} auf GitHub verfügbar. Update: Wenn unten „Update installieren“ erscheint → klicken. Bei file:// bitte ZIP laden/ersetzen (PWA-Updates nur via HTTPS/localhost).`;
+}
+
 function setVersionHtml(html) {
   if (!VERSION_EL) return;
   VERSION_EL.innerHTML = html;
@@ -90,7 +104,7 @@ function shouldCheckUpdates() {
 }
 
 function renderLocalOnly() {
-  setVersionHtml(`v${LOCAL_VERSION} · <a href="${repoUrl()}" target="_blank" rel="noreferrer">GitHub</a>`);
+  setVersionHtml(`<span class="version-inline"><span class="version-pill">v${LOCAL_VERSION}</span> · <a href="${repoUrl()}" target="_blank" rel="noreferrer">GitHub</a></span>`);
 }
 
 function renderWithLatest({ latestSha, latestVersion }) {
@@ -98,26 +112,30 @@ function renderWithLatest({ latestSha, latestVersion }) {
   const cmp = latestVersion ? compareSemver(latestVersion, LOCAL_VERSION) : 0;
 
   if (latestVersion && cmp > 0) {
+    const help = updateHelpText({ latestVersion });
+    const helpAttr = escapeAttr(help);
     setVersionHtml(
-      `v${LOCAL_VERSION} · <strong>Update verfügbar</strong> (v${latestVersion}${
-        latestShort ? ` · GitHub ${latestShort}` : ""
-      }) · <a href="${repoUrl("archive/refs/heads/" + BRANCH + ".zip")}" target="_blank" rel="noreferrer">Download</a> · <a href="#" data-action="reload">Neu laden</a>`
+      `<span class="version-inline"><span class="version-pill">v${LOCAL_VERSION}</span><span class="version-badge version-badge--update hint" tabindex="0" role="note" aria-label="Update verfügbar" title="${helpAttr}" data-tip="${helpAttr}">Update</span> · <span class="version-latest">(v${latestVersion}${latestShort ? ` · GitHub ${latestShort}` : ""})</span> · <a href="${repoUrl(
+        "archive/refs/heads/" + BRANCH + ".zip"
+      )}" target="_blank" rel="noreferrer">Download</a> · <a href="#" data-action="reload">Neu laden</a></span>`
     );
     return;
   }
 
   if (latestVersion && cmp === 0) {
     setVersionHtml(
-      `v${LOCAL_VERSION} · up to date${latestShort ? ` · GitHub ${latestShort}` : ""} · <a href="${repoUrl(
-        "commits/" + BRANCH
-      )}" target="_blank" rel="noreferrer">Commits</a>`
+      `<span class="version-inline"><span class="version-pill">v${LOCAL_VERSION}</span> · up to date${
+        latestShort ? ` · GitHub ${latestShort}` : ""
+      } · <a href="${repoUrl("commits/" + BRANCH)}" target="_blank" rel="noreferrer">Commits</a></span>`
     );
     return;
   }
 
   // Fallback (no version info): show local + optional sha.
   setVersionHtml(
-    `v${LOCAL_VERSION}${latestShort ? ` · GitHub ${latestShort}` : ""} · <a href="${repoUrl()}" target="_blank" rel="noreferrer">GitHub</a>`
+    `<span class="version-inline"><span class="version-pill">v${LOCAL_VERSION}</span>${
+      latestShort ? ` · GitHub ${latestShort}` : ""
+    } · <a href="${repoUrl()}" target="_blank" rel="noreferrer">GitHub</a></span>`
   );
 }
 
