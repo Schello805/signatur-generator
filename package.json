@@ -1,7 +1,7 @@
 {
   "name": "signatur-generator",
   "private": true,
-  "version": "1.1.43",
+  "version": "1.1.45",
   "description": "Lokale Webapp zum Erstellen von E-Mail-Signaturen",
   "type": "module",
   "scripts": {
